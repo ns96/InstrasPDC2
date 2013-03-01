@@ -59,12 +59,21 @@
 		lcd_3310_clear();
 		mainMenu_redraw();
 		select(selection);
+			/*If PWM output required*/					
+		#ifdef _ENABLE_PWM_OUTPUT_ON_MAIN_MENU		
+				// Enable PWM output
+				PWM_outputEnable();			
+				// Set PWM width to 1000us
+				PWM_setCH1Duty(1000*2);		
+		#endif		
 	}
 	
 	/**	Deinitializes Main Menu
 	*/
 	void mainMenu_DeInit(void){
-		firstRun=1;		
+		firstRun=1;	
+		// Disable PWM output
+		PWM_outputDisable();			
 	}
 
 
@@ -89,12 +98,12 @@
 			btnTimer.timeStart=TIM1_cnt&0xFF;
 			// Read state of buttons
 			buttons=btn_getState();
-		
+			if (buttons>0)
+				buzzer_beep();
 			// If UP button is pressed
 			if ((buttons&btnUp)>0){
 				if (selection>SEL_ANALOG){
 					selection--;
-					buzzer_beep();
 				}
 				
 			}
@@ -103,7 +112,6 @@
 			if ((buttons&btnDown)>0){
 				if (selection<SEL_SETUP){
 					selection++;
-					buzzer_beep();
 				}
 				
 			}
@@ -112,7 +120,6 @@
 			if ((buttons&btnEnter)>0){
 				mainMenu_DeInit();
 				menu=selection;
-				buzzer_beep();
 			}	
 	}
 			

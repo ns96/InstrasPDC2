@@ -89,7 +89,7 @@
 		static uint8_t pauseState=0;
 		static uint16_t pauseTimer=0;
 		
-		// Check if the function is colled for the first time
+		// Check if the function is called for the first time
 		if (menuDigital_firstRun)
 		{
 			pwm_width=1000;
@@ -107,11 +107,11 @@
 			btnTimer.timeStart=tmp;
 			// Read state of buttons
 			buttons=btn_getState();
-			
+			if (buttons>0)
+				buzzer_beep();
 			menuDigital_drawStep();
 			// If UP button is pressed
 			if ((buttons&btnUp)>0){
-							buzzer_beep();
 					if (pwm_width+pwm_inc_array[mainConfig.PWMincIndex]<PWM_WIDTH_MAX)
 						pwm_width+=pwm_inc_array[mainConfig.PWMincIndex];
 					else
@@ -120,17 +120,14 @@
 			
 			// If DOWN button is pressed
 			if ((buttons&btnDown)>0){
-							buzzer_beep();
 					if (pwm_width-pwm_inc_array[mainConfig.PWMincIndex]>PWM_WIDTH_MIN)
 						pwm_width-=pwm_inc_array[mainConfig.PWMincIndex];
 					else
 						pwm_width=PWM_WIDTH_MIN;
-						
 			}
 			
 			// If ENTER button is pressed
 			if ((buttons&btnEnter)>0){
-							buzzer_beep();
 				if (!menuDigital_outputEnable){
 					menuDigital_outputEnable=1;
 					PWM_outputEnable();
@@ -146,8 +143,7 @@
 			}	
 			
 			// If EXIT button is pressed
-			if ((buttons&btnExit)>0){		
-				buzzer_beep();			
+			if ((buttons&btnExit)>0){			
 					if (menuDigital_outputEnable){
 					menuDigital_outputEnable=0;
 					PWM_outputDisable();
@@ -191,4 +187,5 @@
 		// Display PWM width
 		itoa((int32_t)pwm_width,&str);
 		lcd_3310_drawTextXY(4*6,3,str);
+		
 	}

@@ -1,11 +1,10 @@
 #ifndef __global_h_
 #define __global_h_
-
 	#define STV3_DEBUG
-	#define _ARM_ESC_ON_RAMP
+
 	
 	#include "board_stv307.h"
-
+	#include "defaults.h"
 	typedef struct {
 	uint8_t timeStart;
 	uint8_t timeElapsed;
@@ -20,9 +19,7 @@
 		uint8_t max_dwell;
 	} TrampConfig;
 	
-	#define RAMP_MODE_COUNT 3
-	#define RAMP_DWELL_MAX	50
-	#define RAMP_DWELL_MIN	1
+
 	
 	typedef struct {
 		uint8_t numReflectors;
@@ -35,9 +32,10 @@
 		uint16_t RPMus;
 	} TmainConfig;
 	
-	#define NUM_REFLECTORS_MAX		10
 
-	#define RAMP1_DEFAULTS 200,3000,10,30
+
+	#define RPM_PULSE_MEASUREMENT_FREQ 1
+	#define RPM_PULSE_COUNT_MAX	((RPM_MAX_VALUE/60)*NUM_REFLECTORS_MAX)/RPM_PULSE_MEASUREMENT_FREQ
 	
 	#define STARTUP_MENU_ANALOG		1
 	#define STARTUP_MENU_DIGITAL	2
@@ -48,17 +46,10 @@
 	#define BACKLIGHT_OFF			1
 	#define BACKLIGHT_LOW			2
 	#define BACKLIGHT_HIGH		3
-	
-	
-	#define PWM_WIDTH_MIN		1000
-	#define PWM_WIDTH_MAX		2000
-	
-	#define PWM_INC_COUNT 5
-	#define PWM_INC_VALUES 1,2,4,10,100
-	
+		
 	extern TmainConfig mainConfig;
 	extern volatile uint16_t TIM1_cnt;
-	extern uint16_t rpm;	
+	extern uint16_t rpm,rpm_p;	
 	extern volatile uint16_t Conversion_Value;
 	extern uint8_t menu;
 	

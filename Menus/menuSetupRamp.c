@@ -171,16 +171,17 @@ uint16_t menuSetupRamp_pwm_width=1000;
 
 			// Read state of buttons
 			buttons=btn_getState();
+			if (buttons>0)
+				buzzer_beep();
 			if ((buttons>0)&&(menuSetupRamp_edit))
 				menuSetupRamp_displayChanged=1;
 			// If UP button is pressed
-			if (((buttons&btnUp)>0)){
+			if (((buttons&btnUp)>0)){				
 				if (!menuSetupRamp_edit){ 					
 					if (mainConfig.rampCurrent<RAMP_MODE_COUNT-1){
 						mainConfig.rampCurrent++;				
 					//	menuSetupRamp_drawParams();
 						menuSetupRamp_displayChanged=1;
-						buzzer_beep();
 					}
 				/*	else{
 						mainConfig.rampCurrent=0;	
@@ -196,7 +197,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 			if ((buttons&btnDown)>0){
 				if (!menuSetupRamp_edit){ 
 					if (mainConfig.rampCurrent>0){
-						buzzer_beep();
 						mainConfig.rampCurrent--;		
 					//	menuSetupRamp_drawParams();
 						menuSetupRamp_displayChanged=1;
@@ -205,13 +205,11 @@ uint16_t menuSetupRamp_pwm_width=1000;
 				else
 				{
 						menuSetupRamp_btn(BTN_DOWN);
-						
 				}
 			}
 			
 			// If ENTER button is pressed
 			if (((buttons&btnEnter)>0)){
-				buzzer_beep();
 				if (!menuSetupRamp_edit){
 					menuSetupRamp_edit=1;
 				}
@@ -256,7 +254,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 					if (mainConfig.rampCfg[mainConfig.rampCurrent].min_dwell<RAMP_DWELL_MAX)
 					{
 						mainConfig.rampCfg[mainConfig.rampCurrent].min_dwell++;
-						buzzer_beep();
 					}
 				}
 				else
@@ -264,7 +261,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 					if (mainConfig.rampCfg[mainConfig.rampCurrent].min_dwell>RAMP_DWELL_MIN)
 					{
 						mainConfig.rampCfg[mainConfig.rampCurrent].min_dwell--;
-						buzzer_beep();
 					}
 				}
 			break;
@@ -278,7 +274,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 					if (mainConfig.rampCfg[mainConfig.rampCurrent].max_dwell<RAMP_DWELL_MAX)
 					{
 						mainConfig.rampCfg[mainConfig.rampCurrent].max_dwell++;
-						buzzer_beep();
 					}
 				}
 				else
@@ -286,7 +281,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 					if (mainConfig.rampCfg[mainConfig.rampCurrent].max_dwell>RAMP_DWELL_MIN)
 					{
 						mainConfig.rampCfg[mainConfig.rampCurrent].max_dwell--;
-						buzzer_beep();
 					}
 				}
 			break;
@@ -352,12 +346,18 @@ uint16_t menuSetupRamp_pwm_width=1000;
 			
 		if (menuSetupRamp_edit){
 			if (menuSetupRamp_editField==RS_FIELD_RPM_MIN){
-				mainConfig.rampCfg[mainConfig.rampCurrent].RPM_min=rpm;
+				if ((rpm_p*mainConfig.numReflectors/60)<150)
+					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_min=rpm;
+				else
+					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_min=rpm_p;
 				mainConfig.rampCfg[mainConfig.rampCurrent].PWM_min=menuSetupRamp_pwm_width;
 			}	
 			
 			if (menuSetupRamp_editField==RS_FIELD_RPM_MAX){
-				mainConfig.rampCfg[mainConfig.rampCurrent].RPM_max=rpm;
+				if ((rpm_p*mainConfig.numReflectors/60)<150)
+					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_max=rpm;
+				else
+					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_max=rpm_p;
 				mainConfig.rampCfg[mainConfig.rampCurrent].PWM_max=menuSetupRamp_pwm_width;
 			}	
 		}

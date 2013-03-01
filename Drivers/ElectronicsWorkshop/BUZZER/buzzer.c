@@ -56,12 +56,8 @@
 			t=(((uint32_t)time*(uint32_t)1000)/(uint32_t)(half_period*2));
 
 			while(t-->0){
-			
-				//GPIO_TOGGLE(S1_PORT, S1_PIN);
 				GPIO_HIGH(buzzer_config.buzzer_port, buzzer_config.buzzer_pin);
-				GPIO_HIGH(S1_PORT, S1_PIN);
 				delay_us(half_period);
-				GPIO_LOW(S1_PORT, S1_PIN);
 				GPIO_LOW(buzzer_config.buzzer_port, buzzer_config.buzzer_pin);		
 				delay_us(half_period);				
 			}

@@ -75,7 +75,8 @@
 			btnTimer.timeStart=TIM1_cnt&0xFF;
 			// Read state of buttons
 			buttons=btn_getState();
-			
+			if (buttons>0)
+				buzzer_beep();
 			// If EXIT button is pressed
 			if ((buttons&btnExit)>0){
 				buzzer_beepA(3200,10);
@@ -115,7 +116,7 @@
 		// limit PWM width to PWM_WIDTH_MAX value
 		if (pwm_width>PWM_WIDTH_MAX)
 			pwm_width=PWM_WIDTH_MAX;
-			
+		 
 		
 		// Set PWM width
 		PWM_setCH1Duty(pwm_width*2);
@@ -128,6 +129,7 @@
 			
 		if ((menuAnalog_outputEnable)||(!pauseState)){
 			menu_displayRPM(4*6,2);
+			//menu_displayRPM_pulses(4*6,3);
 		}
 		
 		if (!menuAnalog_outputEnable){

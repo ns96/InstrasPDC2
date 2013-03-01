@@ -4,7 +4,7 @@ ptn_Child1=DockState
 ptn_Child2=ToolBarMgr
 
 [WorkState_v1_2.DockState]
-Bars=35
+Bars=36
 ScreenCX=1280
 ScreenCY=1024
 ptn_Child1=Bar-0
@@ -42,10 +42,11 @@ ptn_Child32=Bar-31
 ptn_Child33=Bar-32
 ptn_Child34=Bar-33
 ptn_Child35=Bar-34
+ptn_Child36=Bar-35
 
 [WorkState_v1_2.DockState.Bar-0]
 BarID=59419
-Bars=22
+Bars=25
 Bar#0=0
 Bar#1=59647
 Bar#2=0
@@ -68,6 +69,9 @@ Bar#18=32768
 Bar#19=0
 Bar#20=0
 Bar#21=0
+Bar#22=0
+Bar#23=0
+Bar#24=0
 Style=0
 ExStyle=0
 PrevFloating=False
@@ -126,7 +130,7 @@ ResourceID=0
 
 [WorkState_v1_2.DockState.Bar-2]
 BarID=59422
-Bars=13
+Bars=16
 Bar#0=0
 Bar#1=0
 Bar#2=8003
@@ -140,6 +144,9 @@ Bar#9=5721
 Bar#10=0
 Bar#11=32769
 Bar#12=0
+Bar#13=0
+Bar#14=0
+Bar#15=0
 Style=0
 ExStyle=0
 PrevFloating=False
@@ -599,12 +606,12 @@ MRUDockingState=0
 DockingStyle=61440
 TypeID=14946
 ClassName=SECCustomToolBar
-WindowName=
+WindowName=Debug instrument
 ResourceID=0
 ptn_Child1=ToolBarInfoEx
 
 [WorkState_v1_2.DockState.Bar-14.ToolBarInfoEx]
-Title=
+Title=Debug instrument
 Buttons=JPAIAAAAAAAFPBAAAAAANEPBAAAAAABFPBAAAAAACFPBAAAAAA
 
 [WorkState_v1_2.DockState.Bar-15]
@@ -800,9 +807,9 @@ YPos=-2
 Docking=True
 MRUDockID=0
 MRUDockLeftPos=5
-MRUDockTopPos=-2
+MRUDockTopPos=22
 MRUDockRightPos=267
-MRUDockBottomPos=514
+MRUDockBottomPos=538
 MRUFloatStyle=4
 MRUFloatXPos=-2147483648
 MRUFloatYPos=0
@@ -1211,6 +1218,36 @@ WindowName=Peripheral Registers
 ResourceID=0
 
 [WorkState_v1_2.DockState.Bar-32]
+BarID=0
+Visible=False
+MRUWidth=115
+Style=12213
+ExStyle=131852
+PrevFloating=False
+MDIChild=False
+AutoHide=False
+AutoHidePinned=False
+LastAlignedDocking=0
+PctWidth=1000000
+MRUFloatCX=129
+MRUFloatCY=30
+MRUHorzDockCX=132
+MRUHorzDockCY=30
+MRUVertDockCX=31
+MRUVertDockCY=127
+MRUDockingState=0
+DockingStyle=61440
+TypeID=14946
+ClassName=SECCustomToolBar
+WindowName=Window
+ResourceID=0
+ptn_Child1=ToolBarInfoEx
+
+[WorkState_v1_2.DockState.Bar-32.ToolBarInfoEx]
+Title=Window
+Buttons=OHIBAAAAAAPHIBAAAAAACDBOAAAAAADDBOAAAAAAEDBOAAAAAA
+
+[WorkState_v1_2.DockState.Bar-33]
 BarID=59423
 Horz=True
 Floating=True
@@ -1241,7 +1278,7 @@ ClassName=
 WindowName=
 ResourceID=0
 
-[WorkState_v1_2.DockState.Bar-33]
+[WorkState_v1_2.DockState.Bar-34]
 BarID=59423
 Horz=True
 Floating=True
@@ -1272,7 +1309,7 @@ ClassName=
 WindowName=
 ResourceID=0
 
-[WorkState_v1_2.DockState.Bar-34]
+[WorkState_v1_2.DockState.Bar-35]
 BarID=59423
 Horz=True
 Floating=True

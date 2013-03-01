@@ -149,22 +149,23 @@ uint8_t menuRampMode=0;
 		uint8_t tmp=0;
 		lcd_3310_clear();
 		menuRamp_redraw();
-		menuRamp_drawMenuItems();
+		menuRamp_drawMenuItems(); 
 		menuRamp_drawParams();
 		/*If ESC arming on startup required*/					
-		#ifdef _ARM_ESC_ON_RAMP		
+		#ifdef _ARM_ESC_ON_RAMP		 
 				// Enable PWM output
 				PWM_outputEnable();			
 				// Set PWM width to 1000us
 				PWM_setCH1Duty(1000*2);		
-		#endif		
 			// Wait for 2 seconds (100*20ms)
-		tmp=TIM1_cnt&0xFF;
-		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<100)
-			;
+			tmp=TIM1_cnt&0xFF;
+			while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<100)
+				;				
 			
-		// Enable PWM output
-		PWM_outputDisable();	
+			// Enable PWM output
+			PWM_outputDisable();	
+		#endif					
+
 		
 		// Wait for enter button to be depressed
 		while ((btn_getState()&btnEnter)>0)
@@ -195,13 +196,13 @@ uint8_t menuRampMode=0;
 
 			// Read state of buttons
 			buttons=btn_getState();
-			
+			if (buttons>0)
+				buzzer_beep();
 			// If UP button is pressed
 			if (((buttons&btnUp)>0)&&(menuRamp_state==MENU_RAMP_STATE_INACTIVE)){
 				if (mainConfig.rampCurrent<RAMP_MODE_COUNT-1){
 					mainConfig.rampCurrent++;				
-					menuRamp_drawParams();
-					buzzer_beep();					
+					menuRamp_drawParams();				
 				}
 			}
 			
@@ -209,8 +210,7 @@ uint8_t menuRampMode=0;
 			if ((buttons&btnDown)>0){
 				if (mainConfig.rampCurrent>0){
 					mainConfig.rampCurrent--;		
-					menuRamp_drawParams();
-					buzzer_beep();					
+					menuRamp_drawParams();				
 				}					
 			}
 			
@@ -218,12 +218,10 @@ uint8_t menuRampMode=0;
 			if (((buttons&btnEnter)>0)&&(menuRamp_state==MENU_RAMP_STATE_INACTIVE)){
 				if (menuRamp_state==MENU_RAMP_STATE_INACTIVE)
 					menuRamp_state=MENU_RAMP_STATE_MIN;
-				buzzer_beep();
 			}	
 			
 			// If EXIT button is pressed
 			if ((buttons&btnExit)>0){
-				buzzer_beep();
 				if (menuRamp_state==MENU_RAMP_STATE_INACTIVE){
 					menuRamp_DeInit();
 					menu=MENU_MAIN;

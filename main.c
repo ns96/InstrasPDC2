@@ -31,14 +31,14 @@
 /* Private function prototypes -----------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 	volatile uint16_t Conversion_Value = 0;
-	uint16_t rpm=0;
+	uint16_t rpm=0,rpm_p=0;
 	volatile uint16_t TIM1_cnt=0;
 	uint8_t menu=MENU_MAIN;
 	TmainConfig mainConfig;
 	int test;
 	const uint8_t pwm_inc_array[PWM_INC_COUNT]={PWM_INC_VALUES};
 	uint8_t t[10];
-	
+
 /* Private functions ---------------------------------------------------------*/
 	/**
 	* @brief  Main initialization. Initializes all peripherals
@@ -61,11 +61,7 @@
 		// RPM meter initialization structure							
 		Trpm_pinConfig		rpmPinCfg= {	RPM_PIN,RPM_PORT,RPM_ext};
 		// Buzzer initialization structure
-#ifdef BUZZER_DEBUG		
-		Tbuzzer_Config		buzzerCfg= {S1_PIN,S1_PORT,1};
-#else
 		Tbuzzer_Config		buzzerCfg= {BUZZER_PIN,BUZZER_PORT,1};
-#endif
 
 		// Default values for RAMP programs
 		TrampConfig rampDefault=RAMP_DEFAULT_1;
@@ -100,12 +96,12 @@
 		
 		buzzer_setFreqTime(BUZZER_FREQUENCY,BUZZER_TIME);
 
-#ifdef STV3_DEBUG
-		//Temporary initialization of S1 and S2 outputs for debugging purposes
-		GPIO_Init( S1_PORT, S1_PIN, GPIO_MODE_OUT_PP_HIGH_FAST);
-		GPIO_Init( S2_PORT, S2_PIN, GPIO_MODE_OUT_PP_HIGH_FAST);	
-#endif		
 
+		//Initialize S1-4 outputs as push-pull, low level
+		GPIO_Init( S1_PORT, S1_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
+		GPIO_Init( S2_PORT, S2_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
+		GPIO_Init( S3_PORT, S3_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
+		GPIO_Init( S4_PORT, S4_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
 		// Initialize LCD background light control pin as output
 		GPIO_Init( LCD_BACKLIGHT_PORT, LCD_BACKLIGHT_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
 		
@@ -132,7 +128,6 @@
 			// Write new configuration to EEPROM data memory
 			ee_writeBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
 		}
-	
 	}
 	
 	/**
@@ -166,14 +161,13 @@
 		lcd_3310_splash(logo);
 		// Wait for 2 seconds (100*20ms)
 		tmp=TIM1_cnt&0xFF;
-		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<100){
+		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<250){
 			tmp=btn_getState();
-			if ((tmp&btnDown)&&(tmp&btnUp)&&(tmp1<100))
-				tmp1++;
-			
+		/*	if ((tmp&btnDown)&&(tmp&btnUp)&&(tmp1<100))
+				tmp1++;		*/	
 		}
-		if (tmp1>50)
-			menu=MENU_TEST;
+	/*	if (tmp1>50)
+			menu=MENU_TEST;*/
 			
 /*If ESC arming on startup required*/								
 #ifdef _ARM_ESC_ON_STARTUP		
@@ -183,9 +177,7 @@
 
 		// Clear LCD
 		lcd_3310_clear();
-
-		// Beep 4KHz, 50ms
-		buzzer_beep();
+		
 		/* Infinite loop */
 		while (1)
 		{

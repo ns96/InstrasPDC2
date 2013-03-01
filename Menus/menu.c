@@ -16,6 +16,32 @@
 /* Public functions ---------------------------------------------------------*/
 	void menu_displayRPM(uint8_t x, uint8_t y){
 			uint8_t str[14];
+			uint16_t trpm1,trmp2;
+		static Ttimer rpmTimer={0,0};
+		// Calculate elapsed time since last rpm refresh
+		// If time is more than 1s (50*20ms)
+		if (((TIM1_cnt&0xFF)-rpmTimer.timeStart)>50)
+		{
+			// Store current time
+			rpmTimer.timeStart=(TIM1_cnt)&0xFF;
+			// Clear part of LCD, showing the RPM number
+			lcd_3310_drawTextXY(x,y,"      ");
+			
+			trpm1=rpm;
+			trmp2=rpm_p;
+			if ((rpm_p*mainConfig.numReflectors/60)<150)
+				// Convert integer to string
+				itoa((int32_t)trpm1,&str);
+			else
+				// Convert integer to string
+				itoa((int32_t)trmp2,&str);			
+			// Draw the RPM on the screen
+			lcd_3310_drawTextXY(x,y,str);
+		}
+	}
+	
+		void menu_displayRPM_pulses(uint8_t x, uint8_t y){
+			uint8_t str[14];
 		static Ttimer rpmTimer={0,0};
 		// Calculate elapsed time since last rpm refresh
 		// If time is more than 1s (50*20ms)
@@ -26,10 +52,9 @@
 			// Clear part of LCD, showing the RPM number
 			lcd_3310_drawTextXY(x,y,"      ");
 			// Convert integer to string
-			itoa((int32_t)rpm,&str);
+			itoa((int32_t)rpm_p,&str);
 			// Draw the RPM on the screen
 			lcd_3310_drawTextXY(x,y,str);
 		}
-		
 	}
 	

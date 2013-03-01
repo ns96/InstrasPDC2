@@ -226,10 +226,15 @@ INTERRUPT_HANDLER(SPI_IRQHandler, 10)
   */
 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
 {
+	static uint16_t t_last=0;
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
 		TIM1_cnt++;
+		if (((uint16_t)(TIM1_cnt-t_last))>=(50/RPM_PULSE_MEASUREMENT_FREQ)){
+			rpm_timerInterruptHandler();
+			t_last=TIM1_cnt;
+		}
 
 		// Clear the interrupt pending bit for TIM1.
     TIM1_ClearITPendingBit(TIM1_IT_UPDATE);

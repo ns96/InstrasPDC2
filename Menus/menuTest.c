@@ -8,7 +8,6 @@
 #include "pot.h"
 #include "pwm.h"
 #include "buzzer.h"
-
 /* Private defines -----------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
@@ -132,7 +131,5 @@
 		else
 			lcd_3310_invert(0);
 		lcd_3310_drawTextXY(5*6,4,"NORM");
-		lcd_3310_invert(0);*/
-		
-
+		lcd_3310_invert(0);*/		
 	}

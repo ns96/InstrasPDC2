@@ -13,13 +13,10 @@
 	#define SEL_BL		3
 	#define SEL_RAMP	4
 	
-	//								"xxxxxx  yyzzzzz"
 	#define STR_SET   "SET P#"
 	#define STR_START "START"
 	#define STR_BL    "BL"
-	#define STR_RAMP  "RAMP"
-	
-
+	#define STR_RAMP  "RAMP"	
 
 /* Private function prototypes -----------------------------------------------*/
 void menuSetup_redraw(void);
@@ -30,11 +27,7 @@ uint8_t menuNames[4][7]={STR_SET,STR_START,STR_BL,STR_RAMP};
 uint8_t editing=0;
 /* Private functions ---------------------------------------------------------*/
 void menuSetup_redraw(void){
-	lcd_3310_drawTextXY(0,0,"SETUP:");/*
-	lcd_3310_drawTextXY(0,2,"SET P# 2");
-	lcd_3310_drawTextXY(0,3,"START  DIGITAL");
-	lcd_3310_drawTextXY(0,4,"BL     ON");
-	lcd_3310_drawTextXY(0,5,"RAMP");*/
+	lcd_3310_drawTextXY(0,0,"SETUP:");
 }
 
 	/**	Inverts selected item
@@ -42,7 +35,7 @@ void menuSetup_redraw(void){
 	*/
 	void menuSetup_select(uint8_t sel){
 		uint8_t i;
-#ifdef SETUP_MENU_INVERT_SELECTED
+#ifdef SETUP_MENU_INVERT_SELECTED	// If selected item's text should be inverted
 		// Go trough all menu options
 		for (i=SEL_SETP;i<=SEL_RAMP;i++){
 			lcd_3310_invert(0);
@@ -58,7 +51,7 @@ void menuSetup_redraw(void){
 		}		
 		lcd_3310_invert(0);
 	}
-#else
+#else	// If a "*" symbol should be placed to the left of selected item
 		// Go trough all menu options
 		for (i=SEL_SETP;i<=SEL_RAMP;i++){
 			lcd_3310_invert(0);
@@ -75,7 +68,7 @@ void menuSetup_redraw(void){
 	}
 #endif
 	
-		/**	Inverts selected item
+	/**	Inverts selected item
 	* and draws other items
 	*/
 	void menuSetup_drawParams(void){
@@ -148,10 +141,19 @@ void menuSetup_Init(void){
 	// Wait for enter button to be depressed
 	while ((btn_getState()&btnEnter)>0)
 		;
+	/*If PWM output required*/					
+	#ifdef _ENABLE_PWM_OUTPUT_ON_SETUP_MENU		
+		// Enable PWM output
+		PWM_outputEnable();			
+		// Set PWM width to 1000us
+		PWM_setCH1Duty(1000*2);		
+	#endif			
 }
-/**	Deinitializes Main Menu
+/**	Deinitializes Menu
 */
 void menuSetup_DeInit(void){
+	// Disable PWM output
+	PWM_outputDisable();	
 	menuSetup_firstRun=1;
 	ee_writeBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
 }
@@ -165,12 +167,13 @@ void menuSetup_buttons(void){
 			// Store current time
 			btnTimer.timeStart=TIM1_cnt&0xFF;	
 			// Read state of buttons
-			buttons=btn_getState();
-			if (buttons>0)
+			buttons=btn_getState();				
+			if (buttons>0){
+				buzzer_beep();
 				menuSetup_displayChanged=1;
+			}
 		// If UP button is pressed
 			if ((buttons&btnUp)>0){		
-				buzzer_beep();
 				if (!editing){			
 					if (menuSetup_selection>SEL_SETP){
 						menuSetup_selection--;}
@@ -182,7 +185,6 @@ void menuSetup_buttons(void){
 			
 			// If DOWN button is pressed
 			if ((buttons&btnDown)>0){
-				buzzer_beep();
 				if (!editing){
 					if (menuSetup_selection<SEL_RAMP){
 						menuSetup_selection++;}
@@ -194,7 +196,6 @@ void menuSetup_buttons(void){
 	
 			// If ENTER button is pressed
 			if ((buttons&btnEnter)>0){
-				buzzer_beep();
 				if (menuSetup_selection!=SEL_RAMP)
 					editing=1;
 				else
@@ -206,7 +207,6 @@ void menuSetup_buttons(void){
 			
 			// If EXIT button is pressed
 			if ((buttons&btnExit)>0){
-				buzzer_beep();
 				if (editing)
 				{
 					editing=0;

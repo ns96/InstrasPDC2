@@ -22,11 +22,11 @@
 	
 	/* Public variables ----------------------------------------------------------*/
 	Trpm_pinConfig rpm_pins;
-//	volatile uint8_t RP=0;		
 	uint32_t rpm_current=0,rpm_old=0;
 	uint8_t rpmNoSignal=0;
 	uint16_t rpm_min=0;
 	uint16_t rpm_max=65000;
+	uint16_t rpm_pulses=0;
 	/* Private functions ---------------------------------------------------------*/
 	
 	/**
@@ -58,7 +58,6 @@
 		static uint16_t TIM_old=0;
 		if ((TIM1_cnt-TIM_old)>=5){
 			TIM_old=TIM1_cnt;
-			GPIO_TOGGLE(S2_PORT, S2_PIN);
 			if (rpmNoSignal<3){
 				rpmNoSignal++;
 			}
@@ -68,6 +67,10 @@
 		}
 	}
 
+	void rpm_timerInterruptHandler(void){
+		rpm_p=rpm_pulses/mainConfig.numReflectors*RPM_PULSE_MEASUREMENT_FREQ*60;
+		rpm_pulses=0;	
+	}
 
 	/**
   * @brief  Interrupt handler function for RPM metering
@@ -80,6 +83,16 @@
 		static uint32_t rpm_val=0;
 		tmp=TIM1->CNTRH;
 		tmp1=TIM1->CNTRL;
+		/*check if the number of pulses does not exceed
+			limiting values, calculated using max rpm value
+			end max reflector count
+		*/
+		if (rpm_pulses<RPM_PULSE_COUNT_MAX){
+			rpm_pulses++;
+		}
+		else
+			rpm_pulses=0xFFFF;
+			
 		rpm_current=40000*TIM1_cnt;
 		rpm_current+=((uint32_t)tmp<<8);
 		rpm_current+=((uint32_t)tmp1);
