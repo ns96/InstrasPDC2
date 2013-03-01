@@ -119,7 +119,7 @@
 		 
 		
 		// Set PWM width
-		PWM_setCH1Duty(pwm_width*2);
+		PWM_setAllChannelDuty(pwm_width*2);
 			
 			//display pwm width in us
 			itoa(pwm_width,&str);
@@ -129,10 +129,10 @@
 			
 		if ((menuAnalog_outputEnable)||(!pauseState)){
 			menu_displayRPM(4*6,2);
-			//menu_displayRPM_pulses(4*6,3);
 		}
-		
+		// If PWM output is disabled
 		if (!menuAnalog_outputEnable){
+			// Every 1s show PAUSE
 			if (((uint16_t)(TIM1_cnt-pauseTimer))>50){
 				pauseTimer=TIM1_cnt;
 				if (pauseState)

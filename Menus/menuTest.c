@@ -125,11 +125,4 @@
 			lcd_3310_invert(0);
 		lcd_3310_drawTextXY(5*6,3,str);
 		lcd_3310_invert(0);
-		/*
-		if (valueToChange==2)
-			lcd_3310_invert(1);
-		else
-			lcd_3310_invert(0);
-		lcd_3310_drawTextXY(5*6,4,"NORM");
-		lcd_3310_invert(0);*/		
 	}

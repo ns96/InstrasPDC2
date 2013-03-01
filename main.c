@@ -24,7 +24,6 @@
 	#include "global.h"
 	#include "ee.h"
 	#include "buzzer.h"
-	#include "defaults.h"
 	#include "menu.h"
 	
 /* Private defines -----------------------------------------------------------*/
@@ -154,11 +153,12 @@
 		// Enable PWM output
 		PWM_outputEnable();			
 		// Set PWM width to 1000us
-		PWM_setCH1Duty(1000*2);		
+		PWM_setAllChannelDuty(1000*2);		
 #endif		
 
 		// Display logo screen
 		lcd_3310_splash(logo);
+		lcd_3310_drawTextXY(0,4,DEVICE_VERSION_STRING);
 		// Wait for 2 seconds (100*20ms)
 		tmp=TIM1_cnt&0xFF;
 		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<250){

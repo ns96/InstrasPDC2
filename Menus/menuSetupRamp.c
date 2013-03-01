@@ -81,14 +81,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 	void menuSetupRamp_drawParams(void){
 		uint8_t str[14];
 		static TrampConfig rampCfg;		
-
-		// Calculate time elapsed since ramp action start [in 0.1seconds]
-	//	timeElapsed=(uint16_t)(TIM1_cnt-_timeStarted)/5;
-		
-		// If elapsed time is shorter 
-		//if (timeElapsed<5)
-	//		return;
-	//	_timeStarted=TIM1_cnt;	
 		
 		rampCfg=mainConfig.rampCfg[mainConfig.rampCurrent];
 		// Clear symbols on LCD
@@ -183,9 +175,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 					//	menuSetupRamp_drawParams();
 						menuSetupRamp_displayChanged=1;
 					}
-				/*	else{
-						mainConfig.rampCurrent=0;	
-					}*/
 				}
 				else
 				{
@@ -239,7 +228,10 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		}
 	}
 	
-
+	/**
+	* @brief  Callback function for button press in editing mode
+  * @retval None
+  */
 	void menuSetupRamp_btn(uint8_t state){
 		if (!menuSetupRamp_edit)
 			return;
@@ -339,7 +331,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 			if (menuSetupRamp_pwm_width>PWM_WIDTH_MAX)
 				menuSetupRamp_pwm_width=PWM_WIDTH_MAX;
 			// Set PWM width
-			PWM_setCH1Duty(menuSetupRamp_pwm_width*2);
+			PWM_setAllChannelDuty(menuSetupRamp_pwm_width*2);
 		}
 		else
 			PWM_outputDisable();
@@ -361,8 +353,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 				mainConfig.rampCfg[mainConfig.rampCurrent].PWM_max=menuSetupRamp_pwm_width;
 			}	
 		}
-			
-		
 			
 		// Display RPM on the screen
 		menu_displayRPM(4*6,4);

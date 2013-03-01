@@ -53,8 +53,7 @@ uint8_t menuRampMode=0;
 				// invert the text
 				lcd_3310_invert(1);
 			else
-				lcd_3310_invert(0);
-			
+				lcd_3310_invert(0);			
 			// convert integer to string
 			itoa((int32_t)(i+1),&str);
 			// draw on lcd
@@ -66,30 +65,20 @@ uint8_t menuRampMode=0;
 				// add space
 				lcd_3310_drawText(" ");	
 		}
-	/*	// Display text "MIN"
-		if (menuRamp_state==MENU_RAMP_STATE_MIN)
-			lcd_3310_invert(1);
-		else
-			lcd_3310_invert(0);
-		lcd_3310_drawTextXY(0,2,"MIN");
-		
-		if (menuRamp_state==MENU_RAMP_STATE_MAX)
-			lcd_3310_invert(1);
-		else
-			lcd_3310_invert(0);		
-		lcd_3310_drawTextXY(0,3,"MAX");
-		lcd_3310_invert(0);	*/
-		
-		
+		// Check if RAMP program is started
 		if (menuRamp_state!=MENU_RAMP_STATE_INACTIVE){
+			// Chech if 0.5s has passed since the last time
 			if (((uint16_t)(TIM1_cnt-blinkTimer))>25){
 				blinkTimer=TIM1_cnt;
+				// What is the display state at the moment?
 				if (blinkState){
+						// Text MIN/MAX is shown
 							lcd_3310_drawTextXY(0,2,"MIN");
 							lcd_3310_drawTextXY(0,3,"MAX");
 					blinkState=0;				
 				}
 				else{
+					// Time left for the step is shown
 					if (menuRamp_state==MENU_RAMP_STATE_MIN){
 						lcd_3310_drawTextXY(0,2,"   ");
 						//display time left
@@ -109,10 +98,12 @@ uint8_t menuRampMode=0;
 		}
 		else
 		{
+			// Program not started, draw the text MIN/MAX normally
 			lcd_3310_invert(0);
 			lcd_3310_drawTextXY(0,2,"MIN");
 			lcd_3310_drawTextXY(0,3,"MAX");	
 		}
+		// Make sure further text drawing on the screen will not be inverted
 		lcd_3310_invert(0);
 	}
 	
@@ -156,7 +147,7 @@ uint8_t menuRampMode=0;
 				// Enable PWM output
 				PWM_outputEnable();			
 				// Set PWM width to 1000us
-				PWM_setCH1Duty(1000*2);		
+				PWM_setAllChannelDuty(1000*2);		
 			// Wait for 2 seconds (100*20ms)
 			tmp=TIM1_cnt&0xFF;
 			while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<100)
@@ -294,7 +285,7 @@ uint8_t menuRampMode=0;
 				
 		/* Set PWM width. Width step is 0.5us, thus the value in
 		   us is multiplied by two*/
-		PWM_setCH1Duty(menuRamp_pwm_width*2);
+		PWM_setAllChannelDuty(menuRamp_pwm_width*2);
 	}
 	
 /* Public functions ---------------------------------------------------------*/
@@ -320,8 +311,7 @@ uint8_t menuRampMode=0;
 		// Read the state of buttons
 		// And react to changes
 		menuRamp_buttons();
-		
-		
+				
 		// Take the actions needed
 		menuRamp_action();
 		

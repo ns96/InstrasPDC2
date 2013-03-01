@@ -7,4 +7,5 @@
 	void PWM_setCH1Duty(uint16_t duty);
 	void PWM_setCH2Duty(uint16_t duty);
 	void PWM_setCH3Duty(uint16_t duty);
+	void PWM_setAllChannelDuty(uint16_t duty);
 #endif

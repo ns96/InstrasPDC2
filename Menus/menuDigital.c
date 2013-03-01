@@ -65,7 +65,7 @@
 	/**	Initializes  Menu
 	*/
 	void menuDigital_Init(void){
-		PWM_setCH1Duty(1000);
+		PWM_setAllChannelDuty(1000);
 		lcd_3310_clear();
 		menuDigital_redraw();
 		menuDigital_drawStep();
@@ -154,13 +154,6 @@
 				}	
 			}	
 		}
-		/*	
-		if (menuDigital_outputEnable){
-			menu_displayRPM(4*6,2);
-			lcd_3310_drawText(" ");
-		}
-		else
-			lcd_3310_drawTextXY(4*6,2,"PAUSE");*/
 			
 		if ((menuDigital_outputEnable)||(!pauseState)){
 			menu_displayRPM(4*6,2);
@@ -177,13 +170,11 @@
 				}
 			}
 		}	
-			
-			
+	
 		/* Set PWM width. Width step is 0.5us, thus the value in
 		   us is multiplied by two*/
-		PWM_setCH1Duty(pwm_width*2);
-		
-	
+		PWM_setAllChannelDuty(pwm_width*2);
+
 		// Display PWM width
 		itoa((int32_t)pwm_width,&str);
 		lcd_3310_drawTextXY(4*6,3,str);

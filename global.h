@@ -1,15 +1,16 @@
 #ifndef __global_h_
 #define __global_h_
 	#define STV3_DEBUG
-
-	
 	#include "board_stv307.h"
-	#include "defaults.h"
+	#include "config.h"
+	
+	// Structure for measuring the time
 	typedef struct {
 	uint8_t timeStart;
 	uint8_t timeElapsed;
 } Ttimer;
 
+	// Structure for storing RAMP mode configuration
 	typedef struct {
 		uint16_t RPM_min;
 		uint16_t PWM_min;
@@ -20,7 +21,7 @@
 	} TrampConfig;
 	
 
-	
+	// Structure for storing main device configuration.
 	typedef struct {
 		uint8_t numReflectors;
 		uint8_t PWMincValue;
@@ -33,25 +34,33 @@
 	} TmainConfig;
 	
 
-
+	// Defines the frequency of RPM measurement
 	#define RPM_PULSE_MEASUREMENT_FREQ 1
+	// Calculates maximum allowed pulses per second
 	#define RPM_PULSE_COUNT_MAX	((RPM_MAX_VALUE/60)*NUM_REFLECTORS_MAX)/RPM_PULSE_MEASUREMENT_FREQ
 	
+	// Defines the index numbers for the main menu
 	#define STARTUP_MENU_ANALOG		1
 	#define STARTUP_MENU_DIGITAL	2
 	#define STARTUP_MENU_RAMP			3
 	#define STARTUP_MENU_NONE			0
 	
-	
+	// Defines the backlight indexes
 	#define BACKLIGHT_OFF			1
 	#define BACKLIGHT_LOW			2
 	#define BACKLIGHT_HIGH		3
-		
-	extern TmainConfig mainConfig;
-	extern volatile uint16_t TIM1_cnt;
-	extern uint16_t rpm,rpm_p;	
-	extern volatile uint16_t Conversion_Value;
-	extern uint8_t menu;
 	
+	//****************** Global variables used within all project*****************
+	// Main device configuration
+	extern TmainConfig mainConfig; 
+	// Counter value, incremented every 20ms
+	extern volatile uint16_t TIM1_cnt;
+	// Measured RPM values
+	extern uint16_t rpm,rpm_p;	
+	// ADC conversion value, used for reading the potentiometer
+	extern volatile uint16_t Conversion_Value;
+	// Variable, defining the current menu
+	extern uint8_t menu;	
+	// Array of possible increment values in digital mode
 	extern const uint8_t pwm_inc_array[PWM_INC_COUNT];
 #endif

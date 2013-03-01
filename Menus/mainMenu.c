@@ -64,7 +64,7 @@
 				// Enable PWM output
 				PWM_outputEnable();			
 				// Set PWM width to 1000us
-				PWM_setCH1Duty(1000*2);		
+				PWM_setAllChannelDuty(1000*2);		
 		#endif		
 	}
 	

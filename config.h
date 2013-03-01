@@ -1,6 +1,11 @@
-#ifndef __defaults_h_
-#define __defaults_h_		
+#ifndef __config_h_
+#define __config_h_		
 
+		/* Define the device version string.
+		* This string is shown on the logo screen.
+		*/
+		#define DEVICE_VERSION_STRING " PDC2 ver.1.0 "
+			
 		/* Default values for RAMP programs. 
 		* Format as follows: { RPM_MIN, PWM_MIN, RPM_MAX, PWM_MAX, DWELL_MIN, DWELL_MAX}
 		*
@@ -11,6 +16,11 @@
 		#define RAMP_DEFAULT_2	{200,1300,500,1600,3,4}
 		#define RAMP_DEFAULT_3	{300,1400,600,1700,5,6}
 		
+		/* Ramp mode settings.
+		* RAMP_MODE_COUNT defines the number of RAMP modes
+		* RAMP_DWELL_MAX defines the max dwell time
+		* RAMP_DWELL_MIN defines the min dwell time
+		*/
 		#define RAMP_MODE_COUNT 3
 		#define RAMP_DWELL_MAX	50
 		#define RAMP_DWELL_MIN	1
@@ -20,7 +30,6 @@
 		* PWM_INCREMENT_DEFAULT : defines the PWM width increment in DIGITAL mode
 		*/
 		#define REFLECTOR_COUNT_DEFAULT	1
-		#define PWM_INCREMENT_DEFAULT	4
 		
 		/* Values for buzzer control
 		* BUZZER_FREQUENCY : frequency of the signal for speaker
@@ -38,17 +47,26 @@
 		#define RPM_MAX_VALUE				30000
 		#define NUM_REFLECTORS_MAX		10		
 		
-		
+		/* Limiting values for the PWM signal width.
+		*	PWM_WIDTH_MIN defines min PWM width in us
+		*	PWM_WIDTH_MAX defines max PWM width in us
+		*/
 		#define PWM_WIDTH_MIN		1000
 		#define PWM_WIDTH_MAX		2000
 		
-		
+		/* Values for digital mode increment steps.
+		*	PWM_INC_COUNT defines the number of steps to chose from.
+		*	PWM_INC_VALUES defines the values of increment steps.
+		* PWM_INCREMENT_DEFAULT defines the default value for increment step.
+		*/
 		#define PWM_INC_COUNT 5
 		#define PWM_INC_VALUES 1,2,4,10,100
+		#define PWM_INCREMENT_DEFAULT	4
 		
 		
 		//#define _ARM_ESC_ON_RAMP
-		#define _ARM_ESC_ON_STARTUP /*Arm the ESC when showing the logo*/
+		/*Arm the ESC when showing the logo*/
+		#define _ARM_ESC_ON_STARTUP 
 		// Enable the PWM output when in main menu
 		#define _ENABLE_PWM_OUTPUT_ON_MAIN_MENU
 		// Enable the PWM output when in setup menu
