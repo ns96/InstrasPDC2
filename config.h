@@ -71,5 +71,27 @@
 		#define _ENABLE_PWM_OUTPUT_ON_MAIN_MENU
 		// Enable the PWM output when in setup menu
 		#define _ENABLE_PWM_OUTPUT_ON_SETUP_MENU		
+		/* Vacuum pump control parameters
+		* Vacuum pump is turned on when the motor is spinning
+		* and switched off after the motor stops.
+		*/
+		// To disable vacuum pump control,
+		// comment the following line
+		#define PUMP_CONTROL_ENABLED 1
+		// Switches on the pump when 
+		// S1 PWM value exceeds this limit
+		#define PUMP_TURN_ON_PWM	1010
+		// Defines the S2 PWM value required
+		// for turning on the pump
+		#define PUMP_ON_PWM_VALUE	2000
+		// Set the time in seconds motor has to be stopped
+		// before the vacuum pump is switched off
+		#define PUMP_DELAY	2
+		// In case of RPM measurement failure
+		#define PUMP_RPM_TEST_PWM 1065
+		// the pump will be switched off in
+		// PUMP_ON_DELAY seconds after S1 PWM value is less
+		// than PUMP_TURN_ON_PWM
+		#define PUMP_ON_DELAY	10
 		
 #endif		

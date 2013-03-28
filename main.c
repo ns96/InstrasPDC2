@@ -25,6 +25,7 @@
 	#include "ee.h"
 	#include "buzzer.h"
 	#include "menu.h"
+	#include "usart.h"
 	
 /* Private defines -----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -61,6 +62,10 @@
 		Trpm_pinConfig		rpmPinCfg= {	RPM_PIN,RPM_PORT,RPM_ext};
 		// Buzzer initialization structure
 		Tbuzzer_Config		buzzerCfg= {BUZZER_PIN,BUZZER_PORT,1};
+		
+		// Usart initialization structure
+		Tusart_pinConfig		usartCfg= {S3_PIN,S3_PORT,
+																		S4_PIN,S4_PORT};
 
 		// Default values for RAMP programs
 		TrampConfig rampDefault=RAMP_DEFAULT_1;
@@ -91,16 +96,15 @@
 		ee_init();
 		
 		// Initialize buzzer
-		buzzer_init(buzzerCfg);
-		
+		buzzer_init(buzzerCfg);		
 		buzzer_setFreqTime(BUZZER_FREQUENCY,BUZZER_TIME);
-
-
-		//Initialize S1-4 outputs as push-pull, low level
-		GPIO_Init( S1_PORT, S1_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
-		GPIO_Init( S2_PORT, S2_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
-		GPIO_Init( S3_PORT, S3_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
-		GPIO_Init( S4_PORT, S4_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
+		
+		// Initialize usart
+		usart_init(usartCfg);
+	
+		//Initialize S3-4 outputs as push-pull, low level
+		GPIO_Init( S1_PORT, S1_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
+		GPIO_Init( S2_PORT, S2_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
 		// Initialize LCD background light control pin as output
 		GPIO_Init( LCD_BACKLIGHT_PORT, LCD_BACKLIGHT_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
 		
@@ -137,7 +141,7 @@
 	void main(void)
 	{
 		// Temporary variable
-		uint8_t tmp=0,tmp1=0;
+		uint8_t tmp=0;
 		// Main initialization
 		main_init();
 		// Switch the backlight on/of accorting to config
@@ -181,33 +185,49 @@
 		/* Infinite loop */
 		while (1)
 		{
-			// Scheduler for different modes (menus)
-			switch(menu){
-				case MENU_MAIN:
-					mainMenu();
-				break;
-				case MENU_ANALOG:
-					menuAnalog();
-				break;
-				case MENU_DIGITAL:
-					menuDigital();
-				break;
-				case MENU_RAMP:
-					menuRamp();
-				break;
-				case MENU_SETUP:
-					menuSetup();
-				break;	
-				case MENU_SETUPRAMP:
-					menuSetupRamp();
-				break;	
-				case MENU_TEST:
-					menuTest();
-				break;
-				default:
-					menu=MENU_MAIN;
-				break;
+			// Call the communication module callback function
+			communication_callback();
+			// If PC mode is disabled
+			if (PCmode==0){
+				// Scheduler for different modes (menus)
+				switch(menu){
+					case MENU_MAIN:
+						mainMenu();
+					break;
+					case MENU_ANALOG:
+						menuAnalog();
+					break;
+					case MENU_DIGITAL:
+						menuDigital();
+					break;
+					case MENU_RAMP:
+						menuRamp();
+					break;
+					case MENU_SETUP:
+						menuSetup();
+					break;	
+					case MENU_SETUPRAMP:
+						menuSetupRamp();
+					break;	
+					case MENU_TEST:
+						menuTest();
+					break;
+					default:
+						menu=MENU_MAIN;
+					break;
+				}
 			}
+			else{
+				// display PC mode menu
+				menuPC();
+			}
+			
+			// If vacuum pump control is enabled
+			#ifdef PUMP_CONTROL_ENABLED
+				// Execute S2 output control function
+				controlS2();
+			#endif
+			
 			// LCD backlight control
 			if ((mainConfig.backLight==BACKLIGHT_HIGH)||(mainConfig.backLight==BACKLIGHT_LOW))
 					GPIO_HIGH(LCD_BACKLIGHT_PORT, LCD_BACKLIGHT_PIN);

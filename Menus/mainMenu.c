@@ -2,6 +2,7 @@
 	#include "stm8s.h"
 	#include "lcd_3310.h"
 	#include "btn.h"
+	#include "pwm.h"	
 	#include "menu.h"
 	#include "global.h"
 	#include "buzzer.h"
@@ -72,8 +73,12 @@
 	*/
 	void mainMenu_DeInit(void){
 		firstRun=1;	
-		// Disable PWM output
-		PWM_outputDisable();			
+		#ifdef PUMP_CONTROL_ENABLED
+			// Set S1 PWM width to 0
+			TIM1_SetCompare3(0);
+		#else
+			PWM_outputDisable();
+		#endif			
 	}
 
 

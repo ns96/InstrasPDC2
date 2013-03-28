@@ -153,8 +153,12 @@ uint8_t menuRampMode=0;
 			while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<100)
 				;				
 			
-			// Enable PWM output
-			PWM_outputDisable();	
+			#ifdef PUMP_CONTROL_ENABLED
+				// Set S1 PWM width to 0
+				TIM1_SetCompare3(0);
+			#else
+				PWM_outputDisable();
+			#endif
 		#endif					
 
 		
@@ -238,7 +242,12 @@ uint8_t menuRampMode=0;
 			menuRamp_pwm_width=1000;
 	//		menuRamp_state=MENU_RAMP_STATE_INACTIVE;
 			first=1;
-			PWM_outputDisable();
+			#ifdef PUMP_CONTROL_ENABLED
+				// Set S1 PWM width to 0
+				TIM1_SetCompare3(0);
+			#else
+				PWM_outputDisable();
+			#endif
 			// Exit the function
 			return;
 		}
@@ -279,13 +288,24 @@ uint8_t menuRampMode=0;
 			menuRamp_pwm_width=1000;
 			menuRamp_state=MENU_RAMP_STATE_INACTIVE;
 			first=1;
-			PWM_outputDisable();
+			#ifdef PUMP_CONTROL_ENABLED
+				// Set S1 PWM width to 0
+				TIM1_SetCompare3(0);
+			#else
+				PWM_outputDisable();
+			#endif
 			return;
 		}
 				
 		/* Set PWM width. Width step is 0.5us, thus the value in
 		   us is multiplied by two*/
-		PWM_setAllChannelDuty(menuRamp_pwm_width*2);
+		#ifdef PUMP_CONTROL_ENABLED
+				TIM1_SetCompare3(menuRamp_pwm_width*2);	//S1
+		#else			
+			// Set PWM width
+			PWM_setAllChannelDuty(menuRamp_pwm_width*2);
+		#endif				 
+		
 	}
 	
 /* Public functions ---------------------------------------------------------*/

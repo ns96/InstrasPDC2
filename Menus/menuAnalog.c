@@ -45,7 +45,12 @@
 	*/
 	void menuAnalog_DeInit(void){
 		pot_DeInit();
-		PWM_outputDisable();
+		#ifdef PUMP_CONTROL_ENABLED
+			// Set S1 PWM width to 0
+			TIM1_SetCompare3(0);
+		#else
+			PWM_outputDisable();
+		#endif
 		menuAnalog_firstRun=1;
 		menuAnalog_outputEnable=0;
 	}
@@ -82,7 +87,12 @@
 				buzzer_beepA(3200,10);
 				if (menuAnalog_outputEnable){
 					menuAnalog_outputEnable=0;
-					PWM_outputDisable();
+					#ifdef PUMP_CONTROL_ENABLED
+						// Set S1 PWM width to 0
+						TIM1_SetCompare3(0);
+					#else
+						PWM_outputDisable();
+					#endif
 				}
 				else{
 					menuAnalog_DeInit();
@@ -118,9 +128,14 @@
 			pwm_width=PWM_WIDTH_MAX;
 		 
 		
-		// Set PWM width
-		PWM_setAllChannelDuty(pwm_width*2);
-			
+		#ifdef PUMP_CONTROL_ENABLED
+			if (menuAnalog_outputEnable){
+				TIM1_SetCompare3(pwm_width*2);	//S1
+			}
+		#else			
+			// Set PWM width
+			PWM_setAllChannelDuty(pwm_width*2);
+		#endif	
 			//display pwm width in us
 			itoa(pwm_width,&str);
 			lcd_3310_drawTextXY(8*6,3," ");

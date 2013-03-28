@@ -23,7 +23,7 @@
 	/* Public variables ----------------------------------------------------------*/
 	Trpm_pinConfig rpm_pins;
 	uint32_t rpm_current=0,rpm_old=0;
-	uint8_t rpmNoSignal=0;
+	uint8_t rpmNoSignal=0,rpmSpinCNT=0;
 	uint16_t rpm_min=0;
 	uint16_t rpm_max=65000;
 	uint16_t rpm_pulses=0;
@@ -42,7 +42,7 @@
 		GPIO_Init( rpm_pins.RPM_port, rpm_pins.RPM_pin, GPIO_MODE_IN_FL_IT);	
 		
 		/* Initialize the Interrupt sensitivity */
-		EXTI_SetExtIntSensitivity(rpm_pins.RPM_exti, EXTI_SENSITIVITY_RISE_ONLY);
+		EXTI_SetExtIntSensitivity(rpm_pins.RPM_exti, EXTI_SENSITIVITY_FALL_ONLY);
 		EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);
 		
 		/* Enable global interrupts */
@@ -56,14 +56,17 @@
   */
 	void rpm_callback(void){
 		static uint16_t TIM_old=0;
-		if ((TIM1_cnt-TIM_old)>=5){
+		// If 1000ms has passed(50*20ms)
+		if ((TIM1_cnt-TIM_old)>=50){
 			TIM_old=TIM1_cnt;
-			if (rpmNoSignal<3){
+			if (rpmNoSignal<5){
 				rpmNoSignal++;
 			}
 			else{
 				rpm=0;
 			}
+			if (rpmSpinCNT>0)
+				rpmSpinCNT--;
 		}
 	}
 
@@ -81,8 +84,7 @@
   void rpm_interruptHandler(void){		
 		static uint8_t rpm_started=0,rpm_cnt=0,tmp=0,tmp1=0;
 		static uint32_t rpm_val=0;
-		tmp=TIM1->CNTRH;
-		tmp1=TIM1->CNTRL;
+
 		/*check if the number of pulses does not exceed
 			limiting values, calculated using max rpm value
 			end max reflector count
@@ -92,7 +94,9 @@
 		}
 		else
 			rpm_pulses=0xFFFF;
-			
+	/*		
+			tmp=TIM1->CNTRH;
+		tmp1=TIM1->CNTRL;
 		rpm_current=40000*TIM1_cnt;
 		rpm_current+=((uint32_t)tmp<<8);
 		rpm_current+=((uint32_t)tmp1);
@@ -114,8 +118,9 @@
 		else{				
 			rpm_started=1;
 		}
-		rpm_old=rpm_current;
+		rpm_old=rpm_current;*/
 		rpmNoSignal=0;
+		rpmSpinCNT=PUMP_DELAY;
 	}
 	
 	

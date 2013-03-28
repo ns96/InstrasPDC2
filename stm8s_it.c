@@ -165,6 +165,7 @@ INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	RX_pin_int_handler();
 }
 
 #ifdef STM8S903
@@ -474,6 +475,10 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	//GPIO_TOGGLE(S1_PORT, S1_PIN);
+	Timer_interrupt_handler();
+		// Clear the interrupt pending bit for TIM1.
+    TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
  }
 #endif /*STM8S903*/
 

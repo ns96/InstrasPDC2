@@ -20,14 +20,14 @@
 		* @param  None
 		* @retval None
 		*/
-	void PWM_init(void)
+	void PWM_init(void) 
 	{
 	
 		TIM1_DeInit();
-	
+		//Timer step 0.5us, reload every 20ms
 		TIM1_TimeBaseInit(7, TIM1_COUNTERMODE_UP, 40000, 0);
 		/*TIM1_Pulse = CCR1_Val*/
-		TIM1_OC1Init(TIM1_OCMODE_PWM2, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE,
+		TIM1_OC1Init(TIM1_OCMODE_PWM2, TIM1_OUTPUTSTATE_DISABLE, TIM1_OUTPUTNSTATE_ENABLE,
 								 0, TIM1_OCPOLARITY_LOW, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET,
 								 TIM1_OCNIDLESTATE_RESET); 
 	

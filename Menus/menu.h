@@ -19,3 +19,5 @@ void menuDigital(void);
 void menuAnalog(void);
 void mainMenu(void);
 void menuTest(void);
+void menu_deinitAll(void);
+void controlS2(void);

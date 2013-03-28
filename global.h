@@ -63,4 +63,10 @@
 	extern uint8_t menu;	
 	// Array of possible increment values in digital mode
 	extern const uint8_t pwm_inc_array[PWM_INC_COUNT];
+	// PWM values for S1 and S2 outputs
+	extern uint16_t pwm_S1,pwm_S2;
+	// PC mode flag
+	extern uint8_t PCmode;
+	// Values for detecting the loss of RPM signal
+	extern uint8_t rpmNoSignal,rpmSpinCNT;
 #endif

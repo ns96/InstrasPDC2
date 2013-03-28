@@ -65,7 +65,11 @@
 	/**	Initializes  Menu
 	*/
 	void menuDigital_Init(void){
-		PWM_setAllChannelDuty(1000);
+		#ifdef PUMP_CONTROL_ENABLED
+			TIM1_SetCompare3(0);
+		#else
+			PWM_setAllChannelDuty(0);
+		#endif
 		lcd_3310_clear();
 		menuDigital_redraw();
 		menuDigital_drawStep();
@@ -76,7 +80,12 @@
 	/**	Deinitializes Main Menu
 	*/
 	void menuDigital_DeInit(void){
-		PWM_outputDisable();
+		#ifdef PUMP_CONTROL_ENABLED
+			// Set S1 PWM width to 0
+			TIM1_SetCompare3(0);
+		#else
+			PWM_outputDisable();
+		#endif
 		menuDigital_outputEnable=0;
 		menuDigital_firstRun=1;
 	}
@@ -146,7 +155,12 @@
 			if ((buttons&btnExit)>0){			
 					if (menuDigital_outputEnable){
 					menuDigital_outputEnable=0;
-					PWM_outputDisable();
+					#ifdef PUMP_CONTROL_ENABLED
+						// Set S1 PWM width to 0
+						TIM1_SetCompare3(0);
+					#else
+						PWM_outputDisable();
+					#endif
 				}
 				else{
 					menuDigital_DeInit();
@@ -173,7 +187,12 @@
 	
 		/* Set PWM width. Width step is 0.5us, thus the value in
 		   us is multiplied by two*/
-		PWM_setAllChannelDuty(pwm_width*2);
+		#ifdef PUMP_CONTROL_ENABLED			 
+			if (menuDigital_outputEnable)
+				TIM1_SetCompare3(pwm_width*2);	//S1
+		#else
+			PWM_setAllChannelDuty(pwm_width*2);
+		#endif
 
 		// Display PWM width
 		itoa((int32_t)pwm_width,&str);

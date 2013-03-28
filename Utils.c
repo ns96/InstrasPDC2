@@ -13,6 +13,11 @@
 	/* Includes ------------------------------------------------------------------*/
 	#include "Utils.h"
 	
+	void memfill(char *buff,char value,int count){
+		int i;
+		for (i=0;i<count;i++)
+			buff[i]=value;
+	}
 	/**
 	* @brief  Checks if the character provided is number
 	* @param  byte: character to be evaluated

@@ -73,7 +73,7 @@ Int.108=0
 String.6.0=2010,12,7,15,23,36
 String.100.0=$(TargetFName)
 String.101.0=
-String.103.0=.\;..\..;..\..\stm8s_stdperiph_driver\src;..\..\drivers\electronicsworkshop\spi;..\..\drivers\electronicsworkshop\lcd;..\..\drivers\electronicsworkshop\btn;..\..\drivers\electronicsworkshop\pot;..\..\drivers\electronicsworkshop\pwm;..\..\menus;..\..\drivers\electronicsworkshop\rpm;..\..\drivers\electronicsworkshop\eeprom;..\..\drivers\electronicsworkshop\buzzer;..\..\stm8s_stdperiph_driver\inc;
+String.103.0=.\;..\..;..\..\stm8s_stdperiph_driver\src;..\..\drivers\electronicsworkshop\spi;..\..\drivers\electronicsworkshop\lcd;..\..\drivers\electronicsworkshop\btn;..\..\drivers\electronicsworkshop\pot;..\..\drivers\electronicsworkshop\pwm;..\..\menus;..\..\drivers\electronicsworkshop\rpm;..\..\drivers\electronicsworkshop\eeprom;..\..\drivers\electronicsworkshop\buzzer;..\..\stm8s_stdperiph_driver\inc;..\..\drivers\electronicsworkshop\usart;
 
 [Root.Config.0.Settings.2]
 String.2.0=
@@ -82,7 +82,7 @@ String.100.0=STM8S105C6
 
 [Root.Config.0.Settings.3]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer) 
+String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2011,1,31,13,48,37
@@ -141,7 +141,7 @@ Int.108=0
 String.6.0=2010,12,7,15,23,36
 String.100.0=$(TargetFName)
 String.101.0=
-String.103.0=.\;..\..;..\..\stm8s_stdperiph_driver\src;..\..\drivers\electronicsworkshop\spi;..\..\drivers\electronicsworkshop\lcd;..\..\drivers\electronicsworkshop\btn;..\..\drivers\electronicsworkshop\pot;..\..\drivers\electronicsworkshop\pwm;..\..\menus;..\..\drivers\electronicsworkshop\rpm;..\..\drivers\electronicsworkshop\eeprom;..\..\drivers\electronicsworkshop\buzzer;..\..\stm8s_stdperiph_driver\inc;
+String.103.0=.\;..\..;..\..\stm8s_stdperiph_driver\src;..\..\drivers\electronicsworkshop\spi;..\..\drivers\electronicsworkshop\lcd;..\..\drivers\electronicsworkshop\btn;..\..\drivers\electronicsworkshop\pot;..\..\drivers\electronicsworkshop\pwm;..\..\menus;..\..\drivers\electronicsworkshop\rpm;..\..\drivers\electronicsworkshop\eeprom;..\..\drivers\electronicsworkshop\buzzer;..\..\stm8s_stdperiph_driver\inc;..\..\drivers\electronicsworkshop\usart;
 
 [Root.Config.1.Settings.2]
 String.2.0=
@@ -150,7 +150,7 @@ String.100.0=STM8S105C6
 
 [Root.Config.1.Settings.3]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc) 
+String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2010,12,7,15,23,36
@@ -214,7 +214,7 @@ Int.1=0
 
 [Root.Drivers.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer) 
+String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2011,1,31,13,48,37
@@ -241,7 +241,7 @@ Int.1=0
 
 [Root.Drivers.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc) 
+String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2010,12,7,15,23,36
@@ -263,8 +263,13 @@ String.6.0=2010,12,7,15,23,36
 [Root.Drivers.Drivers\inc]
 ElemType=Folder
 PathName=Drivers\inc
-Child=Root.Drivers.Drivers\inc...\..\drivers\electronicsworkshop\buzzer\buzzer.h
+Child=Root.Drivers.Drivers\inc...\..\drivers\electronicsworkshop\usart\usart.h
 Next=Root.Drivers.Drivers\src
+
+[Root.Drivers.Drivers\inc...\..\drivers\electronicsworkshop\usart\usart.h]
+ElemType=File
+PathName=..\..\drivers\electronicsworkshop\usart\usart.h
+Next=Root.Drivers.Drivers\inc...\..\drivers\electronicsworkshop\buzzer\buzzer.h
 
 [Root.Drivers.Drivers\inc...\..\drivers\electronicsworkshop\buzzer\buzzer.h]
 ElemType=File
@@ -308,7 +313,12 @@ PathName=..\..\drivers\electronicsworkshop\spi\spi.h
 [Root.Drivers.Drivers\src]
 ElemType=Folder
 PathName=Drivers\src
-Child=Root.Drivers.Drivers\src...\..\drivers\electronicsworkshop\buzzer\buzzer.c
+Child=Root.Drivers.Drivers\src...\..\drivers\electronicsworkshop\usart\usart.c
+
+[Root.Drivers.Drivers\src...\..\drivers\electronicsworkshop\usart\usart.c]
+ElemType=File
+PathName=..\..\drivers\electronicsworkshop\usart\usart.c
+Next=Root.Drivers.Drivers\src...\..\drivers\electronicsworkshop\buzzer\buzzer.c
 
 [Root.Drivers.Drivers\src...\..\drivers\electronicsworkshop\buzzer\buzzer.c]
 ElemType=File
@@ -352,7 +362,7 @@ PathName=..\..\drivers\electronicsworkshop\spi\spi.c
 [Root.Includes]
 ElemType=Folder
 PathName=Includes
-Child=Root.Includes...\..\defaults.h
+Child=Root.Includes...\..\communication.h
 Next=Root.Source Files
 Config.0=Root.Includes.Config.0
 Config.1=Root.Includes.Config.1
@@ -377,7 +387,7 @@ Int.1=0
 
 [Root.Includes.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer) 
+String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2011,1,31,13,48,37
@@ -404,7 +414,7 @@ Int.1=0
 
 [Root.Includes.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc) 
+String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2010,12,7,15,23,36
@@ -423,9 +433,14 @@ String.4.0=
 String.5.0=
 String.6.0=2010,12,7,15,23,36
 
-[Root.Includes...\..\defaults.h]
+[Root.Includes...\..\communication.h]
 ElemType=File
-PathName=..\..\defaults.h
+PathName=..\..\communication.h
+Next=Root.Includes...\..\config.h
+
+[Root.Includes...\..\config.h]
+ElemType=File
+PathName=..\..\config.h
 Next=Root.Includes...\..\stm8s_stdperiph_driver\inc\stm8s.h
 
 [Root.Includes...\..\stm8s_stdperiph_driver\inc\stm8s.h]
@@ -455,7 +470,7 @@ PathName=..\..\board_stv307.h
 [Root.Source Files]
 ElemType=Folder
 PathName=Source Files
-Child=Root.Source Files...\..\global.h
+Child=Root.Source Files...\..\communication.c
 Next=Root.StdPeriph_Drivers
 Config.0=Root.Source Files.Config.0
 Config.1=Root.Source Files.Config.1
@@ -480,7 +495,7 @@ Int.1=0
 
 [Root.Source Files.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer) 
+String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2011,1,31,13,48,37
@@ -507,7 +522,7 @@ Int.1=0
 
 [Root.Source Files.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc) 
+String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2010,12,7,15,23,36
@@ -525,6 +540,11 @@ String.3.0=
 String.4.0=
 String.5.0=
 String.6.0=2010,12,7,15,23,36
+
+[Root.Source Files...\..\communication.c]
+ElemType=File
+PathName=..\..\communication.c
+Next=Root.Source Files...\..\global.h
 
 [Root.Source Files...\..\global.h]
 ElemType=File
@@ -564,7 +584,12 @@ PathName=..\..\menus\menu.h
 [Root.Source Files.Source Files\Menus.Source Files\Menus\src]
 ElemType=Folder
 PathName=Source Files\Menus\src
-Child=Root.Source Files.Source Files\Menus.Source Files\Menus\src...\..\menus\menutest.c
+Child=Root.Source Files.Source Files\Menus.Source Files\Menus\src...\..\menus\menupc.c
+
+[Root.Source Files.Source Files\Menus.Source Files\Menus\src...\..\menus\menupc.c]
+ElemType=File
+PathName=..\..\menus\menupc.c
+Next=Root.Source Files.Source Files\Menus.Source Files\Menus\src...\..\menus\menutest.c
 
 [Root.Source Files.Source Files\Menus.Source Files\Menus\src...\..\menus\menutest.c]
 ElemType=File
@@ -632,7 +657,7 @@ Int.1=0
 
 [Root.StdPeriph_Drivers.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer) 
+String.3.0=rcstm8 $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) WRV(0) STM8(SMALL) DEBUG DGC(data) AUTO -customSizeOpt -CustomOptimOT(7,SIZE) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB LAOB PIN(..\..\) PIN(..\..\stm8s_stdperiph_driver\inc) DF(STM8S105) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2011,1,31,13,48,37
@@ -659,7 +684,7 @@ Int.1=0
 
 [Root.StdPeriph_Drivers.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc) 
+String.3.0=rcstm8   $(InputFile) OBJECT($(IntermPath)$(InputName).$(ObjectExt)) $(ToolsetIncOpts) DGC(page0) AUTO  WRV(0) -CustomBasicLstPR($(IntermPath)$(InputName).lst) CD CO SB -customSizeOpt -CustomOptimOT(7,SIZE) -CustomAutoReloc @$(OutputPath)$(TargetSName).areloc STM8(SMALL) PIN(..\..)  PIN(..\..\drivers\electronicsworkshop\spi)  PIN(..\..\drivers\electronicsworkshop\lcd)  PIN(..\..\drivers\electronicsworkshop\btn)  PIN(..\..\drivers\electronicsworkshop\pwm)  PIN(..\..\drivers\electronicsworkshop\pot)  PIN(..\..\menus)  PIN(..\..\drivers\electronicsworkshop\rpm)  PIN(..\..\drivers\electronicsworkshop\eeprom)  PIN(..\..\drivers\electronicsworkshop\buzzer)  PIN(..\..\stm8s_stdperiph_driver\inc)  PIN(..\..\drivers\electronicsworkshop\usart) 
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).lst
 String.6.0=2010,12,7,15,23,36
