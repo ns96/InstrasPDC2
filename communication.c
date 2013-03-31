@@ -36,7 +36,7 @@
 		static unsigned char n=0;		
 		// if uart state is idle
 		if (commState!=C_IDLE)
-			return 0; // return
+			return ; // return
 		// if byte received is alphanumeric character and 
 		// current command lenght does not exceed max.
 		if ((n<MAX_COMMAND_LEN)&&(c>=32)&&(c<=127))
