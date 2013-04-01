@@ -26,6 +26,7 @@
 #include "board_stv307.h"
 #include "global.h"
 #include "rpm.h"
+#include "usart.h"
 
 /** @addtogroup Template_Project
   * @{

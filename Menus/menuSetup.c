@@ -7,6 +7,7 @@
 #include "Utils.h"
 #include "ee.h"
 #include "buzzer.h"
+#include "pwm.h"
 /* Private defines -----------------------------------------------------------*/
 	#define SEL_SETP	1
 	#define SEL_START	2

@@ -7,4 +7,5 @@
 	}CommunicationStates_t;
 	/* Public function prototypes ---------------------------------------------*/
 	void usart_byte_received(uint8_t c);
+	void communication_callback(void);
 #endif

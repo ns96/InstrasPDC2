@@ -137,7 +137,9 @@ uint8_t menuRampMode=0;
   * @retval None
   */
 	void menuRamp_Init(void){
+		#ifdef _ARM_ESC_ON_RAMP	
 		uint8_t tmp=0;
+		#endif
 		lcd_3310_clear();
 		menuRamp_redraw();
 		menuRamp_drawMenuItems(); 

@@ -26,6 +26,7 @@
 	#include "buzzer.h"
 	#include "menu.h"
 	#include "usart.h"
+	#include "communication.h"
 	
 /* Private defines -----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/

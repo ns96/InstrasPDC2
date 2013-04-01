@@ -20,7 +20,7 @@
 	*/
 	void menu_displayRPM(uint8_t x, uint8_t y){
 			uint8_t str[14];
-			uint16_t trpm1,trmp2;
+//			uint16_t trpm1,trmp2;
 		static Ttimer rpmTimer={0,0};
 		// Calculate elapsed time since last rpm refresh
 		// If time is more than 1s (50*20ms)

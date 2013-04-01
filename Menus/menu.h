@@ -19,5 +19,15 @@ void menuDigital(void);
 void menuAnalog(void);
 void mainMenu(void);
 void menuTest(void);
+void menuPC(void);
+
 void menu_deinitAll(void);
+void menuPC_DeInit(void);
+void menuSetupRamp_DeInit(void);
+void menuSetup_DeInit(void);
+void menuRamp_DeInit(void);
+void menuDigital_DeInit(void);
+void menuAnalog_DeInit(void);
+void mainMenu_DeInit(void);
+void menuTest_DeInit(void);
 void controlS2(void);

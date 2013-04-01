@@ -56,10 +56,7 @@
 /* Public functions ---------------------------------------------------------*/
 	void menuPC(void){
 		uint8_t buttons,str[14];
-		uint16_t pwm_width;
 		static Ttimer btnTimer={0,0};
-		static uint16_t pauseTimer=0;
-		static uint8_t pauseState=0;
 		// Check if the function is called for the first time
 		if (menuPC_firstRun)
 		{

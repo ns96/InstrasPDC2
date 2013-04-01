@@ -78,7 +78,7 @@
 		#define RS_ModePC "MODE PC"
 		#define RS_ModeNormal "MODE NORMAL"		
 		uint16_t param=0;
-		uint8_t buff[20],i;
+		uint8_t buff[20];
 		// If no data is pending
 		if (commState!=C_PENDING)
 			return; // Finish the function

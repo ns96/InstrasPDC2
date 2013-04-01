@@ -11,4 +11,5 @@
 		void rpm_init(Trpm_pinConfig _rpm_pins,uint16_t min,uint16_t max);
 		void rpm_callback(void);
 		void rpm_interruptHandler(void);
+		void rpm_timerInterruptHandler(void);
 #endif

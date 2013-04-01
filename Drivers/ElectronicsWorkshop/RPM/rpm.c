@@ -17,6 +17,7 @@
 	#include "rpm.h"
 	#include "board_stv307.h"
 	#include "global.h"
+	#include "communication.h"
 	/* Private defines -----------------------------------------------------------*/
 	/* Private function prototypes -----------------------------------------------*/
 	
@@ -82,8 +83,8 @@
   * @retval : None
   */
   void rpm_interruptHandler(void){		
-		static uint8_t rpm_started=0,rpm_cnt=0,tmp=0,tmp1=0;
-		static uint32_t rpm_val=0;
+	//	static uint8_t rpm_started=0,rpm_cnt=0,tmp=0,tmp1=0;
+	//	static uint32_t rpm_val=0;
 
 		/*check if the number of pulses does not exceed
 			limiting values, calculated using max rpm value
