@@ -338,17 +338,17 @@ uint16_t menuSetupRamp_pwm_width=1000;
 			
 		if (menuSetupRamp_edit){
 			if (menuSetupRamp_editField==RS_FIELD_RPM_MIN){
-				if ((rpm_p*mainConfig.numReflectors/60)<150)
-					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_min=rpm;
-				else
+				//if ((rpm_p*mainConfig.numReflectors/60)<150)
+				//	mainConfig.rampCfg[mainConfig.rampCurrent].RPM_min=rpm;
+				//else
 					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_min=rpm_p;
 				mainConfig.rampCfg[mainConfig.rampCurrent].PWM_min=menuSetupRamp_pwm_width;
 			}	
 			
 			if (menuSetupRamp_editField==RS_FIELD_RPM_MAX){
-				if ((rpm_p*mainConfig.numReflectors/60)<150)
-					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_max=rpm;
-				else
+				//if ((rpm_p*mainConfig.numReflectors/60)<150)
+				//	mainConfig.rampCfg[mainConfig.rampCurrent].RPM_max=rpm;
+				//else
 					mainConfig.rampCfg[mainConfig.rampCurrent].RPM_max=rpm_p;
 				mainConfig.rampCfg[mainConfig.rampCurrent].PWM_max=menuSetupRamp_pwm_width;
 			}	
