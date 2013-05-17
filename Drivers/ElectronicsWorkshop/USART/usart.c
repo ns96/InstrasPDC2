@@ -140,8 +140,8 @@ void usart_initTim4(uint8_t reload){
 		// Go to idle after stop bit was sent.
 		case TRANSMIT_STOP_BIT:
 			TIM4_ITConfig(TIM1_IT_UPDATE, DISABLE);          // Stop the timer interrupts.
-			state = IDLE;                         // Go back to idle.
-		 // ENABLE_EXTERNAL0_INTERRUPT( );        // Enable reception again.
+			state = IDLE;                         // Go back to idle.			
+			GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_IT);     // Enable interrupt to receive more bytes.
 		break;
 	
 		//Receive Byte.
