@@ -26,11 +26,11 @@ uint8_t menuRampMode=0;
   * @retval None
   */
 	void menuRamp_redraw(void){
-		lcd_3310_drawTextXY(0,0,"RAMP: 1 2 3");
-		lcd_3310_drawTextXY(0,2,"MIN  310  20 s");
-		lcd_3310_drawTextXY(0,3,"MAX  2110 35 s");
-		lcd_3310_drawTextXY(0,4,"RPM 2105");
-		lcd_3310_drawTextXY(0,5,"PWM 1456 us");
+		lcd_drawTextXY(0,0,"RAMP: 1 2 3");
+		lcd_drawTextXY(0,2,"MIN  310  20 s");
+		lcd_drawTextXY(0,3,"MAX  2110 35 s");
+		lcd_drawTextXY(0,4,"RPM 2105");
+		lcd_drawTextXY(0,5,"PWM 1456 us");
 	}
 	
 	/**
@@ -45,25 +45,25 @@ uint8_t menuRampMode=0;
 		static uint8_t blinkState=0;
 		uint8_t i,str[14];
 		// Move LCD cursor to the first line
-		lcd_3310_gotoXY(6*6,0);
+		lcd_gotoXY(6*6,0);
 		// Go trough all menu items
 		for (i=0;i<RAMP_MODE_COUNT;i++){
 			// If current item is selected //and RAMP program is inactive
 			if ((i==mainConfig.rampCurrent))//&&(menuRamp_state==MENU_RAMP_STATE_INACTIVE))
 				// invert the text
-				lcd_3310_invert(1);
+				lcd_invert(1);
 			else
-				lcd_3310_invert(0);			
+				lcd_invert(0);			
 			// convert integer to string
 			itoa((int32_t)(i+1),&str);
 			// draw on lcd
-			lcd_3310_drawText(str);			
+			lcd_drawText(str);			
 			// disable text inversion
-			lcd_3310_invert(0);
+			lcd_invert(0);
 			// if this is not the last item
 			if (i!=RAMP_MODE_COUNT-1)
 				// add space
-				lcd_3310_drawText(" ");	
+				lcd_drawText(" ");	
 		}
 		// Check if RAMP program is started
 		if (menuRamp_state!=MENU_RAMP_STATE_INACTIVE){
@@ -73,24 +73,24 @@ uint8_t menuRampMode=0;
 				// What is the display state at the moment?
 				if (blinkState){
 						// Text MIN/MAX is shown
-							lcd_3310_drawTextXY(0,2,"MIN");
-							lcd_3310_drawTextXY(0,3,"MAX");
+							lcd_drawTextXY(0,2,"MIN");
+							lcd_drawTextXY(0,3,"MAX");
 					blinkState=0;				
 				}
 				else{
 					// Time left for the step is shown
 					if (menuRamp_state==MENU_RAMP_STATE_MIN){
-						lcd_3310_drawTextXY(0,2,"   ");
+						lcd_drawTextXY(0,2,"   ");
 						//display time left
 						itoa((int32_t)menuRamp_RampStagetimeLeft,&str);
-						lcd_3310_drawTextXY(0,2,str);	
+						lcd_drawTextXY(0,2,str);	
 					}
 					
 					if (menuRamp_state==MENU_RAMP_STATE_MAX){
-						lcd_3310_drawTextXY(0,3,"   ");
+						lcd_drawTextXY(0,3,"   ");
 						//display time left
 						itoa((int32_t)menuRamp_RampStagetimeLeft,&str);
-						lcd_3310_drawTextXY(0,3,str);	
+						lcd_drawTextXY(0,3,str);	
 					}
 					blinkState=1;
 				}
@@ -99,12 +99,12 @@ uint8_t menuRampMode=0;
 		else
 		{
 			// Program not started, draw the text MIN/MAX normally
-			lcd_3310_invert(0);
-			lcd_3310_drawTextXY(0,2,"MIN");
-			lcd_3310_drawTextXY(0,3,"MAX");	
+			lcd_invert(0);
+			lcd_drawTextXY(0,2,"MIN");
+			lcd_drawTextXY(0,3,"MAX");	
 		}
 		// Make sure further text drawing on the screen will not be inverted
-		lcd_3310_invert(0);
+		lcd_invert(0);
 	}
 	
 	/**
@@ -116,20 +116,20 @@ uint8_t menuRampMode=0;
 		TrampConfig rampCfg;
 		rampCfg=mainConfig.rampCfg[mainConfig.rampCurrent];
 		// Clear symbols on LCD
-		lcd_3310_drawTextXY(3*6,2,"          ");
-		lcd_3310_drawTextXY(3*6,3,"          ");
+		lcd_drawTextXY(3*6,2,"          ");
+		lcd_drawTextXY(3*6,3,"          ");
 		// Display RPM min value
 		itoa((int32_t)rampCfg.RPM_min,&str);
-		lcd_3310_drawTextXY(5*6,2,str);
+		lcd_drawTextXY(5*6,2,str);
 		// Display RPM min dwell time
 		itoa((int32_t)rampCfg.min_dwell,&str);
-		lcd_3310_drawTextXY(10*6,2,str);
+		lcd_drawTextXY(10*6,2,str);
 		// Display RPM max value
 		itoa((int32_t)rampCfg.RPM_max,&str);
-		lcd_3310_drawTextXY(5*6,3,str);
+		lcd_drawTextXY(5*6,3,str);
 		// Display RPM max dwell time
 		itoa((int32_t)rampCfg.max_dwell,&str);
-		lcd_3310_drawTextXY(10*6,3,str);		
+		lcd_drawTextXY(10*6,3,str);		
 	}
 	
 	/**
@@ -140,7 +140,7 @@ uint8_t menuRampMode=0;
 		#ifdef _ARM_ESC_ON_RAMP	
 		uint8_t tmp=0;
 		#endif
-		lcd_3310_clear();
+		lcd_clear();
 		menuRamp_redraw();
 		menuRamp_drawMenuItems(); 
 		menuRamp_drawParams();
@@ -157,7 +157,7 @@ uint8_t menuRampMode=0;
 			
 			#ifdef PUMP_CONTROL_ENABLED
 				// Set S1 PWM width to 0
-				TIM1_SetCompare3(0);
+				S1_TimSetCompare(0);
 			#else
 				PWM_outputDisable();
 			#endif
@@ -246,7 +246,7 @@ uint8_t menuRampMode=0;
 			first=1;
 			#ifdef PUMP_CONTROL_ENABLED
 				// Set S1 PWM width to 0
-				TIM1_SetCompare3(0);
+				S1_TimSetCompare(0);
 			#else
 				PWM_outputDisable();
 			#endif
@@ -292,7 +292,7 @@ uint8_t menuRampMode=0;
 			first=1;
 			#ifdef PUMP_CONTROL_ENABLED
 				// Set S1 PWM width to 0
-				TIM1_SetCompare3(0);
+				S1_TimSetCompare(0);
 			#else
 				PWM_outputDisable();
 			#endif
@@ -302,7 +302,7 @@ uint8_t menuRampMode=0;
 		/* Set PWM width. Width step is 0.5us, thus the value in
 		   us is multiplied by two*/
 		#ifdef PUMP_CONTROL_ENABLED
-				TIM1_SetCompare3(menuRamp_pwm_width*2);	//S1
+				S1_TimSetCompare(menuRamp_pwm_width*2);	//S1
 		#else			
 			// Set PWM width
 			PWM_setAllChannelDuty(menuRamp_pwm_width*2);
@@ -345,5 +345,5 @@ uint8_t menuRampMode=0;
 		
 		//display pwm width in us
 		itoa((int32_t)menuRamp_pwm_width,&str);
-		lcd_3310_drawTextXY(4*6,5,str);
+		lcd_drawTextXY(4*6,5,str);
 	}

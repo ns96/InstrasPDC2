@@ -31,11 +31,11 @@ uint16_t menuSetupRamp_pwm_width=1000;
   * @retval None
   */
 	void menuSetupRamp_redraw(void){
-		lcd_3310_drawTextXY(0,0,"RAMP: 1 2 3");
-		lcd_3310_drawTextXY(0,2,"MIN  310  20 s");
-		lcd_3310_drawTextXY(0,3,"MAX  2110 35 s");
-		lcd_3310_drawTextXY(0,4,"RPM 2105");
-		lcd_3310_drawTextXY(0,5,"PWM 1456 us");
+		lcd_drawTextXY(0,0,"RAMP: 1 2 3");
+		lcd_drawTextXY(0,2,"MIN  310  20 s");
+		lcd_drawTextXY(0,3,"MAX  2110 35 s");
+		lcd_drawTextXY(0,4,"RPM 2105");
+		lcd_drawTextXY(0,5,"PWM 1456 us");
 	}
 	
 	/**
@@ -51,26 +51,26 @@ uint16_t menuSetupRamp_pwm_width=1000;
 			
 
 		// Move LCD cursor to the first line
-		lcd_3310_gotoXY(6*6,0);
+		lcd_gotoXY(6*6,0);
 		// Go trough all menu items
 		for (i=0;i<RAMP_MODE_COUNT;i++){
 			// If current item is selected and RAMP program is inactive
 			if (i==mainConfig.rampCurrent)
 				// invert the text
-				lcd_3310_invert(1);
+				lcd_invert(1);
 			else
-				lcd_3310_invert(0);
+				lcd_invert(0);
 			
 			// convert integer to string
 			itoa((int32_t)(i+1),&str);
 			// draw on lcd
-			lcd_3310_drawText(str);			
+			lcd_drawText(str);			
 			// disable text inversion
-			lcd_3310_invert(0);
+			lcd_invert(0);
 			// if this is not the last item
 			if (i!=RAMP_MODE_COUNT-1)
 				// add space
-				lcd_3310_drawText(" ");	
+				lcd_drawText(" ");	
 		}
 	}
 	
@@ -84,41 +84,41 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		
 		rampCfg=mainConfig.rampCfg[mainConfig.rampCurrent];
 		// Clear symbols on LCD
-		lcd_3310_drawTextXY(3*6,2,"          ");
-		lcd_3310_drawTextXY(3*6,3,"          ");
+		lcd_drawTextXY(3*6,2,"          ");
+		lcd_drawTextXY(3*6,3,"          ");
 		
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_RPM_MIN))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		// Display RPM min value
 		itoa((int32_t)rampCfg.RPM_min,&str);
-		lcd_3310_drawTextXY(4*6,2,str);
+		lcd_drawTextXY(4*6,2,str);
 		
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_DWELL_MIN))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		// Display RPM min dwell time
 		itoa((int32_t)rampCfg.min_dwell,&str);
-		lcd_3310_drawTextXY(10*6,2,str);
+		lcd_drawTextXY(10*6,2,str);
 		
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_RPM_MAX))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		// Display RPM max value
 		itoa((int32_t)rampCfg.RPM_max,&str);
-		lcd_3310_drawTextXY(4*6,3,str);
+		lcd_drawTextXY(4*6,3,str);
 
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_DWELL_MAX))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		// Display RPM max dwell time
 		itoa((int32_t)rampCfg.max_dwell,&str);
-		lcd_3310_drawTextXY(10*6,3,str);
-		lcd_3310_invert(0);
+		lcd_drawTextXY(10*6,3,str);
+		lcd_invert(0);
 	}
 	
 	/**
@@ -128,7 +128,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 	void menuSetupRamp_Init(void){
 			pot_init();		
 			
-		lcd_3310_clear();
+		lcd_clear();
 		menuSetupRamp_redraw();
 		menuSetupRamp_drawMenuItems();
 		menuSetupRamp_drawParams();
@@ -359,5 +359,5 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		
 		//display pwm width in us
 		itoa((int32_t)menuSetupRamp_pwm_width,&str);
-		lcd_3310_drawTextXY(4*6,5,str);
+		lcd_drawTextXY(4*6,5,str);
 	}

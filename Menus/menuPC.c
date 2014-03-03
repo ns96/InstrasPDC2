@@ -27,16 +27,16 @@
 	*
 	*/
 	void menuPC_redraw(void){//              "
-		lcd_3310_drawTextXY(0,0,"    PC mode   ");
-		lcd_3310_drawTextXY(0,2,"RPM ");
-		lcd_3310_drawTextXY(0,3,"PWM1 0000 us");
-		lcd_3310_drawTextXY(0,4,"PWM2 0000 us");
+		lcd_drawTextXY(0,0,"    PC mode   ");
+		lcd_drawTextXY(0,2,"RPM ");
+		lcd_drawTextXY(0,3,"PWM1 0000 us");
+		lcd_drawTextXY(0,4,"PWM2 0000 us");
 	}
 
 	/**	Initializes  Menu
 	*/
 	void menuPC_Init(void){	
-		lcd_3310_clear();
+		lcd_clear();
 		menuPC_redraw();
 		pwm_S1=0;
 		pwm_S2=0;
@@ -101,24 +101,24 @@
 		if (pwm_S2>PWM_WIDTH_MAX)
 			pwm_S2=PWM_WIDTH_MAX;
 		
-			TIM1_SetCompare3(pwm_S1*2);
-			TIM1_SetCompare2(pwm_S2*2);
+			S1_TimSetCompare(pwm_S1*2);
+			S2_TimSetCompare(pwm_S2*2);
 /////////////////////////////			
 			//display pwm width in us
 			itoa(pwm_S1,&str);
-			lcd_3310_drawTextXY(9*6,3," ");
+			lcd_drawTextXY(9*6,3," ");
 			if (pwm_S1==0)
-				lcd_3310_drawTextXY(5*6,3,"0000");
+				lcd_drawTextXY(5*6,3,"0000");
 			else
-			lcd_3310_drawTextXY(5*6,3,str);
+			lcd_drawTextXY(5*6,3,str);
 
 			//display pwm width in us
 			itoa(pwm_S2,&str);
-			lcd_3310_drawTextXY(9*6,4," ");
+			lcd_drawTextXY(9*6,4," ");
 			if (pwm_S2==0)
-				lcd_3310_drawTextXY(5*6,4,"0000");
+				lcd_drawTextXY(5*6,4,"0000");
 			else			
-			lcd_3310_drawTextXY(5*6,4,str);
+			lcd_drawTextXY(5*6,4,str);
 			
 			menu_displayRPM(5*6,2);
 

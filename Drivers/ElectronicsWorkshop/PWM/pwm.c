@@ -12,6 +12,7 @@
   */ 
 	/* Includes ------------------------------------------------------------------*/
 	#include "stm8s.h"
+	#include "global.h"
 	
 	/* Public functions ---------------------------------------------------------*/		
 
@@ -32,13 +33,13 @@
 								 TIM1_OCNIDLESTATE_RESET); 
 	
 		/*TIM1_Pulse = CCR2_Val*/
-		TIM1_OC2Init(TIM1_OCMODE_PWM2, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE, 0,
+		S1_OCInit(TIM1_OCMODE_PWM2, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE, 0,
 								 TIM1_OCPOLARITY_LOW, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET, 
 								 TIM1_OCNIDLESTATE_RESET);
 	
 		/*TIM1_Pulse = CCR3_Val*/
-	 TIM1_OC3Init(TIM1_OCMODE_PWM2, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE,
-								 0, TIM1_OCPOLARITY_LOW, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET,
+		S2_OCInit(TIM1_OCMODE_PWM2, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE, 0,
+								 TIM1_OCPOLARITY_LOW, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET,
 								 TIM1_OCNIDLESTATE_RESET); 				 
 								 
 		/* Enable Timer1 compare interrupt*/
@@ -76,8 +77,8 @@
 		*/
 	void PWM_setAllChannelDuty(uint16_t duty){
 			TIM1_SetCompare1(duty);
-			TIM1_SetCompare2(duty);
-			TIM1_SetCompare3(duty);
+			S2_TimSetCompare(duty);
+			S1_TimSetCompare(duty);
 	}
 	
 	/**

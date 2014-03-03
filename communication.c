@@ -14,7 +14,8 @@
 		#include "stm8s.h"
 		#include "usart.h"
 		#include <string.h>
-		#include "board_stv307.h"
+//		#include "board_stv307.h"
+	#include "board_MotorTalkV1a.h"
 		#include "communication.h" 
 		#include "utils.h"
 		#include "global.h"

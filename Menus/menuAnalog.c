@@ -26,16 +26,16 @@
 	*
 	*/
 	void menuAnalog_redraw(void){
-		lcd_3310_drawTextXY(0,0,"Analog Control");
-		lcd_3310_drawTextXY(0,2,"RPM PAUSE");
-		lcd_3310_drawTextXY(0,3,"PWM 00000 us");
+		lcd_drawTextXY(0,0,"Analog Control");
+		lcd_drawTextXY(0,2,"RPM PAUSE");
+		lcd_drawTextXY(0,3,"PWM 00000 us");
 	}
 
 	/**	Initializes  Menu
 	*/
 	void menuAnalog_Init(void){
 		pot_init();		
-		lcd_3310_clear();
+		lcd_clear();
 		menuAnalog_redraw();
 		// Wait for enter button to be depressed
 		while ((btn_getState()&btnEnter)>0)
@@ -47,7 +47,7 @@
 		pot_DeInit();
 		#ifdef PUMP_CONTROL_ENABLED
 			// Set S1 PWM width to 0
-			TIM1_SetCompare3(0);
+			S1_TimSetCompare(0);
 		#else
 			PWM_outputDisable();
 		#endif
@@ -89,7 +89,7 @@
 					menuAnalog_outputEnable=0;
 					#ifdef PUMP_CONTROL_ENABLED
 						// Set S1 PWM width to 0
-						TIM1_SetCompare3(0);
+						S1_TimSetCompare(0);
 					#else
 						PWM_outputDisable();
 					#endif
@@ -130,7 +130,7 @@
 		
 		#ifdef PUMP_CONTROL_ENABLED
 			if (menuAnalog_outputEnable){
-				TIM1_SetCompare3(pwm_width*2);	//S1
+				S1_TimSetCompare(pwm_width*2);	//S1
 			}
 		#else			
 			// Set PWM width
@@ -138,8 +138,8 @@
 		#endif	
 			//display pwm width in us
 			itoa(pwm_width,&str);
-			lcd_3310_drawTextXY(8*6,3," ");
-			lcd_3310_drawTextXY(4*6,3,str);
+			lcd_drawTextXY(8*6,3," ");
+			lcd_drawTextXY(4*6,3,str);
 			
 			
 		if ((menuAnalog_outputEnable)||(!pauseState)){
@@ -154,7 +154,7 @@
 					pauseState=0;
 				else{
 					pauseState=1;
-					lcd_3310_drawTextXY(4*6,2,"PAUSE");
+					lcd_drawTextXY(4*6,2,"PAUSE");
 				}
 			}
 		}

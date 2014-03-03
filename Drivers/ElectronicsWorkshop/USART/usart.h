@@ -5,7 +5,8 @@
 		u32 TX_pin;
 		GPIO_TypeDef* TX_port;
 		u32 RX_pin;
-		GPIO_TypeDef* RX_port;		
+		GPIO_TypeDef* RX_port;	
+		EXTI_Port_TypeDef RX_exti_port;		
 	} Tusart_pinConfig;
 	
 	/* Public function prototypes ---------------------------------------------*/

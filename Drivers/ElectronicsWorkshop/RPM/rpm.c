@@ -15,7 +15,7 @@
 	/* Includes ------------------------------------------------------------------*/
 	#include "stm8s.h"
 	#include "rpm.h"
-	#include "board_stv307.h"
+//	#include "board_stv307.h"
 	#include "global.h"
 	#include "communication.h"
 	/* Private defines -----------------------------------------------------------*/

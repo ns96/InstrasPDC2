@@ -45,9 +45,14 @@
 	
 	#define S1_PORT			GPIOC
 	#define S1_PIN			GPIO_PIN_3
+	#define S1_TimSetCompare(x)	TIM1_SetCompare3(x)
+	#define S1_TimGetCapture(x) TIM1_GetCapture3(x)
+	#define S1_OCInit(x)	TIM1_OC3Init(x)
 	
 	#define S2_PORT			GPIOC
 	#define S2_PIN			GPIO_PIN_2
+	#define S2_TimSetCompare(x)	TIM1_SetCompare2(x)
+	#define S2_OCInit(x)	TIM1_OC2Init(x)
 	
 	#define S3_PORT			GPIOC
 	#define S3_PIN			GPIO_PIN_1
@@ -62,6 +67,7 @@
 	#define RPM_PORT			GPIOC
 	#define RPM_PIN				GPIO_PIN_7
 	#define RPM_ext	EXTI_PORT_GPIOC
+	#define RPM_INT_HANDLER	7
 	
 	/* LCD port/pin */
 	#define LCD_SCK_PORT		GPIOD
@@ -81,5 +87,13 @@
 	
 	#define LCD_BACKLIGHT_PORT		GPIOD
 	#define LCD_BACKLIGHT_PIN			GPIO_PIN_6
+	
+	/* UART interface  */
+	#define TX_PIN				S3_PIN
+	#define TX_PORT				S3_PORT
+	#define RX_PIN				S4_PIN
+	#define RX_PORT				S4_PORT
+	#define RX_EXTI_PORT	EXTI_PORT_GPIOE	
+	#define RX_HANDLER		7
 
 #endif

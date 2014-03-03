@@ -23,7 +23,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
-#include "board_stv307.h"
+//#include "board_stv307.h"
+#include "board_MotorTalkV1a.h"
 #include "global.h"
 #include "rpm.h"
 #include "usart.h"
@@ -140,8 +141,12 @@ INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-	rpm_interruptHandler();
-
+	#if (RPM_INT_HANDLER==5)
+		rpm_interruptHandler();
+	#endif
+	#if (RX_HANDLER==5)
+		RX_pin_int_handler();
+	#endif
 }
 
 /**
@@ -154,6 +159,9 @@ INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+	#if (RX_HANDLER==6)
+		RX_pin_int_handler();
+	#endif
 }
 
 /**
@@ -166,7 +174,12 @@ INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-	RX_pin_int_handler();
+	#if (RPM_INT_HANDLER==7)
+		rpm_interruptHandler();
+	#endif
+	#if (RX_HANDLER==7)
+		RX_pin_int_handler();
+	#endif
 }
 
 #ifdef STM8S903
@@ -448,7 +461,11 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
     /* In order to detect unexpected events during development,
        it is recommended to set a breakpoint on the following instruction.
     */
-		 Conversion_Value = ADC1_GetConversionValue();
+		#ifdef POT_INVERTED
+			Conversion_Value = 1023-ADC1_GetConversionValue();
+		#else
+			Conversion_Value = ADC1_GetConversionValue();
+		#endif
 		 ADC1_ClearITPendingBit(ADC1_IT_EOC);
  }
 #endif /*STM8S208 or STM8S207 or STM8AF52Ax or STM8AF62Ax */

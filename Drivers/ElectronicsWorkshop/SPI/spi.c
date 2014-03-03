@@ -43,8 +43,9 @@
   * @param byte: data byte to transmit
   * @retval : None
   */
-		void spi_sendData(uint8_t byte){
+		uint8_t spi_sendData(uint8_t byte){
 			uint8_t d=byte;
+			uint8_t received=0;
 			uint8_t i;
 			for (i=8;i>0;i--){
 				SCK_LOW;
@@ -53,8 +54,12 @@
 				else
 					MOSI_LOW;
 				SCK_HIGH;
+				
+				if ((spi_pins.MISO_port->IDR&spi_pins.MISO_pin)==0)
+					received|=(1<<(i-1));
 			}
 			MOSI_HIGH;
+			return received;
 		}		
 
 	/* Private functions ---------------------------------------------------------*/		
@@ -71,6 +76,8 @@
 		/* Configure SPI1 SCK as output */
 		GPIO_Init( spi_pins.SCK_port, spi_pins.SCK_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
 		
+		/* Configure SPI1 MISO as input */
+		GPIO_Init( spi_pins.MISO_port, spi_pins.MISO_pin, GPIO_MODE_IN_PU_NO_IT);
 		MOSI_HIGH;
 		SCK_HIGH;
 		

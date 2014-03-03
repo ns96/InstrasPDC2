@@ -29,7 +29,7 @@
 			// Store current time
 			rpmTimer.timeStart=(TIM1_cnt)&0xFF;
 			// Clear part of LCD, showing the RPM number
-			lcd_3310_drawTextXY(x,y,"      ");		
+			lcd_drawTextXY(x,y,"      ");		
 			itoa((int32_t)rpm_p,&str);			
 		/*	trpm1=rpm;
 			trmp2=rpm_p;
@@ -40,7 +40,7 @@
 				// Convert integer to string
 				itoa((int32_t)trmp2,&str);		*/	
 			// Draw the RPM on the screen
-			lcd_3310_drawTextXY(x,y,str);
+			lcd_drawTextXY(x,y,str);
 		}
 	}
 	
@@ -64,14 +64,14 @@
 		void controlS2(void){
 			static uint8_t rpmFailCnt=0;
 			// Read current PWM width value of S1
-			if (TIM1_GetCapture3()>(PUMP_TURN_ON_PWM*2)){
-				TIM1_SetCompare2(PUMP_ON_PWM_VALUE*2);	//S2	
+			if (S1_TimGetCapture()>(PUMP_TURN_ON_PWM*2)){				
+				S2_TimSetCompare(PUMP_ON_PWM_VALUE*2);	//S2	
 			}
 			else{
 				// If the motor was not spinning for predefined period of time
 				if (rpmSpinCNT==0){
 					// Switch off the vacuum pump
-					TIM1_SetCompare2(1000*2);	//S2		
+					S2_TimSetCompare(1000*2);	//S2		
 				}
 			}	
 			// If there is no RPM measurement even though the motor is on	

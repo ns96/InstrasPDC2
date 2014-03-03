@@ -1,7 +1,8 @@
 #ifndef __global_h_
 #define __global_h_
 	#define STV3_DEBUG
-	#include "board_stv307.h"
+//	#include "board_stv307.h"
+#include "board_MotorTalkV1a.h"
 	#include "config.h"
 	
 	// Structure for measuring the time

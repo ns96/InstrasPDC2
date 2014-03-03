@@ -25,16 +25,16 @@
 	*
 	*/
 	void menuTest_redraw(void){
-		lcd_3310_drawTextXY(0,0,"Test menu");
-		lcd_3310_drawTextXY(0,2,"Freq.     Hz");
-		lcd_3310_drawTextXY(0,3,"Time      ms");
+		lcd_drawTextXY(0,0,"Test menu");
+		lcd_drawTextXY(0,2,"Freq.     Hz");
+		lcd_drawTextXY(0,3,"Time      ms");
 	}
 
 	/**	Initializes  Menu
 	*/
 	void menuTest_Init(void){
 		pot_init();		
-		lcd_3310_clear();
+		lcd_clear();
 		menuTest_redraw();
 		// Wait for enter button to be depressed
 		while ((btn_getState()&btnEnter)>0)
@@ -108,21 +108,21 @@
 		buzzer_setFreqTime(freq_val,time_val);
 		//display pwm width in us
 		itoa(freq_val,&str);
-		lcd_3310_drawTextXY(5*6,2,"    ");
+		lcd_drawTextXY(5*6,2,"    ");
 		if (valueToChange==0)
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
-		lcd_3310_drawTextXY(5*6,2,str);
-		lcd_3310_invert(0);
+			lcd_invert(0);
+		lcd_drawTextXY(5*6,2,str);
+		lcd_invert(0);
 			
 		//display pwm width in us
 		itoa(time_val,&str);
-		lcd_3310_drawTextXY(5*6,3,"    ");
+		lcd_drawTextXY(5*6,3,"    ");
 		if (valueToChange==1)
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
-		lcd_3310_drawTextXY(5*6,3,str);
-		lcd_3310_invert(0);
+			lcd_invert(0);
+		lcd_drawTextXY(5*6,3,str);
+		lcd_invert(0);
 	}

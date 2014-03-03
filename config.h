@@ -77,7 +77,7 @@
 		*/
 		// To disable vacuum pump control,
 		// comment the following line
-		#define PUMP_CONTROL_ENABLED 1
+//		#define PUMP_CONTROL_ENABLED 1
 		// Switches on the pump when 
 		// S1 PWM value exceeds this limit
 		#define PUMP_TURN_ON_PWM	1010

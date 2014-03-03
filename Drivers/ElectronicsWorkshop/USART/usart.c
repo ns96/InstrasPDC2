@@ -13,7 +13,8 @@
 	/* Includes ------------------------------------------------------------------*/
 		#include "stm8s.h"
 		#include "usart.h"
-		#include "board_stv307.h"
+//		#include "board_stv307.h"
+#include "board_MotorTalkV1a.h"
 		#include "communication.h"
 	/* Private defines -----------------------------------------------------------*/
 		#define GPIO_HIGH(a,b) 		a->ODR|=b
@@ -62,12 +63,12 @@
 		// initialize RX pin
 		GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_IT);		
 		// disable TIM4 update interrupt
-		TIM4_ITConfig(TIM4_IT_UPDATE, DISABLE);//tim1
+		TIM4_ITConfig(TIM4_IT_UPDATE, DISABLE);//
 		// initialize TIM4
 		usart_initTim4(USART_DELAY_VAL);
-		//////////HARDCODED///////////////////////////////////////////
-		EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOE,EXTI_SENSITIVITY_FALL_ONLY);
-		//////////HARDCODED///////////////////////////////////////////
+		// Initialize interrupt on RX pin
+		EXTI_SetExtIntSensitivity(_usart_pins.RX_exti_port,EXTI_SENSITIVITY_FALL_ONLY);
+		// Global enable interrupts
 		enableInterrupts();
 		//Internal State Variable
 		state = IDLE;

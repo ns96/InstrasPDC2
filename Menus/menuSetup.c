@@ -28,7 +28,7 @@ uint8_t menuNames[4][7]={STR_SET,STR_START,STR_BL,STR_RAMP};
 uint8_t editing=0;
 /* Private functions ---------------------------------------------------------*/
 void menuSetup_redraw(void){
-	lcd_3310_drawTextXY(0,0,"SETUP:");
+	lcd_drawTextXY(0,0,"SETUP:");
 }
 
 	/**	Inverts selected item
@@ -39,33 +39,33 @@ void menuSetup_redraw(void){
 #ifdef SETUP_MENU_INVERT_SELECTED	// If selected item's text should be inverted
 		// Go trough all menu options
 		for (i=SEL_SETP;i<=SEL_RAMP;i++){
-			lcd_3310_invert(0);
-			lcd_3310_drawTextXY(0,2+i-SEL_SETP,"      ");
+			lcd_invert(0);
+			lcd_drawTextXY(0,2+i-SEL_SETP,"      ");
 			// If current menu option is selected
 			if (i==sel)	
 				// invert the text
-				lcd_3310_invert(1);
+				lcd_invert(1);
 			else				
 				// invert the text
-				lcd_3310_invert(0);
-			lcd_3310_drawTextXY(0,2+i-SEL_SETP,menuNames[i-SEL_SETP]);
+				lcd_invert(0);
+			lcd_drawTextXY(0,2+i-SEL_SETP,menuNames[i-SEL_SETP]);
 		}		
-		lcd_3310_invert(0);
+		lcd_invert(0);
 	}
 #else	// If a "*" symbol should be placed to the left of selected item
 		// Go trough all menu options
 		for (i=SEL_SETP;i<=SEL_RAMP;i++){
-			lcd_3310_invert(0);
-			lcd_3310_drawTextXY(1,2+i-SEL_SETP,"      ");
+			lcd_invert(0);
+			lcd_drawTextXY(1,2+i-SEL_SETP,"      ");
 			// If current menu option is selected
 			if (i==sel)	
-				lcd_3310_drawTextXY(0,2+i-SEL_SETP,"*");
+				lcd_drawTextXY(0,2+i-SEL_SETP,"*");
 			else				
-				lcd_3310_drawTextXY(0,2+i-SEL_SETP," ");
+				lcd_drawTextXY(0,2+i-SEL_SETP," ");
 
-			lcd_3310_drawText(menuNames[i-SEL_SETP]);
+			lcd_drawText(menuNames[i-SEL_SETP]);
 		}		
-		lcd_3310_invert(0);
+		lcd_invert(0);
 	}
 #endif
 	
@@ -75,58 +75,58 @@ void menuSetup_redraw(void){
 	void menuSetup_drawParams(void){
 		uint8_t str[14];
 		
-		lcd_3310_invert(0);
-		lcd_3310_drawTextXY(7*6,4,"   ");
+		lcd_invert(0);
+		lcd_drawTextXY(7*6,4,"   ");
 		if ((editing)&&(menuSetup_selection==SEL_BL))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		switch (mainConfig.backLight){
 			case BACKLIGHT_HIGH:
 			case BACKLIGHT_LOW:
-				lcd_3310_drawTextXY(7*6,4,"ON");
+				lcd_drawTextXY(7*6,4,"ON");
 			break;
 			default:
-				lcd_3310_drawTextXY(7*6,4,"OFF");
+				lcd_drawTextXY(7*6,4,"OFF");
 			break;
 		}
 		
 		// Display P#
-		lcd_3310_invert(0);
-		lcd_3310_drawTextXY(7*6,2,"  ");
+		lcd_invert(0);
+		lcd_drawTextXY(7*6,2,"  ");
 		if ((editing)&&(menuSetup_selection==SEL_SETP))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		itoa((int32_t)mainConfig.numReflectors,&str);			
-		lcd_3310_drawTextXY(7*6,2,str);
+		lcd_drawTextXY(7*6,2,str);
 		
-		lcd_3310_invert(0);
-		lcd_3310_drawTextXY(7*6,3,"       ");
+		lcd_invert(0);
+		lcd_drawTextXY(7*6,3,"       ");
 		if ((editing)&&(menuSetup_selection==SEL_START))
-			lcd_3310_invert(1);
+			lcd_invert(1);
 		else
-			lcd_3310_invert(0);
+			lcd_invert(0);
 		
 			switch (mainConfig.startupMenu){
 			case STARTUP_MENU_NONE:
-				lcd_3310_drawTextXY(7*6,3,"NONE");
+				lcd_drawTextXY(7*6,3,"NONE");
 			break;
 			
 			case STARTUP_MENU_RAMP:
-				lcd_3310_drawTextXY(7*6,3,"RAMP");
+				lcd_drawTextXY(7*6,3,"RAMP");
 			break;
 			
 			case STARTUP_MENU_DIGITAL:
-				lcd_3310_drawTextXY(7*6,3,"DIGITAL");
+				lcd_drawTextXY(7*6,3,"DIGITAL");
 			break;
 			
 			case STARTUP_MENU_ANALOG:
-				lcd_3310_drawTextXY(7*6,3,"ANALOG");
+				lcd_drawTextXY(7*6,3,"ANALOG");
 			break;
 			
 			default:
-				lcd_3310_drawTextXY(7*6,3,"-------");
+				lcd_drawTextXY(7*6,3,"-------");
 			break;
 		}
 
@@ -135,7 +135,7 @@ void menuSetup_redraw(void){
 */
 void menuSetup_Init(void){
 
-	lcd_3310_clear();
+	lcd_clear();
 	menuSetup_redraw();
 	menuSetup_drawParams();
 	menuSetup_select(menuSetup_selection);

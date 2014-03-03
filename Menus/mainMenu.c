@@ -29,11 +29,11 @@
 	*
 	*/
 	void mainMenu_redraw(void){
-		lcd_3310_drawTextXY(0,0,"Select Mode:");
-		lcd_3310_drawTextXY(10,2,"ANALOG");
-		lcd_3310_drawTextXY(10,3,"DIGITAL");
-		lcd_3310_drawTextXY(10,4,"RAMP");
-		lcd_3310_drawTextXY(10,5,"SETUP");	
+		lcd_drawTextXY(0,0,"Select Mode:");
+		lcd_drawTextXY(10,2,"ANALOG");
+		lcd_drawTextXY(10,3,"DIGITAL");
+		lcd_drawTextXY(10,4,"RAMP");
+		lcd_drawTextXY(10,5,"SETUP");	
 	}
 
 	/**	Draws a tick in front of selected item
@@ -46,10 +46,10 @@
 			// If current menu option is selected
 			if (i==sel)	
 				// Write the tick symbol
-				lcd_3310_drawTextXY(2,2+i-SEL_ANALOG,"*");	
+				lcd_drawTextXY(2,2+i-SEL_ANALOG,"*");	
 			else
 				// Clear the tick symbol
-				lcd_3310_drawTextXY(2,2+i-SEL_ANALOG," ");
+				lcd_drawTextXY(2,2+i-SEL_ANALOG," ");
 		}
 	}
 
@@ -57,7 +57,7 @@
 	*/
 	void mainMenu_Init(void){
 		selection_old=selection;
-		lcd_3310_clear();
+		lcd_clear();
 		mainMenu_redraw();
 		select(selection);
 			/*If PWM output required*/					
@@ -75,7 +75,7 @@
 		firstRun=1;	
 		#ifdef PUMP_CONTROL_ENABLED
 			// Set S1 PWM width to 0
-			TIM1_SetCompare3(0);
+			S1_TimSetCompare(0);
 		#else
 			PWM_outputDisable();
 		#endif			

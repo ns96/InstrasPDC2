@@ -26,13 +26,13 @@
 		/*Since the display can accomodate only 14 characters,  
 		"Digital Control" would exceed the limits, thus
 		the space between words is set 2pixels*/
-		lcd_3310_drawTextXY(0,0,"Digital");
+		lcd_drawTextXY(0,0,"Digital");
 		// Push the word "Control" by 7 character widths + 2px
-		lcd_3310_drawTextXY(7*6+2,0,"Control");	
-		lcd_3310_drawTextXY(0,2,"RPM        ");
-		lcd_3310_drawTextXY(0,3,"PWM      us");
-		lcd_3310_drawTextXY(0,4,"INC:");	
-		lcd_3310_drawTextXY(0,5,"1 2 4 10 100");	
+		lcd_drawTextXY(7*6+2,0,"Control");	
+		lcd_drawTextXY(0,2,"RPM        ");
+		lcd_drawTextXY(0,3,"PWM      us");
+		lcd_drawTextXY(0,4,"INC:");	
+		lcd_drawTextXY(0,5,"1 2 4 10 100");	
 	}
 
 	/**	Draws the increment step selection
@@ -42,35 +42,35 @@
 	void menuDigital_drawStep(void){
 		uint8_t i,str[14];
 		// Move LCD cursor to the last line
-		lcd_3310_gotoXY(0,5);
+		lcd_gotoXY(0,5);
 		// Go trough all inc. step options
 		for (i=0;i<PWM_INC_COUNT;i++){
 			itoa((int32_t)pwm_inc_array[i],&str);
 			// If current step is the step selected
 			if (i==mainConfig.PWMincIndex)
 				// invert the text
-				lcd_3310_invert(1);
+				lcd_invert(1);
 			else
-				lcd_3310_invert(0);
+				lcd_invert(0);
 			// draw the text
-			lcd_3310_drawText(str);			
+			lcd_drawText(str);			
 			// disable inversion
-			lcd_3310_invert(0);
+			lcd_invert(0);
 			// if this is not the last item
 			if (i!=PWM_INC_COUNT-1)
 				// add space
-				lcd_3310_drawText(" ");	
+				lcd_drawText(" ");	
 		}
 	}
 	/**	Initializes  Menu
 	*/
 	void menuDigital_Init(void){
 		#ifdef PUMP_CONTROL_ENABLED
-			TIM1_SetCompare3(0);
+			S1_TimSetCompare(0);
 		#else
 			PWM_setAllChannelDuty(0);
 		#endif
-		lcd_3310_clear();
+		lcd_clear();
 		menuDigital_redraw();
 		menuDigital_drawStep();
 		// Wait for enter button to be depressed
@@ -82,7 +82,7 @@
 	void menuDigital_DeInit(void){
 		#ifdef PUMP_CONTROL_ENABLED
 			// Set S1 PWM width to 0
-			TIM1_SetCompare3(0);
+			S1_TimSetCompare(0);
 		#else
 			PWM_outputDisable();
 		#endif
@@ -157,7 +157,7 @@
 					menuDigital_outputEnable=0;
 					#ifdef PUMP_CONTROL_ENABLED
 						// Set S1 PWM width to 0
-						TIM1_SetCompare3(0);
+						S1_TimSetCompare(0);
 					#else
 						PWM_outputDisable();
 					#endif
@@ -180,7 +180,7 @@
 					pauseState=0;
 				else{
 					pauseState=1;
-					lcd_3310_drawTextXY(4*6,2,"PAUSE     ");
+					lcd_drawTextXY(4*6,2,"PAUSE     ");
 				}
 			}
 		}	
@@ -189,13 +189,13 @@
 		   us is multiplied by two*/
 		#ifdef PUMP_CONTROL_ENABLED			 
 			if (menuDigital_outputEnable)
-				TIM1_SetCompare3(pwm_width*2);	//S1
+				S1_TimSetCompare(pwm_width*2);	//S1
 		#else
 			PWM_setAllChannelDuty(pwm_width*2);
 		#endif
 
 		// Display PWM width
 		itoa((int32_t)pwm_width,&str);
-		lcd_3310_drawTextXY(4*6,3,str);
+		lcd_drawTextXY(4*6,3,str);
 		
 	}

@@ -14,7 +14,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 	#include "stm8s.h"
-	#include "board_stv307.h"
+	//#include "board_stv307.h"
+	#include "board_MotorTalkV1a.h"
 	#include "lcd_3310.h"
 	#include "logo.h"
 	#include "btn.h"
@@ -65,9 +66,11 @@
 		Tbuzzer_Config		buzzerCfg= {BUZZER_PIN,BUZZER_PORT,1};
 		
 		// Usart initialization structure
-		Tusart_pinConfig		usartCfg= {S3_PIN,S3_PORT,
-																		S4_PIN,S4_PORT};
-
+		//Tusart_pinConfig		usartCfg= {S3_PIN,S3_PORT,
+		//																S4_PIN,S4_PORT};
+		Tusart_pinConfig		usartCfg= {TX_PIN,TX_PORT,
+																		RX_PIN,RX_PORT,
+																		RX_EXTI_PORT};
 		// Default values for RAMP programs
 		TrampConfig rampDefault=RAMP_DEFAULT_1;
 		TrampConfig rampDefault1=RAMP_DEFAULT_2;
@@ -88,9 +91,9 @@
 		// Initialize PWM output
 		PWM_init();	
 		// Initialize RPM meter
-		rpm_init(rpmPinCfg,RPM_MIN_VALUE,RPM_MAX_VALUE);
+		//rpm_init(rpmPinCfg,RPM_MIN_VALUE,RPM_MAX_VALUE);
 		// Initialize LCD
-		lcd_3310_init(lcdPinCfg);
+		lcd_init(lcdPinCfg);
 		// Initialize buttons
 		btn_init(btnPinCfg);	
 		// Initialize non-volatile memory
@@ -134,6 +137,7 @@
 		}
 	}
 	
+	
 	/**
 	* @brief  Main function. This function is executed after
 	* power up.
@@ -162,8 +166,8 @@
 #endif		
 
 		// Display logo screen
-		lcd_3310_splash(logo);
-		lcd_3310_drawTextXY(0,4,DEVICE_VERSION_STRING);
+		lcd_splash(logo);
+		lcd_drawTextXY(0,4,DEVICE_VERSION_STRING);
 		// Wait for 2 seconds (100*20ms)
 		tmp=TIM1_cnt&0xFF;
 		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<250){
@@ -181,7 +185,7 @@
 #endif		
 
 		// Clear LCD
-		lcd_3310_clear();
+		lcd_clear();
 		
 		/* Infinite loop */
 		while (1)
@@ -225,8 +229,10 @@
 			
 			// If vacuum pump control is enabled
 			#ifdef PUMP_CONTROL_ENABLED
-				// Execute S2 output control function
-				controlS2();
+				if (PCmode==0){
+					// Execute S2 output control function
+					controlS2();
+				}
 			#endif
 			
 			// LCD backlight control
