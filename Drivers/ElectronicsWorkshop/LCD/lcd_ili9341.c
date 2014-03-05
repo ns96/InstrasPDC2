@@ -14,7 +14,11 @@
 #define RST_LOW GPIO_LOW(lcd_ili9341_pins.RST_port,lcd_ili9341_pins.RST_pin)
 #define RST_HIGH GPIO_HIGH(lcd_ili9341_pins.RST_port,lcd_ili9341_pins.RST_pin)
 
-
+#define LCD_ILI9341_DC_HIGH	GPIO_HIGH(lcd_ili9341_pins.DC_port,lcd_ili9341_pins.DC_pin)
+#define LCD_ILI9341_DC_LOW	GPIO_LOW(lcd_ili9341_pins.DC_port,lcd_ili9341_pins.DC_pin)
+#define LCD_ILI9341_CS_HIGH	GPIO_HIGH(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
+#define LCD_ILI9341_CS_LOW	GPIO_LOW(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
+#define LCD_ILI9341_SPI_SendByte(x)	spi_sendData(x)
 
 #define LCD_ILI9341_RST_HIGH	RST_HIGH
 #define LCD_ILI9341_RST_LOW	RST_LOW
@@ -81,8 +85,9 @@ void lcd_ili9341_invert(uint8_t val){
 
 //==========================================LOW LEVEL ROUTINES===================
 	void lcd_ili9341_del(){
-			volatile uint16_t i;
-			for (i=10000;i>1;i--);
+			volatile uint16_t i,j;
+			for (i=10000;i>1;i--)
+				for (j=14;j>1;j--);
 	}
 
 
@@ -100,7 +105,7 @@ void lcd_ili9341_invert(uint8_t val){
 		lcd_ili9341_SPI_init();
 		LCD_ILI9341_init1();
 		//Clear LCD
-		lcd_ili9341_clear();	
+	//	lcd_ili9341_clear();	
 	}
 	
 	/**
@@ -112,15 +117,22 @@ void lcd_ili9341_invert(uint8_t val){
 	{	
 		uint8_t i,character;
 		uint8_t *pFontArray;  
-		pFontArray = (uint8_t *)lcd_ili9341_font;
-		chr -= lcd_ili9341_font_start;
+		pFontArray = (uint8_t *)lcd_3310_font;
+		chr -= lcd_3310_font_start;
 	
+				 LCD_ILI9341_DC_HIGH;
+    LCD_ILI9341_CS_LOW;
 		for (i=0; i<6; i++){
 			character = pFontArray[chr*6+i+1];
 			if (invertText>0)
 			character=~character;
-			lcd_ili9341_write_byte( character , 1);
+			//lcd_3310_write_byte( character , 1);
+        LCD_ILI9341_SPI_SendByte(0xf8);
+        LCD_ILI9341_SPI_SendByte(0x10);
+
+
 		}
+		    LCD_ILI9341_CS_HIGH;
 	}
 
 	
@@ -179,11 +191,7 @@ void lcd_ili9341_invert(uint8_t val){
 		/* Configure SPI1 DC as output push-pull */
 		GPIO_Init( lcd_ili9341_pins.DC_port, lcd_ili9341_pins.DC_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
 	}
-#define LCD_ILI9341_DC_HIGH	GPIO_HIGH(lcd_ili9341_pins.DC_port,lcd_ili9341_pins.DC_pin)
-#define LCD_ILI9341_DC_LOW	GPIO_LOW(lcd_ili9341_pins.DC_port,lcd_ili9341_pins.DC_pin)
-#define LCD_ILI9341_CS_HIGH	GPIO_HIGH(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
-#define LCD_ILI9341_CS_LOW	GPIO_LOW(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
-#define LCD_ILI9341_SPI_SendByte(x)	spi_sendData(x)
+
 /**
   * @brief  Writes a byte to LCD
   * @param data: data byte to be written
@@ -250,126 +258,134 @@ uint8_t LCD_ILI9341_Read_Register(uint8_t Addr, uint8_t xParameter)
 void LCD_ILI9341_init1 (void)
 {
 	 uint8_t i=0, LCD_ILI9341Driver=0;
-    lcd_ili9341_SPI_init();
+	 uint16_t x=0;
+   // lcd_ili9341_SPI_init();
     LCD_ILI9341_CS_HIGH;
     LCD_ILI9341_DC_HIGH;
    
 
-	LCD_ILI9341_RST_LOW;
-	lcd_ili9341_delay(1000);
+	//LCD_ILI9341_RST_LOW;
+	//lcd_ili9341_delay(1000);
 	LCD_ILI9341_RST_HIGH;
-
+//lcd_ili9341_delay(1000);
     for(i=0;i<3;i++)
 		//while(1)
     {
         LCD_ILI9341Driver = LCD_ILI9341_readID();
-				lcd_ili9341_delay(10000);
+				lcd_ili9341_delay(100);
     }
+		
+		 lcd_ili9341_delay(500);
+    sendCMD(0x01);	//software reset
+    lcd_ili9341_delay(200);
+		sendCMD(0xCF);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x8B);
+    WRITE_DATA(0X30);
 
-	sendCMD(0xCB);  
-	WRITE_DATA(0x39); 
-	WRITE_DATA(0x2C); 
-	WRITE_DATA(0x00); 
-	WRITE_DATA(0x34); 
-	WRITE_DATA(0x02); 
+    sendCMD(0xED);
+    WRITE_DATA(0x67);
+    WRITE_DATA(0x03);
+    WRITE_DATA(0X12);
+    WRITE_DATA(0X81);
 
-	sendCMD(0xCF);  
-	WRITE_DATA(0x00); 
-	WRITE_DATA(0XC1); 
-	WRITE_DATA(0X30); 
+    sendCMD(0xE8);
+    WRITE_DATA(0x85);
+    WRITE_DATA(0x10);
+    WRITE_DATA(0x7A);
 
-	sendCMD(0xE8);  
-	WRITE_DATA(0x85); 
-	WRITE_DATA(0x00); 
-	WRITE_DATA(0x78); 
+    sendCMD(0xCB);
+    WRITE_DATA(0x39);
+    WRITE_DATA(0x2C);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x34);
+    WRITE_DATA(0x02);
 
-	sendCMD(0xEA);  
-	WRITE_DATA(0x00); 
-	WRITE_DATA(0x00); 
+    sendCMD(0xF7);
+    WRITE_DATA(0x20);
 
-	sendCMD(0xED);  
-	WRITE_DATA(0x64); 
-	WRITE_DATA(0x03); 
-	WRITE_DATA(0X12); 
-	WRITE_DATA(0X81); 
+    sendCMD(0xEA);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x00);
 
-	sendCMD(0xF7);  
-	WRITE_DATA(0x20); 
+    sendCMD(0xC0);                                                      /* Power control                */
+    WRITE_DATA(0x1B);                                                   /* VRH[5:0]                     */
 
-	sendCMD(0xC0);    	//Power control 
-	WRITE_DATA(0x23);   	//VRH[5:0] 
+    sendCMD(0xC1);                                                      /* Power control                */
+    WRITE_DATA(0x10);                                                   /* SAP[2:0];BT[3:0]             */
 
-	sendCMD(0xC1);    	//Power control 
-	WRITE_DATA(0x10);   	//SAP[2:0];BT[3:0] 
+    sendCMD(0xC5);                                                      /* VCM control                  */
+    WRITE_DATA(0x3F);
+    WRITE_DATA(0x3C);
 
-	sendCMD(0xC5);    	//VCM control 
-	WRITE_DATA(0x3e);   	//Contrast
-	WRITE_DATA(0x28); 
+    sendCMD(0xC7);                                                      /* VCM control2                 */
+    WRITE_DATA(0XB7);
 
-	sendCMD(0xC7);    	//VCM control2 
-	WRITE_DATA(0x86);  	 //--
+    sendCMD(0x36);                                                      /* Memory Access Control        */
+    WRITE_DATA(0x08);
 
-	sendCMD(0x36);    	// Memory Access Control 
-	WRITE_DATA(0x48);  	//C8	   //48 68???//28 E8 ???
+    sendCMD(0x3A);
+    WRITE_DATA(0x55);
 
-	sendCMD(0x3A);    
-	WRITE_DATA(0x55); 
+    sendCMD(0xB1);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x1B);
 
-	sendCMD(0xB1);    
-	WRITE_DATA(0x00);  
-	WRITE_DATA(0x18); 
+    sendCMD(0xB6);                                                      /* Display Function Control     */
+    WRITE_DATA(0x0A);
+    WRITE_DATA(0xA2);
 
-	sendCMD(0xB6);    	// Display Function Control 
-	WRITE_DATA(0x08); 
-	WRITE_DATA(0x82);
-	WRITE_DATA(0x27);  
- 
-	sendCMD(0xF2);    	// 3Gamma Function Disable 
-	WRITE_DATA(0x00); 
 
-	sendCMD(0x26);    	//Gamma curve selected 
-	WRITE_DATA(0x01); 
+    sendCMD(0xF2);                                                      /* 3Gamma Function Disable      */
+    WRITE_DATA(0x00);
 
-	sendCMD(0xE0);    	//Set Gamma 
-	WRITE_DATA(0x0F); 
-	WRITE_DATA(0x31); 
-	WRITE_DATA(0x2B); 
-	WRITE_DATA(0x0C); 
-	WRITE_DATA(0x0E); 
-	WRITE_DATA(0x08); 
-	WRITE_DATA(0x4E); 
-	WRITE_DATA(0xF1); 
-	WRITE_DATA(0x37); 
-	WRITE_DATA(0x07); 
-	WRITE_DATA(0x10); 
-	WRITE_DATA(0x03); 
-	WRITE_DATA(0x0E); 
-	WRITE_DATA(0x09); 
-	WRITE_DATA(0x00); 
+    sendCMD(0x26);                                                      /* Gamma curve selected         */
+    WRITE_DATA(0x01);
 
-	sendCMD(0XE1);    	//Set Gamma 
-	WRITE_DATA(0x00); 
-	WRITE_DATA(0x0E); 
-	WRITE_DATA(0x14); 
-	WRITE_DATA(0x03); 
-	WRITE_DATA(0x11); 
-	WRITE_DATA(0x07); 
-	WRITE_DATA(0x31); 
-	WRITE_DATA(0xC1); 
-	WRITE_DATA(0x48); 
-	WRITE_DATA(0x08); 
-	WRITE_DATA(0x0F); 
-	WRITE_DATA(0x0C); 
-	WRITE_DATA(0x31); 
-	WRITE_DATA(0x36); 
-	WRITE_DATA(0x0F); 
+    sendCMD(0xE0);                                                      /* Set Gamma                    */
+    WRITE_DATA(0x0F);
+    WRITE_DATA(0x2A);
+    WRITE_DATA(0x28);
+    WRITE_DATA(0x08);
+    WRITE_DATA(0x0E);
+    WRITE_DATA(0x08);
+    WRITE_DATA(0x54);
+    WRITE_DATA(0XA9);
+    WRITE_DATA(0x43);
+    WRITE_DATA(0x0A);
+    WRITE_DATA(0x0F);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x00);
 
-	sendCMD(0x11);    	//Exit Sleep 
-	lcd_ili9341_delay(120); 
+    sendCMD(0XE1);                                                      /* Set Gamma                    */
+    WRITE_DATA(0x00);
+    WRITE_DATA(0x15);
+    WRITE_DATA(0x17);
+    WRITE_DATA(0x07);
+    WRITE_DATA(0x11);
+    WRITE_DATA(0x06);
+    WRITE_DATA(0x2B);
+    WRITE_DATA(0x56);
+    WRITE_DATA(0x3C);
+    WRITE_DATA(0x05);
+    WRITE_DATA(0x10);
+    WRITE_DATA(0x0F);
+    WRITE_DATA(0x3F);
+    WRITE_DATA(0x3F);
+    WRITE_DATA(0x0F);
 
-	sendCMD(0x29);    //Display on 
-	sendCMD(0x2c);   
-	LCD_ILI9341_fillScreen();
+    sendCMD(0x11);                                                      /* Exit Sleep                   */
+    lcd_ili9341_delay(120);
+    sendCMD(0x29);                                                      /* Display on                   */
+     LCD_ILI9341_fillScreen();
+		 for (x=0;x<100;x++)
+		 LCD_ILI9341_setPixel(x,10,0xf810);
+		 lcd_ili9341_putChar('a');
+	while(1){
+		
+	}
 }
 
 uint8_t LCD_ILI9341_readID(void)
@@ -469,12 +485,61 @@ void LCD_ILI9341_fillScreen(void)
     LCD_ILI9341_CS_LOW;
     for(i=0; i<38400; i++)
     {
-        LCD_ILI9341_SPI_SendByte(100);
-        LCD_ILI9341_SPI_SendByte(110);
-        LCD_ILI9341_SPI_SendByte(115);
-        LCD_ILI9341_SPI_SendByte(120);
+        LCD_ILI9341_SPI_SendByte(0);
+        LCD_ILI9341_SPI_SendByte(0);
+        LCD_ILI9341_SPI_SendByte(0);
+        LCD_ILI9341_SPI_SendByte(0);
     }
     LCD_ILI9341_CS_HIGH;
+}
+
+void LCD_ILI9341_setXY(uint16_t poX, uint16_t poY)
+{
+    LCD_ILI9341_setCol(poX, poX);
+    LCD_ILI9341_setPage(poY, poY);
+    sendCMD(0x2c);
+}
+void LCD_ILI9341_setPixel(uint16_t poX, uint16_t poY,uint16_t color)
+{
+    LCD_ILI9341_setXY(poX, poY);
+    LCD_ILI9341_sendData(color);
+}
+
+void LCD_ILI9341_drawChar( uint8_t ascii, uint8_t poX, uint16_t poY,uint8_t size, uint16_t fgcolor)
+{
+	uint8_t temp;
+  /*  if((ascii>=32)&&(ascii<=127))
+    {
+        ;
+    }
+    else
+    {
+        ascii = '?'-32;
+    }
+    for (int i =0; i<FONT_X; i++ ) {
+        temp = pgm_read_byte(&simpleFont[ascii-0x20][i]);
+        for(uint8_t f=0;f<8;f++)
+        {
+            if((temp>>f)&0x01)
+            {
+                fillRectangle(poX+i*size, poY+f*size, size, size, fgcolor);
+            }
+        }
+    }*/
+}
+
+void LCD_ILI9341_drawString(char *string,uint16_t poX, uint16_t poY, uint16_t size,uint16_t fgcolor)
+{
+  /*  while(*string)
+    {
+        drawChar(*string, poX, poY, size, fgcolor);
+        *string++;
+
+        if(poX < MAX_X)
+        {
+            poX += FONT_SPACE*size;                                     // Move cursor right            
+        }
+    }*/
 }
 //-----------------------------------------------
 	/**
@@ -492,7 +557,7 @@ void LCD_ILI9341_fillScreen(void)
 			spi_config.SCK_pin=lcd_ili9341_pins.CLK_pin;
 			spi_config.SCK_port=lcd_ili9341_pins.CLK_port;
 			spi_config.MISO_port=LCD_MISO_PORT;
-			spi_config.MOSI_pin=LCD_MISO_PIN;
+			spi_config.MISO_pin=LCD_MISO_PIN;
 			
 			spi_init(spi_config );
 	}

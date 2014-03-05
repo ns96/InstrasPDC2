@@ -55,8 +55,8 @@
 					MOSI_LOW;
 				SCK_HIGH;
 				
-				if ((spi_pins.MISO_port->IDR&spi_pins.MISO_pin)==0)
-					received|=(1<<(i-1));
+			//	if ((spi_pins.MISO_port->IDR&spi_pins.MISO_pin)==0)
+				//	received|=(1<<(i-1));
 			}
 			MOSI_HIGH;
 			return received;
@@ -77,7 +77,7 @@
 		GPIO_Init( spi_pins.SCK_port, spi_pins.SCK_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
 		
 		/* Configure SPI1 MISO as input */
-		GPIO_Init( spi_pins.MISO_port, spi_pins.MISO_pin, GPIO_MODE_IN_PU_NO_IT);
+		//GPIO_Init( spi_pins.MISO_port, spi_pins.MISO_pin, GPIO_MODE_IN_PU_NO_IT);
 		MOSI_HIGH;
 		SCK_HIGH;
 		
