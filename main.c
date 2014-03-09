@@ -14,15 +14,19 @@
 
 /* Includes ------------------------------------------------------------------*/
 	#include "stm8s.h"
+	#include "global.h"
 	//#include "board_stv307.h"
 	#include "board_MotorTalkV1a.h"
-	#include "lcd_3310.h"
+	#ifdef LCD_ILI9341
+		#include "lcd_ili9341.h"
+	#else
+		#include "lcd_3310.h"
+	#endif
 	#include "logo.h"
 	#include "btn.h"
 	#include "menu.h"
 	#include "rpm.h"
 	#include "pwm.h"
-	#include "global.h"
 	#include "ee.h"
 	#include "buzzer.h"
 	#include "menu.h"
@@ -49,12 +53,21 @@
 	* @retval None
 	*/
 	void main_init(void){
+		#ifdef LCD_ILI9341
 		//  LCD initialization structure
+		lcd_ili9341_pinConfig lcdPinCfg={LCD_RST_PIN,LCD_RST_PORT,
+																LCD_CE_PIN,LCD_CE_PORT,
+																LCD_DC_PIN,LCD_DC_PORT,
+																LCD_MOSI_PIN,LCD_MOSI_PORT,
+																LCD_SCK_PIN,LCD_SCK_PORT};
+		#else
+				//  LCD initialization structure
 		lcd_3310_pinConfig lcdPinCfg={LCD_RST_PIN,LCD_RST_PORT,
 																LCD_CE_PIN,LCD_CE_PORT,
 																LCD_DC_PIN,LCD_DC_PORT,
 																LCD_MOSI_PIN,LCD_MOSI_PORT,
 																LCD_SCK_PIN,LCD_SCK_PORT};
+		#endif
 		// Buttons initialization structure											
 		Tbtn_pinConfig		btnPinCfg={	BTN_ENTER_PIN,BTN_ENTER_PORT,
 																	BTN_EXIT_PIN,BTN_EXIT_PORT,

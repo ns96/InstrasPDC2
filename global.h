@@ -2,8 +2,13 @@
 #define __global_h_
 	#define STV3_DEBUG
 //	#include "board_stv307.h"
-#include "board_MotorTalkV1a.h"
+	#include "board_MotorTalkV1a.h"
 	#include "config.h"
+	#ifdef LCD_ILI9341
+		#include "lcd_ili9341.h"
+	#else
+		#include "lcd_3310.h"
+	#endif
 	
 	// Structure for measuring the time
 	typedef struct {

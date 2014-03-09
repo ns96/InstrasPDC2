@@ -1,6 +1,6 @@
 /* Includes ------------------------------------------------------------------*/
 	#include "stm8s.h"
-	#include "lcd_3310.h"
+
 	#include "btn.h"
 	#include "menu.h"
 	#include "global.h"

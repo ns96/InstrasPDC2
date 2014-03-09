@@ -44,5 +44,7 @@
 uint8_t LCD_ILI9341_readID(void);
 void LCD_ILI9341_fillScreen(void);
 void LCD_ILI9341_setPixel(uint16_t poX, uint16_t poY,uint16_t color);
+void LCD_ILI9341_setXY(uint16_t poX, uint16_t poY);
+void lcd_ili9341_fillRectangle(uint16_t poX, uint16_t poY, uint16_t length, uint16_t width, uint16_t color);
 /*void LCD_ILI9341_fillScreen(uint16_t XL, uint16_t XR, uint16_t YU, uint16_t YD, uint16_t color);*/
 #endif

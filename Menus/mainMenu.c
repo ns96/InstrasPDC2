@@ -1,10 +1,9 @@
 /* Includes ------------------------------------------------------------------*/
 	#include "stm8s.h"
-	#include "lcd_3310.h"
+	#include "global.h"	
 	#include "btn.h"
 	#include "pwm.h"	
 	#include "menu.h"
-	#include "global.h"
 	#include "buzzer.h"
 /* Private defines -----------------------------------------------------------*/
 	#define SEL_ANALOG	1

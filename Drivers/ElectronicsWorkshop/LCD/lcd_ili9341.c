@@ -23,7 +23,9 @@
 #define LCD_ILI9341_RST_HIGH	RST_HIGH
 #define LCD_ILI9341_RST_LOW	RST_LOW
 
-
+#define WRITE_DATA(x) lcd_ili9341_write_byte(x,1)
+#define sendCMD(x) lcd_ili9341_write_byte(x,0)
+#define FONT_SIZE 2
 /**Private variables------------------------------------------ */
 uint8_t invertText=0;
 lcd_ili9341_pinConfig lcd_ili9341_pins;
@@ -65,9 +67,11 @@ void lcd_ili9341_invert(uint8_t val){
   * @retval : None
   */
 	void lcd_ili9341_drawTextXY(uint8_t x,uint8_t y,uint8_t *str){
-		lcd_ili9341_gotoXY(x,y);
+		//lcd_ili9341_gotoXY(x,y);
+		uint8_t l=0;
 		while (*str){
-			lcd_ili9341_putChar(*str++);
+			lcd_ili9341_putCharXY(x*FONT_SIZE*12/10+l*(FONT_SIZE*12/10)*6,y*9*FONT_SIZE,*str++);
+			l++;
 		}
 	}
 /**
@@ -78,9 +82,28 @@ void lcd_ili9341_invert(uint8_t val){
   * @retval : None
   */
 	void lcd_ili9341_putCharXY(uint8_t x, uint8_t y,uint8_t chr)
-	{
-		lcd_ili9341_gotoXY(x,y);	
-		lcd_ili9341_putChar(chr);
+	{	
+
+		uint8_t i,j,character;
+		uint8_t *pFontArray;  
+		pFontArray = (uint8_t *)lcd_3310_font;
+		chr -= lcd_3310_font_start;
+	
+		//LCD_ILI9341_setXY(0, 0);
+    
+		for (i=0; i<6; i++){
+			character = pFontArray[chr*6+i+1];
+			if (invertText>0)
+			character=~character;
+			for (j=0;j<8;j++){
+				if ((character&1<<j)>0)
+					lcd_ili9341_fillRectangle(x+i*FONT_SIZE,y+j*FONT_SIZE,FONT_SIZE,FONT_SIZE,0xF810);
+				else
+					lcd_ili9341_fillRectangle(x+i*FONT_SIZE,y+j*FONT_SIZE,FONT_SIZE,FONT_SIZE,0x0000);
+			}
+
+		}
+		    LCD_ILI9341_CS_HIGH;
 	}
 
 //==========================================LOW LEVEL ROUTINES===================
@@ -107,7 +130,65 @@ void lcd_ili9341_invert(uint8_t val){
 		//Clear LCD
 	//	lcd_ili9341_clear();	
 	}
-	
+uint16_t constrain(uint16_t x, uint16_t a, uint16_t b) {
+    if(x < a) {
+        return a;
+    }
+    else if(b < x) {
+        return b;
+    }
+    else
+        return x;
+}
+	void lcd_ili9341_fillScreen1(uint16_t XL, uint16_t XR, uint16_t YU, uint16_t YD, uint16_t color)
+{
+    unsigned long  XY=0;
+    unsigned long i=0;
+    uint8_t Hcolor = color>>8;
+    uint8_t Lcolor = color&0xff;
+		
+    if(XL > XR)
+    {
+        XL = XL^XR;
+        XR = XL^XR;
+        XL = XL^XR;
+    }
+    if(YU > YD)
+    {
+        YU = YU^YD;
+        YD = YU^YD;
+        YU = YU^YD;
+    }
+    XL = constrain(XL, MIN_X,MAX_X);
+    XR = constrain(XR, MIN_X,MAX_X);
+    YU = constrain(YU, MIN_Y,MAX_Y);
+    YD = constrain(YD, MIN_Y,MAX_Y);
+
+    XY = (XR-XL+1);
+    XY = XY*(YD-YU+1);
+
+    lcd_ili9341_setCol(XL,XR);
+    lcd_ili9341_setPage(YU, YD);
+    sendCMD(0x2c);                                                  /* start to write to display ra */
+                                                                        /* m                            */
+
+    LCD_ILI9341_DC_HIGH;
+    LCD_ILI9341_CS_LOW;
+
+
+    for(i=0; i < XY; i++)
+    {
+        LCD_ILI9341_SPI_SendByte(Hcolor);
+        LCD_ILI9341_SPI_SendByte(Lcolor);
+    }
+
+    LCD_ILI9341_CS_HIGH;
+}
+
+void lcd_ili9341_fillRectangle(uint16_t poX, uint16_t poY, uint16_t length, uint16_t width, uint16_t color)
+{
+    lcd_ili9341_fillScreen1(poX, poX+length, poY, poY+width, color);
+}
 	/**
   * @brief  Draws a character on LCD
 	* @param chr: character to be printed
@@ -115,23 +196,32 @@ void lcd_ili9341_invert(uint8_t val){
   */
 	void lcd_ili9341_putChar(uint8_t chr)
 	{	
-		uint8_t i,character;
+		uint8_t i,j,character;
 		uint8_t *pFontArray;  
 		pFontArray = (uint8_t *)lcd_3310_font;
 		chr -= lcd_3310_font_start;
 	
-				 LCD_ILI9341_DC_HIGH;
-    LCD_ILI9341_CS_LOW;
+	  //  sendCMD(0x36);                                                      /* Memory Access Control        */
+   // WRITE_DATA(0x68);
+		//LCD_ILI9341_DC_HIGH;
+    //LCD_ILI9341_CS_LOW;
+		LCD_ILI9341_setXY(0, 0);
+    
 		for (i=0; i<6; i++){
 			character = pFontArray[chr*6+i+1];
 			if (invertText>0)
 			character=~character;
+			for (j=0;j<8;j++){
+				if ((character&1<<j)>0){
 			//lcd_3310_write_byte( character , 1);
-        LCD_ILI9341_SPI_SendByte(0xf8);
-        LCD_ILI9341_SPI_SendByte(0x10);
-
+       // LCD_ILI9341_sendData(0xF810);
+				lcd_ili9341_fillRectangle(i*FONT_SIZE,j*FONT_SIZE,FONT_SIZE,FONT_SIZE,0xF810);
+				}
+			}
 
 		}
+		  //  sendCMD(0x36);                                                      /* Memory Access Control        */
+  //  WRITE_DATA(0x08);
 		    LCD_ILI9341_CS_HIGH;
 	}
 
@@ -154,7 +244,7 @@ void lcd_ili9341_invert(uint8_t val){
   * @retval : None
   */
 	void lcd_ili9341_clear(void){
-		lcd_ili9341_fill(0);
+		LCD_ILI9341_fillScreen();
 	}
 	
 	/**
@@ -253,8 +343,7 @@ uint8_t LCD_ILI9341_Read_Register(uint8_t Addr, uint8_t xParameter)
     LCD_ILI9341_CS_HIGH;
     return vdata;
 }
-#define WRITE_DATA(x) lcd_ili9341_write_byte(x,1)
-#define sendCMD(x) lcd_ili9341_write_byte(x,0)
+
 void LCD_ILI9341_init1 (void)
 {
 	 uint8_t i=0, LCD_ILI9341Driver=0;
@@ -379,13 +468,7 @@ void LCD_ILI9341_init1 (void)
     sendCMD(0x11);                                                      /* Exit Sleep                   */
     lcd_ili9341_delay(120);
     sendCMD(0x29);                                                      /* Display on                   */
-     LCD_ILI9341_fillScreen();
-		 for (x=0;x<100;x++)
-		 LCD_ILI9341_setPixel(x,10,0xf810);
-		 lcd_ili9341_putChar('a');
-	while(1){
-		
-	}
+		LCD_ILI9341_fillScreen();
 }
 
 uint8_t LCD_ILI9341_readID(void)
@@ -428,50 +511,7 @@ void LCD_ILI9341_setPage(uint16_t StartPage,uint16_t EndPage)
     sendCMD(0x2B);                                                      /* Column Command address       */
     LCD_ILI9341_sendData(StartPage);
     LCD_ILI9341_sendData(EndPage);
-}/*
-void LCD_ILI9341_fillScreen(uint16_t XL, uint16_t XR, uint16_t YU, uint16_t YD, uint16_t color)
-{
-    unsigned long  XY=0;
-    unsigned long i=0;
-    uint8_t Hcolor = color>>8;
-    uint8_t Lcolor = color&0xff;		
-
-    if(XL > XR)
-    {
-        XL = XL^XR;
-        XR = XL^XR;
-        XL = XL^XR;
-    }
-    if(YU > YD)
-    {
-        YU = YU^YD;
-        YD = YU^YD;
-        YU = YU^YD;
-    }
-    XL = constrain(XL, MIN_X,MAX_X);
-    XR = constrain(XR, MIN_X,MAX_X);
-    YU = constrain(YU, MIN_Y,MAX_Y);
-    YD = constrain(YD, MIN_Y,MAX_Y);
-
-    XY = (XR-XL+1);
-    XY = XY*(YD-YU+1);
-
-    LCD_ILI9341_setCol(XL,XR);
-    LCD_ILI9341_setPage(YU, YD);
-    LCD_ILI9341_sendCMD(0x2c);                                                  
-
-    LCD_ILI9341_DC_HIGH;
-    LCD_ILI9341_CS_LOW;
-
-
-    for(i=0; i < XY; i++)
-    {
-        LCD_ILI9341_SPI_SendByte(Hcolor);
-        LCD_ILI9341_SPI_SendByte(Lcolor);
-    }
-
-    LCD_ILI9341_CS_HIGH;
-}*/
+}
 //****************************************
 void LCD_ILI9341_fillScreen(void)
 {

@@ -73,6 +73,7 @@
 	#define RPM_INT_HANDLER	0
 	
 	/* LCD port/pin */
+	#define LCD_ILI9341	1
 	#define LCD_SCK_PORT		GPIOC
 	#define LCD_SCK_PIN			GPIO_PIN_5
 	
