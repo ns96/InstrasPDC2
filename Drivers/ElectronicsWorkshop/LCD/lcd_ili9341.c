@@ -4,10 +4,11 @@
 /**Includes ------------------------------------------------ */
 #include "font_6x8.h"
 #include "spi.h"
+//#include "stm8s_spi.h"
 #include "global.h"
 /**Private defines------------------------------------------ */
 #define lcd_ili9341_delay lcd_ili9341_del();
-
+void lcd_ili9341_d(void);
 /*Defines macros for controlling the RST pin*/
 #define GPIO_HIGH(a,b) 		a->ODR|=b
 #define GPIO_LOW(a,b)		a->ODR&=~b
@@ -18,14 +19,15 @@
 #define LCD_ILI9341_DC_LOW	GPIO_LOW(lcd_ili9341_pins.DC_port,lcd_ili9341_pins.DC_pin)
 #define LCD_ILI9341_CS_HIGH	GPIO_HIGH(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
 #define LCD_ILI9341_CS_LOW	GPIO_LOW(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
-#define LCD_ILI9341_SPI_SendByte(x)	spi_sendData(x)
+#define LCD_ILI9341_SPI_SendByte(x)	spi_sendData(x);lcd_ili9341_d(1)
+//SPI_SendData(x)
 
 #define LCD_ILI9341_RST_HIGH	RST_HIGH
 #define LCD_ILI9341_RST_LOW	RST_LOW
 
 #define WRITE_DATA(x) lcd_ili9341_write_byte(x,1)
 #define sendCMD(x) lcd_ili9341_write_byte(x,0)
-#define FONT_SIZE 2
+#define FONT_SIZE 3
 /**Private variables------------------------------------------ */
 uint8_t invertText=0;
 lcd_ili9341_pinConfig lcd_ili9341_pins;
@@ -70,7 +72,7 @@ void lcd_ili9341_invert(uint8_t val){
 		//lcd_ili9341_gotoXY(x,y);
 		uint8_t l=0;
 		while (*str){
-			lcd_ili9341_putCharXY(x*FONT_SIZE*12/10+l*(FONT_SIZE*12/10)*6,y*9*FONT_SIZE,*str++);
+			lcd_ili9341_putCharXY(x*FONT_SIZE+l*(FONT_SIZE)*6,y*9*FONT_SIZE,*str++);
 			l++;
 		}
 	}
@@ -112,7 +114,10 @@ void lcd_ili9341_invert(uint8_t val){
 			for (i=10000;i>1;i--)
 				for (j=14;j>1;j--);
 	}
-
+	void lcd_ili9341_d(){
+			//volatile uint16_t i,j;
+			//for (i=2;i>1;i--);
+	}
 
 	/**
   * @brief  Initializes LCD display
@@ -468,7 +473,16 @@ void LCD_ILI9341_init1 (void)
     sendCMD(0x11);                                                      /* Exit Sleep                   */
     lcd_ili9341_delay(120);
     sendCMD(0x29);                                                      /* Display on                   */
-		LCD_ILI9341_fillScreen();
+				
+		//while(1){
+			//LCD_ILI9341_SPI_SendByte(1);
+		//	LCD_ILI9341_setPixel(0, 0,0x8120);
+			lcd_ili9341_putCharXY(0, 0,'a');
+		//lcd_drawTextXY(0,0,"Analog Control");
+	LCD_ILI9341_fillScreen();
+	//}
+
+		
 }
 
 uint8_t LCD_ILI9341_readID(void)
@@ -590,7 +604,7 @@ void LCD_ILI9341_drawString(char *string,uint16_t poX, uint16_t poY, uint16_t si
   * @retval : None
   */
 	void lcd_ili9341_SPI_init(void){
-			Tspi_pinConfig spi_config;
+			/*Tspi_pinConfig spi_config;
 			
 			spi_config.MOSI_pin=lcd_ili9341_pins.DIN_pin;
 			spi_config.MOSI_port=lcd_ili9341_pins.DIN_port;		
@@ -600,5 +614,23 @@ void LCD_ILI9341_drawString(char *string,uint16_t poX, uint16_t poY, uint16_t si
 			spi_config.MISO_pin=LCD_MISO_PIN;
 			
 			spi_init(spi_config );
+			*/
+			
+			
+		GPIO_Init( lcd_ili9341_pins.DIN_port, lcd_ili9341_pins.DIN_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_Init( lcd_ili9341_pins.CLK_port, lcd_ili9341_pins.CLK_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
+  SPI_DeInit();
+  SPI_Init(SPI_FIRSTBIT_MSB, SPI_BAUDRATEPRESCALER_2, SPI_MODE_MASTER, SPI_CLOCKPOLARITY_HIGH,
+           SPI_CLOCKPHASE_2EDGE, SPI_DATADIRECTION_2LINES_FULLDUPLEX, SPI_NSS_SOFT,(uint8_t)0x07);
+  SPI_Cmd(ENABLE);
+
+	/*
+	while(1){
+		LCD_ILI9341_SPI_SendByte(0x55);
+		LCD_ILI9341_SPI_SendByte(0x25);
+		LCD_ILI9341_SPI_SendByte(0x15);
+		lcd_ili9341_del(10);
+	}*/
+	
 	}
 

@@ -20,6 +20,7 @@
 		#include "utils.h"
 		#include "global.h"
 		#include "menu.h"
+		#include "stepper.h"
 	/* Private defines -----------------------------------------------------------*/
 		#define MAX_COMMAND_LEN	20
 	/* Private function prototypes -----------------------------------------------*/
@@ -74,6 +75,7 @@
 		// Command prefixes
 		#define RS_SetPWM1 "SET S1 "
 		#define RS_SetPWM2 "SET S2 "
+		#define RS_Step 	"STEP "
 		#define RS_GetPWM "GET S"
 		#define RS_GetRPM "GET RPM"
 		#define RS_ModePC "MODE PC"
@@ -198,6 +200,37 @@
 			// Send response
 			usart_sendString("OK\r\n");
 		}		
+		else
+		// RS_Step received?
+		if (memcmp(rsbuff,RS_Step,sizeof(RS_Step)-2)==0)
+		{
+			// Is it PC mode?
+			if (PCmode==1){
+				// parse PWM value
+				param=atoi (&rsbuff[sizeof(RS_Step)-1],4);
+				// check if it is in predefined range
+				if (((param>=1)||(param==0))&&(param<=2000)){
+					// send response
+					usart_sendString("OK");
+					usart_sendString("\r\n");
+					if (rsbuff[sizeof(RS_Step)-2]=='R')
+						stepper_step(1,param);
+					else
+						stepper_step(0,param);
+				}
+				// PWM value is out of range
+				else
+				{
+					// send error message
+					usart_sendString("ERR:1\r\n");
+				}
+			}
+			// Trying to change values not in PC mode
+			else
+				// send error message
+				usart_sendString("ERR:3\r\n");
+
+		}
 		// Unknown command received
 		else
 			usart_sendString("ERR:0\r\n");

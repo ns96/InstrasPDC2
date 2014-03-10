@@ -458,14 +458,24 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
   */
  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
  {
+	 uint16_t tmp[10],i;
     /* In order to detect unexpected events during development,
        it is recommended to set a breakpoint on the following instruction.
     */
-		#ifdef POT_INVERTED
+		/*#ifdef POT_INVERTED
 			Conversion_Value = 1023-ADC1_GetConversionValue();
 		#else
 			Conversion_Value = ADC1_GetConversionValue();
-		#endif
+		#endif*/
+		/*
+		#ifdef POT_INVERTED
+			Conversion_Value = 1023-ADC1_GetBufferValue(2);
+		#else
+			Conversion_Value = ADC1_GetBufferValue(2);
+		#endif*/
+		
+		for (i=0;i<10;i++)
+		tmp[i]=ADC1_GetBufferValue(i);;
 		 ADC1_ClearITPendingBit(ADC1_IT_EOC);
  }
 #endif /*STM8S208 or STM8S207 or STM8AF52Ax or STM8AF62Ax */

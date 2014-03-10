@@ -65,6 +65,12 @@
 	#define S4_PORT			GPIOE
 	#define S4_PIN			GPIO_PIN_0
 	
+	
+	#define STEPPER_DIR_PIN			GPIO_PIN_0
+	#define STEPPER_DIR_PORT		GPIOG
+	#define STEPPER_PULSE_PIN		GPIO_PIN_1
+	#define STEPPER_PULSE_PORT	GPIOG
+	
 	/* RPM sensor input port/pin */
 	
 	#define RPM_PORT			GPIOE

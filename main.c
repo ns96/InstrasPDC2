@@ -29,6 +29,7 @@
 	#include "pwm.h"
 	#include "ee.h"
 	#include "buzzer.h"
+	#include "stepper.h"
 	#include "menu.h"
 	#include "usart.h"
 	#include "communication.h"
@@ -78,6 +79,10 @@
 		// Buzzer initialization structure
 		Tbuzzer_Config		buzzerCfg= {BUZZER_PIN,BUZZER_PORT,1};
 		
+		// Stepper control initialization structure
+		Tstepper_Config		stepperCfg= {STEPPER_DIR_PIN,STEPPER_DIR_PORT,
+																	STEPPER_PULSE_PIN,STEPPER_PULSE_PORT};
+		
 		// Usart initialization structure
 		//Tusart_pinConfig		usartCfg= {S3_PIN,S3_PORT,
 		//																S4_PIN,S4_PORT};
@@ -125,6 +130,9 @@
 		// Initialize LCD background light control pin as output
 		GPIO_Init( LCD_BACKLIGHT_PORT, LCD_BACKLIGHT_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
 		
+		
+		// Initialize stepper
+		stepper_init(stepperCfg);		
 		// Read device configuration from EEPROM data memory
 		ee_readBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
 
@@ -177,17 +185,18 @@
 		// Set PWM width to 1000us
 		PWM_setAllChannelDuty(1000*2);		
 #endif		
-
+		stepper_step(0,50);
+		stepper_step(1,50);
 		// Display logo screen
 		lcd_splash(logo);
 		lcd_drawTextXY(0,4,DEVICE_VERSION_STRING);
 		// Wait for 2 seconds (100*20ms)
-		tmp=TIM1_cnt&0xFF;
+		/*tmp=TIM1_cnt&0xFF;
 		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<250){
 			tmp=btn_getState();
-		/*	if ((tmp&btnDown)&&(tmp&btnUp)&&(tmp1<100))
-				tmp1++;		*/	
-		}
+		//	if ((tmp&btnDown)&&(tmp&btnUp)&&(tmp1<100))
+			//	tmp1++;			
+		}*/
 	/*	if (tmp1>50)
 			menu=MENU_TEST;*/
 			
@@ -199,7 +208,7 @@
 
 		// Clear LCD
 		lcd_clear();
-		
+	//menu=MENU_TEST;
 		/* Infinite loop */
 		while (1)
 		{
