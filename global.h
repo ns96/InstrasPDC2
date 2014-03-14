@@ -65,6 +65,9 @@
 	extern uint16_t rpm,rpm_p;	
 	// ADC conversion value, used for reading the potentiometer
 	extern volatile uint16_t Conversion_Value;
+	
+	extern volatile uint16_t VSupply_Value;
+	extern volatile uint16_t IMot_Value;
 	// Variable, defining the current menu
 	extern uint8_t menu;	
 	// Array of possible increment values in digital mode

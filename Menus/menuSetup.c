@@ -61,8 +61,8 @@ void menuSetup_redraw(void){
 				lcd_drawTextXY(0,2+i-SEL_SETP,"*");
 			else				
 				lcd_drawTextXY(0,2+i-SEL_SETP," ");
-
-			lcd_drawText(menuNames[i-SEL_SETP]);
+			lcd_drawTextXY(6,2+i-SEL_SETP,menuNames[i-SEL_SETP]);
+			//lcd_drawText(menuNames[i-SEL_SETP]);
 		}		
 		lcd_invert(0);
 	}

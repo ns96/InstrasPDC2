@@ -33,16 +33,27 @@
 	/**	Initializes  Menu
 	*/
 	void menuTest_Init(void){
-		pot_init();		
-		/* Init ADC1 peripheral */
+		//pot_init();		
+		 /*  Init GPIO for ADC7 */
+		GPIO_Init(GPIOB, GPIO_PIN_7, GPIO_MODE_IN_FL_NO_IT);
+		
+		GPIO_Init(GPIOB, GPIO_PIN_2, GPIO_MODE_IN_FL_NO_IT);
+		
+		/* De-Init ADC peripheral*/
+		ADC1_DeInit();
 		ADC1_Init(ADC1_CONVERSIONMODE_CONTINUOUS, ADC1_CHANNEL_2, ADC1_PRESSEL_FCPU_D18, \
 							ADC1_EXTTRIG_TIM, DISABLE, ADC1_ALIGN_RIGHT, ADC1_SCHMITTTRIG_CHANNEL2,\
-							DISABLE);	
-		/*ADC1_Init(ADC1_CONVERSIONMODE_CONTINUOUS, ADC1_CHANNEL_1, ADC1_PRESSEL_FCPU_D18, \
-							ADC1_EXTTRIG_TIM, DISABLE, ADC1_ALIGN_RIGHT, ADC1_SCHMITTTRIG_CHANNEL1,\
-							DISABLE);		*/
-	ADC1_ScanModeCmd(ENABLE);		
-ADC1_DataBufferCmd(ENABLE);	
+							DISABLE);								
+	
+		/* Enable EOC interrupt */
+		ADC1_ITConfig(ADC1_IT_EOCIE,ENABLE);
+	
+		/* Enable general interrupts */  
+		enableInterrupts();
+		
+		/*Start Conversion */
+		ADC1_StartConversion();
+	
 		lcd_clear();
 		menuTest_redraw();/*
 		// Wait for enter button to be depressed
@@ -62,6 +73,7 @@ ADC1_DataBufferCmd(ENABLE);
 		static Ttimer btnTimer={0,0};
 		static uint16_t time_val=0,freq_val=0;
 		static uint8_t valueToChange=0;		
+		static int16_t im=0;
 		// Check if the function is called for the first time
 		if (menuTest_firstRun)
 		{
@@ -71,11 +83,27 @@ ADC1_DataBufferCmd(ENABLE);
 			menuTest_firstRun=0;
 		}	
 		//display pwm width in us
-		itoa(time_val++,&str);
+		itoa(Conversion_Value,&str);
 		lcd_drawTextXY(5*6,3,"    ");
 		lcd_invert(0);
 		lcd_drawTextXY(5*6,3,str);
-		/*
+		
+		//display pwm width in us
+		itoa((uint32_t)VSupply_Value*33*65/1024,&str);
+		lcd_drawTextXY(5*6,4,"    ");
+		lcd_invert(0);
+		lcd_drawTextXY(5*6,4,str);		
+
+		im=(((int32_t)IMot_Value-452)*10000/2537);
+		if (im<0)
+			im=-im;
+		//display pwm width in us
+		itoa(im,&str);
+		lcd_drawTextXY(5*6,5,"    ");
+		lcd_invert(0);
+		lcd_drawTextXY(5*6,5,str);	
+
+		
 		// Calculate the time elapsed since the button timer was started
 		btnTimer.timeElapsed=(TIM1_cnt&0xFF)-btnTimer.timeStart;	
 		// If time elapsed is more than 400ms(20*20ms)
@@ -97,7 +125,7 @@ ADC1_DataBufferCmd(ENABLE);
 			}
 			
 			if ((buttons&btnUp)>0){
-				if (valueToChange<1)
+				/*if (valueToChange<1)
 					valueToChange++;
 				else
 					valueToChange=0;
@@ -107,11 +135,11 @@ ADC1_DataBufferCmd(ENABLE);
 					
 				if (valueToChange==2){
 					pot_DeInit();
-				}
+				}*/
 			}
 			if ((buttons&btnDown)>0){
 			}
-		}
+		}/*
 		if (valueToChange==0){
 			freq_val=Conversion_Value*5;
 		}

@@ -100,6 +100,7 @@
 	
 	#define LCD_BACKLIGHT_PORT		GPIOD
 	#define LCD_BACKLIGHT_PIN			GPIO_PIN_2
+	#define LCD_BACKLIGHT_INVERTED	1
 	
 	#define lcd_clear()	lcd_ili9341_clear()
 	#define lcd_drawText(x)	lcd_ili9341_drawText(x)
@@ -117,5 +118,12 @@
 	#define RX_PIN				GPIO_PIN_6
 	#define RX_EXTI_PORT	EXTI_PORT_GPIOD
 	#define RX_HANDLER		6
+	
+	
+	#define D0_PORT		GPIOB
+	#define D0_PIN		GPIO_PIN_5
+
+	#define D1_PORT		GPIOB
+	#define D1_PIN		GPIO_PIN_4
 
 #endif

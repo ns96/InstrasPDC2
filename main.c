@@ -33,11 +33,14 @@
 	#include "menu.h"
 	#include "usart.h"
 	#include "communication.h"
+	#include "exgpio.h"
 	
 /* Private defines -----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 	volatile uint16_t Conversion_Value = 0;
+	volatile uint16_t VSupply_Value = 0;
+	volatile uint16_t IMot_Value = 0;
 	uint16_t rpm=0,rpm_p=0;
 	volatile uint16_t TIM1_cnt=0;
 	uint8_t menu=MENU_MAIN;
@@ -89,6 +92,8 @@
 		Tusart_pinConfig		usartCfg= {TX_PIN,TX_PORT,
 																		RX_PIN,RX_PORT,
 																		RX_EXTI_PORT};
+																		
+		TEXGPIO_Config		exgpioCfg= {D0_PIN,D0_PORT,D1_PIN,D1_PORT};																		
 		// Default values for RAMP programs
 		TrampConfig rampDefault=RAMP_DEFAULT_1;
 		TrampConfig rampDefault1=RAMP_DEFAULT_2;
@@ -109,7 +114,7 @@
 		// Initialize PWM output
 		PWM_init();	
 		// Initialize RPM meter
-		//rpm_init(rpmPinCfg,RPM_MIN_VALUE,RPM_MAX_VALUE);
+		rpm_init(rpmPinCfg,RPM_MIN_VALUE,RPM_MAX_VALUE);
 		// Initialize LCD
 		lcd_init(lcdPinCfg);
 		// Initialize buttons
@@ -124,6 +129,8 @@
 		// Initialize usart
 		usart_init(usartCfg);
 	
+	
+		EXGPIO_init(exgpioCfg);
 		//Initialize S3-4 outputs as push-pull, low level
 		GPIO_Init( S1_PORT, S1_PIN, GPIO_MODE_OUT_PP_LOW_FAST);	
 		GPIO_Init( S2_PORT, S2_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
@@ -167,7 +174,7 @@
 	void main(void)
 	{
 		// Temporary variable
-		uint8_t tmp=0;
+		uint8_t tmp=0,tmp1=0;
 		// Main initialization
 		main_init();
 		// Switch the backlight on/of accorting to config
@@ -191,13 +198,13 @@
 		lcd_splash(logo);
 		lcd_drawTextXY(0,4,DEVICE_VERSION_STRING);
 		// Wait for 2 seconds (100*20ms)
-		/*tmp=TIM1_cnt&0xFF;
+	/*	tmp=TIM1_cnt&0xFF;
 		while (((uint8_t)((TIM1_cnt&0xFF)-tmp))<250){
 			tmp=btn_getState();
-		//	if ((tmp&btnDown)&&(tmp&btnUp)&&(tmp1<100))
-			//	tmp1++;			
-		}*/
-	/*	if (tmp1>50)
+			if ((tmp&btnDown)&&(tmp&btnUp)&&(tmp1<100))
+				tmp1++;			
+		}
+		if (tmp1>50)
 			menu=MENU_TEST;*/
 			
 /*If ESC arming on startup required*/								
@@ -258,7 +265,11 @@
 			#endif
 			
 			// LCD backlight control
+			#ifndef LCD_BACKLIGHT_INVERTED
 			if ((mainConfig.backLight==BACKLIGHT_HIGH)||(mainConfig.backLight==BACKLIGHT_LOW))
+			#else
+			if ((mainConfig.backLight==BACKLIGHT_OFF))
+			#endif
 					GPIO_HIGH(LCD_BACKLIGHT_PORT, LCD_BACKLIGHT_PIN);
 			else		
 					GPIO_LOW(LCD_BACKLIGHT_PORT, LCD_BACKLIGHT_PIN);

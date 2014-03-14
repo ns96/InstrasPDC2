@@ -18,6 +18,7 @@
 //	#include "board_stv307.h"
 	#include "global.h"
 	#include "communication.h"
+	#include "exgpio.h"
 	/* Private defines -----------------------------------------------------------*/
 	/* Private function prototypes -----------------------------------------------*/
 	
@@ -56,7 +57,7 @@
   * @retval : None
   */
 	void rpm_callback(void){
-		static uint16_t TIM_old=0;
+		static uint16_t TIM_old=0;		
 		// If 1000ms has passed(50*20ms)
 		if ((TIM1_cnt-TIM_old)>=50){
 			TIM_old=TIM1_cnt;
@@ -74,6 +75,7 @@
 	void rpm_timerInterruptHandler(void){
 		rpm_p=rpm_pulses/mainConfig.numReflectors*RPM_PULSE_MEASUREMENT_FREQ*60;
 		rpm_pulses=0;	
+		EXGPIO_toggle(D0);
 	}
 
 	/**
@@ -85,7 +87,7 @@
   void rpm_interruptHandler(void){		
 	//	static uint8_t rpm_started=0,rpm_cnt=0,tmp=0,tmp1=0;
 	//	static uint32_t rpm_val=0;
-
+		EXGPIO_toggle(D1);
 		/*check if the number of pulses does not exceed
 			limiting values, calculated using max rpm value
 			end max reflector count
