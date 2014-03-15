@@ -27,10 +27,12 @@ void lcd_ili9341_d(void);
 
 #define WRITE_DATA(x) lcd_ili9341_write_byte(x,1)
 #define sendCMD(x) lcd_ili9341_write_byte(x,0)
-#define FONT_SIZE 3
+#define FONT_SIZE 2
 /**Private variables------------------------------------------ */
 uint8_t invertText=0;
 lcd_ili9341_pinConfig lcd_ili9341_pins;
+uint16_t current_x=0;
+uint16_t current_y=0;
 
 /**Function implementation------------------------------------ */
 void lcd_ili9341_invert(uint8_t val){
@@ -56,9 +58,7 @@ void lcd_ili9341_invert(uint8_t val){
   * @retval : None
   */
 	void lcd_ili9341_drawText(uint8_t *str){
-		while (*str){
-			lcd_ili9341_putChar(*str++);
-		}
+		lcd_ili9341_drawTextXY(current_x,current_y,str);
 	}
 	
 	/**
@@ -74,6 +74,7 @@ void lcd_ili9341_invert(uint8_t val){
 		while (*str){
 			lcd_ili9341_putCharXY(x*FONT_SIZE+l*(FONT_SIZE)*6,y*9*FONT_SIZE,*str++);
 			l++;
+			current_x+=6;
 		}
 	}
 /**
@@ -240,7 +241,8 @@ void lcd_ili9341_fillRectangle(uint16_t poX, uint16_t poY, uint16_t length, uint
   */
 	void lcd_ili9341_gotoXY(uint8_t x, uint8_t y)
 	{
-
+		current_x=x;
+		current_y=y;
 	}
 
 	/**

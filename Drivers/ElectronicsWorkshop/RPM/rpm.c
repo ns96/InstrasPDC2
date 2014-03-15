@@ -75,7 +75,7 @@
 	void rpm_timerInterruptHandler(void){
 		rpm_p=rpm_pulses/mainConfig.numReflectors*RPM_PULSE_MEASUREMENT_FREQ*60;
 		rpm_pulses=0;	
-		EXGPIO_toggle(D0);
+
 	}
 
 	/**

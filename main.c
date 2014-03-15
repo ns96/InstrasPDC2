@@ -93,7 +93,13 @@
 																		RX_PIN,RX_PORT,
 																		RX_EXTI_PORT};
 																		
-		TEXGPIO_Config		exgpioCfg= {D0_PIN,D0_PORT,D1_PIN,D1_PORT};																		
+		TEXGPIO_Config		exgpioCfg= {D0_PIN,D0_PORT,
+																	D1_PIN,D1_PORT,
+																	D2_PIN,D2_PORT,
+																	D3_PIN,D3_PORT,
+																	D4_PIN,D4_PORT,
+																	D5_PIN,D5_PORT
+																	};
 		// Default values for RAMP programs
 		TrampConfig rampDefault=RAMP_DEFAULT_1;
 		TrampConfig rampDefault1=RAMP_DEFAULT_2;

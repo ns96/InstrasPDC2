@@ -39,6 +39,10 @@
 		/* Configure SPI1 MOSI as output */
 		GPIO_Init( _exgpio_config.D0_port, _exgpio_config.D0_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
 		GPIO_Init( _exgpio_config.D1_port, _exgpio_config.D1_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_Init( _exgpio_config.D2_port, _exgpio_config.D2_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_Init( _exgpio_config.D3_port, _exgpio_config.D3_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_Init( _exgpio_config.D4_port, _exgpio_config.D4_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_Init( _exgpio_config.D5_port, _exgpio_config.D5_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
 	}
 	
 	void EXGPIO_set(uint8_t pin,uint8_t state){
@@ -46,18 +50,57 @@
 		{
 			if (state)
 				GPIO_HIGH(exgpio_config.D0_port, exgpio_config.D0_pin);
-				else
+			else
 				GPIO_LOW(exgpio_config.D0_port, exgpio_config.D0_pin);
+		}
+		if ((pin&D1)>0)
+		{
+			if (state)
+				GPIO_HIGH(exgpio_config.D1_port, exgpio_config.D1_pin);
+			else
+				GPIO_LOW(exgpio_config.D1_port, exgpio_config.D1_pin);
+		}		
+		if ((pin&D2)>0)
+		{
+			if (state)
+				GPIO_HIGH(exgpio_config.D2_port, exgpio_config.D2_pin);
+			else
+				GPIO_LOW(exgpio_config.D2_port, exgpio_config.D2_pin);
+		}
+		if ((pin&D3)>0)
+		{
+			if (state)
+				GPIO_HIGH(exgpio_config.D3_port, exgpio_config.D3_pin);
+			else
+				GPIO_LOW(exgpio_config.D3_port, exgpio_config.D3_pin);
+		}
+		if ((pin&D4)>0)
+		{
+			if (state)
+				GPIO_HIGH(exgpio_config.D4_port, exgpio_config.D4_pin);
+			else
+				GPIO_LOW(exgpio_config.D4_port, exgpio_config.D4_pin);
+		}
+		if ((pin&D5)>0)
+		{
+			if (state)
+				GPIO_HIGH(exgpio_config.D5_port, exgpio_config.D5_pin);
+			else
+				GPIO_LOW(exgpio_config.D5_port, exgpio_config.D5_pin);
 		}
 	}
 	
 		void EXGPIO_toggle(uint8_t pin){
 		if ((pin&D0)>0)
-		{
 				GPIO_TOGGLE(exgpio_config.D0_port, exgpio_config.D0_pin);
-		}
 		if ((pin&D1)>0)
-		{
 				GPIO_TOGGLE(exgpio_config.D1_port, exgpio_config.D1_pin);
-		}		
+		if ((pin&D2)>0)
+				GPIO_TOGGLE(exgpio_config.D2_port, exgpio_config.D2_pin);
+		if ((pin&D3)>0)
+				GPIO_TOGGLE(exgpio_config.D3_port, exgpio_config.D3_pin);
+		if ((pin&D4)>0)
+				GPIO_TOGGLE(exgpio_config.D4_port, exgpio_config.D4_pin);
+		if ((pin&D5)>0)
+				GPIO_TOGGLE(exgpio_config.D5_port, exgpio_config.D5_pin);				
 	}

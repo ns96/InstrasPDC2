@@ -75,7 +75,7 @@
 	
 	#define RPM_PORT			GPIOE
 	#define RPM_PIN				GPIO_PIN_7
-	#define RPM_ext	EXTI_PORT_GPIOC
+	#define RPM_ext	EXTI_PORT_GPIOE
 	#define RPM_INT_HANDLER	0
 	
 	/* LCD port/pin */
@@ -120,10 +120,22 @@
 	#define RX_HANDLER		6
 	
 	
-	#define D0_PORT		GPIOB
-	#define D0_PIN		GPIO_PIN_5
+	#define D0_PORT		GPIOC
+	#define D0_PIN		GPIO_PIN_2
 
-	#define D1_PORT		GPIOB
-	#define D1_PIN		GPIO_PIN_4
+	#define D1_PORT		GPIOC
+	#define D1_PIN		GPIO_PIN_1
+	
+	#define D2_PORT		GPIOB
+	#define D2_PIN		GPIO_PIN_6
+
+	#define D3_PORT		GPIOB
+	#define D3_PIN		GPIO_PIN_3	
+	
+	#define D4_PORT		GPIOB
+	#define D4_PIN		GPIO_PIN_4
+
+	#define D5_PORT		GPIOB
+	#define D5_PIN		GPIO_PIN_5	
 
 #endif
