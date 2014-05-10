@@ -98,7 +98,7 @@
 		if (im<0)
 			im=-im;
 		//display pwm width in us
-		itoa(im,&str);
+		itoa(((int32_t)IMot_Value-452)*10000/2537,&str);
 		lcd_drawTextXY(5*6,5,"    ");
 		lcd_invert(0);
 		lcd_drawTextXY(5*6,5,str);	

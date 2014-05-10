@@ -181,6 +181,7 @@
 	{
 		// Temporary variable
 		uint8_t tmp=0,tmp1=0;
+				uint8_t str[14];
 		// Main initialization
 		main_init();
 		// Switch the backlight on/of accorting to config
@@ -262,6 +263,32 @@
 				menuPC();
 			}
 			
+		if (menu!=MENU_MAIN){
+			//lcd_drawTextXY(5*6,9,"  .  V");
+			lcd_invert(0);
+			itoa((uint32_t)VSupply_Value*33*65/1024/1000,&str);
+			lcd_drawTextXY(5*6,9,str);	
+			itoa((uint32_t)VSupply_Value*33*65/1024/100%10,&str);
+			lcd_drawTextXY(6*6,9,str);				
+			itoa((uint32_t)VSupply_Value*33*65/1024/10%10,&str);
+			lcd_drawTextXY(8*6,9,str);				
+			itoa((uint32_t)VSupply_Value*33*65/1024%10,&str);
+			lcd_drawTextXY(9*6,9,str);			
+			lcd_drawTextXY(7*6,9,".");
+			lcd_drawTextXY(10*6,9,"V");
+			
+		
+			
+			lcd_drawTextXY(5*6,8," .  A");
+			lcd_invert(0);
+			itoa(((int32_t)IMot_Value-452)*10000/2537/100,&str);
+			lcd_drawTextXY(5*6,8,str);	
+			itoa(((int32_t)IMot_Value-452)*10000/2537/10%10,&str);
+			lcd_drawTextXY(7*6,8,str);	
+				itoa(((int32_t)IMot_Value-452)*10000/2537%10,&str);
+			lcd_drawTextXY(8*6,8,str);	
+		}
+		
 			// If vacuum pump control is enabled
 			#ifdef PUMP_CONTROL_ENABLED
 				if (PCmode==0){
