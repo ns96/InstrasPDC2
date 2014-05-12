@@ -12,7 +12,6 @@
   */ 
 	
 	/* Includes ------------------------------------------------------------------*/
-	#include "stm8s.h"
 	#include "btn.h"
 	
 	/* Public variables ----------------------------------------------------------*/
@@ -26,18 +25,37 @@
   * @retval : None
   */
 	void btn_init(Tbtn_pinConfig _pin_cfg){
+		GPIO_InitTypeDef        GPIO_InitStructure;
+			/* GPIOB Clock enable */
+		RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
 		pin_cfg=_pin_cfg;
-		/* Configure Enter button pin as input with pull-up resistor*/
-		GPIO_Init( pin_cfg.Enter_port, pin_cfg.Enter_pin, GPIO_MODE_IN_PU_NO_IT);
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 		
 		/* Configure Enter button pin as input with pull-up resistor*/
-		GPIO_Init( pin_cfg.Exit_port, pin_cfg.Exit_pin, GPIO_MODE_IN_PU_NO_IT);
+		GPIO_InitStructure.GPIO_Pin = pin_cfg.Enter_pin;
+		GPIO_Init(pin_cfg.Enter_port, &GPIO_InitStructure);
+		/* Configure Exit button pin as input with pull-up resistor*/
+		GPIO_InitStructure.GPIO_Pin = pin_cfg.Exit_pin;
+		GPIO_Init(pin_cfg.Exit_port, &GPIO_InitStructure);
+		/* Configure Up button pin as input with pull-up resistor*/
+		GPIO_InitStructure.GPIO_Pin = pin_cfg.Up_pin;
+		GPIO_Init(pin_cfg.Up_port, &GPIO_InitStructure);
+		/* Configure Down button pin as input with pull-up resistor*/
+		GPIO_InitStructure.GPIO_Pin = pin_cfg.Down_pin;
+		GPIO_Init(pin_cfg.Down_port, &GPIO_InitStructure);
 		
-		/* Configure Enter button pin as input with pull-up resistor*/
-		GPIO_Init( pin_cfg.Up_port, pin_cfg.Up_pin, GPIO_MODE_IN_PU_NO_IT);
-		
-		/* Configure Enter button pin as input with pull-up resistor*/
-		GPIO_Init( pin_cfg.Down_port, pin_cfg.Down_pin, GPIO_MODE_IN_PU_NO_IT);		
+//		/* Configure Enter button pin as input with pull-up resistor*/
+//		GPIO_Init( pin_cfg.Enter_port, pin_cfg.Enter_pin, GPIO_MODE_IN_PU_NO_IT);
+//		
+//		/* Configure Enter button pin as input with pull-up resistor*/
+//		GPIO_Init( pin_cfg.Exit_port, pin_cfg.Exit_pin, GPIO_MODE_IN_PU_NO_IT);
+//		
+//		/* Configure Enter button pin as input with pull-up resistor*/
+//		GPIO_Init( pin_cfg.Up_port, pin_cfg.Up_pin, GPIO_MODE_IN_PU_NO_IT);
+//		
+//		/* Configure Enter button pin as input with pull-up resistor*/
+//		GPIO_Init( pin_cfg.Down_port, pin_cfg.Down_pin, GPIO_MODE_IN_PU_NO_IT);		
 	}
 	
 	

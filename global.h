@@ -1,15 +1,38 @@
 #ifndef __global_h_
 #define __global_h_
+	#define u32 uint32
+
 	#define STV3_DEBUG
-//	#include "board_stv307.h"
-	#include "board_MotorTalkV1a.h"
 	#include "config.h"
+	
+	#include "stm32f0xx_gpio.h"
+	
+	//#define itoa 
+	
+	
+	#ifdef BOARD_MOTORTALKV1ASTM8
+		#include "board_MotorTalkV1a.h"
+	#else
+		#ifdef BOARD_MOTORTALKV1ASTM32
+			#include "board_MotorTalkV1aSTM32.h"
+		#else
+			#include "board_stv307.h"
+		#endif
+	#endif
+	
 	#ifdef LCD_ILI9341
 		#include "lcd_ili9341.h"
 	#else
 		#include "lcd_3310.h"
 	#endif
-	
+		#include "btn.h"
+//	#include "rpm.h"
+	#include "pwm.h"
+//	#include "ee.h"
+		#include "buzzer.h"
+//	#include "stepper.h"
+	#include "exgpio.h"
+//	#include "usart.h"
 	// Structure for measuring the time
 	typedef struct {
 	uint8_t timeStart;

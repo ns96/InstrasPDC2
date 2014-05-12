@@ -1,6 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-	#include "stm8s.h"
-
 	#include "btn.h"
 	#include "menu.h"
 	#include "global.h"
@@ -30,7 +28,7 @@
 			rpmTimer.timeStart=(TIM1_cnt)&0xFF;
 			// Clear part of LCD, showing the RPM number
 			lcd_drawTextXY(x,y,"      ");		
-			itoa((int32_t)rpm_p,&str);			
+			itoa((int32_t)rpm_p,(char *)&str);			
 		/*	trpm1=rpm;
 			trmp2=rpm_p;
 			if ((rpm_p*mainConfig.numReflectors/60)<150)

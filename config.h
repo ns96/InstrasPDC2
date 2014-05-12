@@ -1,6 +1,8 @@
 #ifndef __config_h_
 #define __config_h_		
 
+		//#define BOARD_MOTORTALKV1A
+		#define BOARD_MOTORTALKV1ASTM32
 		/* Define the device version string.
 		* This string is shown on the logo screen.
 		*/

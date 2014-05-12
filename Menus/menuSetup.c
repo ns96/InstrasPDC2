@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "btn.h"
 #include "menu.h"
 #include "global.h"
@@ -97,7 +96,7 @@ void menuSetup_redraw(void){
 			lcd_invert(1);
 		else
 			lcd_invert(0);
-		itoa((int32_t)mainConfig.numReflectors,&str);			
+		itoa((int32_t)mainConfig.numReflectors,(char *)&str);			
 		lcd_drawTextXY(7*6,2,str);
 		
 		lcd_invert(0);
@@ -155,7 +154,8 @@ void menuSetup_DeInit(void){
 	// Disable PWM output
 	PWM_outputDisable();	
 	menuSetup_firstRun=1;
-	ee_writeBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
+	#warning "todo"
+	//ee_writeBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
 }
 void menuSetup_buttons(void){
 	uint8_t buttons;

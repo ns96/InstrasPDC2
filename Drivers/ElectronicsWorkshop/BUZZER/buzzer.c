@@ -12,9 +12,9 @@
   */ 
 	
 	/* Includes ------------------------------------------------------------------*/
-		#include "stm8s.h"
+		//#include "global.h"
 		#include "buzzer.h"
-		#include "global.h"
+
 	/* Private defines -----------------------------------------------------------*/
 		#define GPIO_HIGH(a,b) 		a->ODR|=b
 		#define GPIO_LOW(a,b)		a->ODR&=~b
@@ -39,9 +39,9 @@
 		void delay_us(uint32_t duration){
 			uint16_t time_current;
 			static uint16_t time_last;
-			time_last=(uint16_t)(((TIM1->CNTRH)<<8)|(TIM1->CNTRL));
+			time_last=(uint16_t)(TIM3->CNT);
 			do {
-				time_current=(uint16_t)(((TIM1->CNTRH)<<8)|(TIM1->CNTRL));
+				time_current=(uint16_t)(TIM3->CNT);	
 			} while((uint16_t)((uint16_t)time_current-(uint16_t)time_last)<(duration*2));
 		}		
 	/**
@@ -68,6 +68,7 @@
   * @retval : None
   */
 		void buzzer_beep(){
+			int t=100;
 			buzzer_beepA(defaultFrequency,defaultTime);
 		}
 		
@@ -89,9 +90,16 @@
   * @retval : None
   */
 	void buzzer_GPIO_init(void){
+		GPIO_InitTypeDef        GPIO_InitStructure;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 		
-		/* Configure SPI1 MOSI as output */
-		GPIO_Init( buzzer_config.buzzer_port, buzzer_config.buzzer_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_InitStructure.GPIO_Pin = buzzer_config.buzzer_pin;
+		GPIO_Init(buzzer_config.buzzer_port, &GPIO_InitStructure);
+		/* Configure buzzer output pin */
+	//	GPIO_Init( buzzer_config.buzzer_port, buzzer_config.buzzer_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
 		
 		// Turn the buzzer off
 		if (buzzer_config.buzzer_polarity)

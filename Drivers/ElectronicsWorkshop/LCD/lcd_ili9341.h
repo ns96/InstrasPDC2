@@ -6,6 +6,7 @@
 #define MIN_Y	0
 #define MAX_X	239
 #define MAX_Y	319
+#include "stm32f0xx_gpio.h"
 /* Public type definitions ------------------------------------------------*/	
 	typedef struct {
 		uint32_t RST_pin;
@@ -46,5 +47,9 @@ void LCD_ILI9341_fillScreen(void);
 void LCD_ILI9341_setPixel(uint16_t poX, uint16_t poY,uint16_t color);
 void LCD_ILI9341_setXY(uint16_t poX, uint16_t poY);
 void lcd_ili9341_fillRectangle(uint16_t poX, uint16_t poY, uint16_t length, uint16_t width, uint16_t color);
+
+void LCD_ILI9341_setCol(uint16_t StartCol,uint16_t EndCol);
+void LCD_ILI9341_setPage(uint16_t StartPage,uint16_t EndPage);
+
 /*void LCD_ILI9341_fillScreen(uint16_t XL, uint16_t XR, uint16_t YU, uint16_t YD, uint16_t color);*/
 #endif

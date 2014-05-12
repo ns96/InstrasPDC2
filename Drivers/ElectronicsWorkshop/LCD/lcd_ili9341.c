@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "stm8s.h"
 #include "lcd_ili9341.h"
 /**Includes ------------------------------------------------ */
 #include "font_6x8.h"
@@ -19,8 +18,15 @@ void lcd_ili9341_d(void);
 #define LCD_ILI9341_DC_LOW	GPIO_LOW(lcd_ili9341_pins.DC_port,lcd_ili9341_pins.DC_pin)
 #define LCD_ILI9341_CS_HIGH	GPIO_HIGH(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
 #define LCD_ILI9341_CS_LOW	GPIO_LOW(lcd_ili9341_pins.CE_port,lcd_ili9341_pins.CE_pin)
-#define LCD_ILI9341_SPI_SendByte(x)	spi_sendData(x);lcd_ili9341_d(1)
+
+/*SPI module procedure selection*/
+#define LCD_ILI9341_SPI_SendByte(x)	spi_sendData(x);lcd_ili9341_d();//lcd_ili9341_del(1);
 //SPI_SendData(x)
+
+
+#define LCD_ILI9341_sendData lcd_ili9341_sendData
+#define lcd_ili9341_setCol LCD_ILI9341_setCol
+#define lcd_ili9341_setPage LCD_ILI9341_setPage
 
 #define LCD_ILI9341_RST_HIGH	RST_HIGH
 #define LCD_ILI9341_RST_LOW	RST_LOW
@@ -34,6 +40,9 @@ lcd_ili9341_pinConfig lcd_ili9341_pins;
 uint16_t current_x=0;
 uint16_t current_y=0;
 
+void a(uint8_t b){
+	spi_sendData(1);
+}
 /**Function implementation------------------------------------ */
 void lcd_ili9341_invert(uint8_t val){
 	invertText=val;
@@ -116,8 +125,8 @@ void lcd_ili9341_invert(uint8_t val){
 				for (j=14;j>1;j--);
 	}
 	void lcd_ili9341_d(){
-			//volatile uint16_t i,j;
-			//for (i=2;i>1;i--);
+			volatile uint16_t i,j;
+			for (i=1;i>1;i--);
 	}
 
 	/**
@@ -132,6 +141,10 @@ void lcd_ili9341_invert(uint8_t val){
 		lcd_ili9341_pins=_lcd_pins;
 		lcd_ili9341_GPIO_init();
 		lcd_ili9341_SPI_init();
+	/*	while(1){
+			LCD_ILI9341_SPI_SendByte(0x22);
+			lcd_ili9341_del(1);
+		}*/
 		LCD_ILI9341_init1();
 		//Clear LCD
 	//	lcd_ili9341_clear();	
@@ -278,15 +291,27 @@ void lcd_ili9341_fillRectangle(uint16_t poX, uint16_t poY, uint16_t length, uint
   * @retval : None
   */
 	void lcd_ili9341_GPIO_init(void){
-	
+	GPIO_InitTypeDef        GPIO_InitStructure;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+		
+		
 		/* Configure SPI1 RST as output push-pull */		
-			GPIO_Init( lcd_ili9341_pins.RST_port, lcd_ili9341_pins.RST_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+	//		GPIO_Init( lcd_ili9341_pins.RST_port, lcd_ili9341_pins.RST_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_InitStructure.GPIO_Pin = lcd_ili9341_pins.RST_pin;
+		GPIO_Init(lcd_ili9341_pins.RST_port, &GPIO_InitStructure);
 			
 		/* Configure SPI1 CE as output push-pull */
-		GPIO_Init( lcd_ili9341_pins.CE_port, lcd_ili9341_pins.CE_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+	//	GPIO_Init( lcd_ili9341_pins.CE_port, lcd_ili9341_pins.CE_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+		GPIO_InitStructure.GPIO_Pin = lcd_ili9341_pins.CE_pin;
+		GPIO_Init(lcd_ili9341_pins.CE_port, &GPIO_InitStructure);
 	
 		/* Configure SPI1 DC as output push-pull */
-		GPIO_Init( lcd_ili9341_pins.DC_port, lcd_ili9341_pins.DC_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
+	//	GPIO_Init( lcd_ili9341_pins.DC_port, lcd_ili9341_pins.DC_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
+		GPIO_InitStructure.GPIO_Pin = lcd_ili9341_pins.DC_pin;
+		GPIO_Init( lcd_ili9341_pins.DC_port, &GPIO_InitStructure);
 	}
 
 /**
@@ -346,7 +371,8 @@ uint8_t LCD_ILI9341_Read_Register(uint8_t Addr, uint8_t xParameter)
     LCD_ILI9341_CS_LOW;
     LCD_ILI9341_SPI_SendByte(Addr);
     LCD_ILI9341_DC_HIGH;
-    vdata = LCD_ILI9341_SPI_SendByte(0);
+    //vdata = 
+	LCD_ILI9341_SPI_SendByte(0);
     LCD_ILI9341_CS_HIGH;
     return vdata;
 }
@@ -606,7 +632,7 @@ void LCD_ILI9341_drawString(char *string,uint16_t poX, uint16_t poY, uint16_t si
   * @retval : None
   */
 	void lcd_ili9341_SPI_init(void){
-			/*Tspi_pinConfig spi_config;
+			Tspi_pinConfig spi_config;
 			
 			spi_config.MOSI_pin=lcd_ili9341_pins.DIN_pin;
 			spi_config.MOSI_port=lcd_ili9341_pins.DIN_port;		
@@ -616,15 +642,15 @@ void LCD_ILI9341_drawString(char *string,uint16_t poX, uint16_t poY, uint16_t si
 			spi_config.MISO_pin=LCD_MISO_PIN;
 			
 			spi_init(spi_config );
-			*/
 			
 			
-		GPIO_Init( lcd_ili9341_pins.DIN_port, lcd_ili9341_pins.DIN_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+			
+/*		GPIO_Init( lcd_ili9341_pins.DIN_port, lcd_ili9341_pins.DIN_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
 		GPIO_Init( lcd_ili9341_pins.CLK_port, lcd_ili9341_pins.CLK_pin, GPIO_MODE_OUT_PP_HIGH_FAST);	
   SPI_DeInit();
   SPI_Init(SPI_FIRSTBIT_MSB, SPI_BAUDRATEPRESCALER_2, SPI_MODE_MASTER, SPI_CLOCKPOLARITY_HIGH,
            SPI_CLOCKPHASE_2EDGE, SPI_DATADIRECTION_2LINES_FULLDUPLEX, SPI_NSS_SOFT,(uint8_t)0x07);
-  SPI_Cmd(ENABLE);
+  SPI_Cmd(ENABLE);*/
 
 	/*
 	while(1){

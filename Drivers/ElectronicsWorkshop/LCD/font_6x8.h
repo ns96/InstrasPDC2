@@ -4,7 +4,8 @@
 #define lcd_3310_font_start 32
 #define lcd_ili9341_font font6_8 
 #define lcd_ili9341_font_start 32
-unsigned char code font6_8[][6] =
+//unsigned char code font6_8[][6] =
+unsigned char font6_8[][6] =
 {
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // space
     { 0x00, 0x00, 0x00, 0x2f, 0x00, 0x00 },   // !

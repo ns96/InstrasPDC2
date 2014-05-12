@@ -13,7 +13,6 @@
   */ 
 	
 	/* Includes ------------------------------------------------------------------*/
-	#include "stm8s.h"
 	#include "rpm.h"
 //	#include "board_stv307.h"
 	#include "global.h"
@@ -40,15 +39,15 @@
 		rpm_pins=_rpm_pins;
 		rpm_min=min;
 		rpm_max=max;
-		/* Configure RPM pin as floating input with interrupt*/
-		GPIO_Init( rpm_pins.RPM_port, rpm_pins.RPM_pin, GPIO_MODE_IN_FL_IT);	
-		
-		/* Initialize the Interrupt sensitivity */
-		EXTI_SetExtIntSensitivity(rpm_pins.RPM_exti, EXTI_SENSITIVITY_FALL_ONLY);
-		EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);
-		
-		/* Enable global interrupts */
-		enableInterrupts();
+//		/* Configure RPM pin as floating input with interrupt*/
+//		GPIO_Init( rpm_pins.RPM_port, rpm_pins.RPM_pin, GPIO_MODE_IN_FL_IT);	
+//		
+//		/* Initialize the Interrupt sensitivity */
+//		EXTI_SetExtIntSensitivity(rpm_pins.RPM_exti, EXTI_SENSITIVITY_FALL_ONLY);
+//		EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);
+//		
+//		/* Enable global interrupts */
+//		enableInterrupts();
 	}
 	
 	/**
@@ -87,7 +86,7 @@
   void rpm_interruptHandler(void){		
 	//	static uint8_t rpm_started=0,rpm_cnt=0,tmp=0,tmp1=0;
 	//	static uint32_t rpm_val=0;
-		EXGPIO_toggle(D1);
+		EXGPIO_toggle(D3);
 		/*check if the number of pulses does not exceed
 			limiting values, calculated using max rpm value
 			end max reflector count

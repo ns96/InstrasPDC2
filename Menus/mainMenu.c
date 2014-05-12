@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-	#include "stm8s.h"
 	#include "global.h"	
 	#include "btn.h"
 	#include "pwm.h"	
@@ -96,7 +95,7 @@
 		
 		// Check the time elapsed sinced last read of button state
 		// If it is more than 200ms (10*20ms)
-		if (((TIM1_cnt&0xFF)-btnTimer.timeStart)>10)
+		if ((unsigned char)((TIM1_cnt&0xFF)-btnTimer.timeStart)>10)
 		{
 			// Store current time
 			btnTimer.timeStart=TIM1_cnt&0xFF;
@@ -117,7 +116,6 @@
 				if (selection<SEL_SETUP){
 					selection++;
 				}
-				
 			}
 			
 			// If ENTER button is pressed

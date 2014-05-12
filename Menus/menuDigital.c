@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "global.h"	
 #include "btn.h"
 #include "menu.h"
@@ -44,7 +43,7 @@
 		lcd_gotoXY(0,5);
 		// Go trough all inc. step options
 		for (i=0;i<PWM_INC_COUNT;i++){
-			itoa((int32_t)pwm_inc_array[i],&str);
+			itoa((int32_t)pwm_inc_array[i],(char *)&str);
 			// If current step is the step selected
 			if (i==mainConfig.PWMincIndex)
 				// invert the text
@@ -194,7 +193,7 @@
 		#endif
 
 		// Display PWM width
-		itoa((int32_t)pwm_width,&str);
+		itoa((int32_t)pwm_width,(char *)&str);
 		lcd_drawTextXY(4*6,3,str);
 		
 	}

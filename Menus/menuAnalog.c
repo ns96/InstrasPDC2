@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "global.h"	
 #include "btn.h"
 #include "menu.h"
@@ -136,7 +135,7 @@
 			PWM_setAllChannelDuty(pwm_width*2);
 		#endif	
 			//display pwm width in us
-			itoa(pwm_width,&str);
+			itoa(pwm_width,(char *)&str);
 			lcd_drawTextXY(8*6,3," ");
 			lcd_drawTextXY(4*6,3,str);
 			

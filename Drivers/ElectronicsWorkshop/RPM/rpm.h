@@ -1,8 +1,10 @@
 #ifndef __rpm_h_
 #define __rpm_h_
+#include "stm32f0xx_gpio.h"
 	/* Public type definitions ------------------------------------------------*/
+	typedef uint32_t EXTI_Port_TypeDef ;
 	typedef struct {
-		u32 RPM_pin;
+		uint32_t RPM_pin;
 		GPIO_TypeDef* RPM_port;
 		EXTI_Port_TypeDef RPM_exti;
 	} Trpm_pinConfig;
@@ -13,3 +15,5 @@
 		void rpm_interruptHandler(void);
 		void rpm_timerInterruptHandler(void);
 #endif
+	
+	

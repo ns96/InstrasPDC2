@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "btn.h"
 #include "menu.h"
 #include "global.h"
@@ -61,7 +60,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 				lcd_invert(0);
 			
 			// convert integer to string
-			itoa((int32_t)(i+1),&str);
+			itoa((int32_t)(i+1),(char *)&str);
 			// draw on lcd
 			lcd_drawText(str);			
 			// disable text inversion
@@ -91,7 +90,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		else
 			lcd_invert(0);
 		// Display RPM min value
-		itoa((int32_t)rampCfg.RPM_min,&str);
+		itoa((int32_t)rampCfg.RPM_min,(char *)&str);
 		lcd_drawTextXY(4*6,2,str);
 		
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_DWELL_MIN))
@@ -99,7 +98,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		else
 			lcd_invert(0);
 		// Display RPM min dwell time
-		itoa((int32_t)rampCfg.min_dwell,&str);
+		itoa((int32_t)rampCfg.min_dwell,(char *)&str);
 		lcd_drawTextXY(10*6,2,str);
 		
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_RPM_MAX))
@@ -107,7 +106,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		else
 			lcd_invert(0);
 		// Display RPM max value
-		itoa((int32_t)rampCfg.RPM_max,&str);
+		itoa((int32_t)rampCfg.RPM_max,(char *)&str);
 		lcd_drawTextXY(4*6,3,str);
 
 		if ((menuSetupRamp_edit)&&(menuSetupRamp_editField==RS_FIELD_DWELL_MAX))
@@ -115,7 +114,7 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		else
 			lcd_invert(0);
 		// Display RPM max dwell time
-		itoa((int32_t)rampCfg.max_dwell,&str);
+		itoa((int32_t)rampCfg.max_dwell,(char *)&str);
 		lcd_drawTextXY(10*6,3,str);
 		lcd_invert(0);
 	}
@@ -143,7 +142,8 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		pot_DeInit();
 		PWM_outputDisable();
 		menuSetupRamp_firstRun=1;
-		ee_writeBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
+		#warning "todo"
+//		ee_writeBuff((uint32_t)FLASH_DATA_START_PHYSICAL_ADDRESS,(uint8_t*)&mainConfig,sizeof(TmainConfig));
 	}
 
 	
@@ -357,6 +357,6 @@ uint16_t menuSetupRamp_pwm_width=1000;
 		menu_displayRPM(4*6,4);
 		
 		//display pwm width in us
-		itoa((int32_t)menuSetupRamp_pwm_width,&str);
+		itoa((int32_t)menuSetupRamp_pwm_width,(char *)&str);
 		lcd_drawTextXY(4*6,5,str);
 	}

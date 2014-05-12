@@ -11,10 +11,8 @@
   ******************************************************************************
   */ 
 	/* Includes ------------------------------------------------------------------*/
-		#include "stm8s.h"
 		#include "usart.h"
-//		#include "board_stv307.h"
-#include "board_MotorTalkV1a.h"
+		#include "global.h"
 		#include "communication.h"
 	/* Private defines -----------------------------------------------------------*/
 		#define GPIO_HIGH(a,b) 		a->ODR|=b
@@ -23,33 +21,10 @@
 		#define BAUD	9600
 		#define USART_DELAY_VAL	(1000000/BAUD)
 	/* Private function prototypes -----------------------------------------------*/
-		void usart_initTim4(uint8_t reload);
+
 	/* Public variables ----------------------------------------------------------*/
 		Tusart_pinConfig usart_pins;
 	/*************/
-	// bit-level communication states
-	typedef enum
-	{
-			IDLE,                                       // Idle state
-			TRANSMIT,                                   // Transmitting byte
-			TRANSMIT_STOP_BIT,                          // Transmitting stop bit
-			RECEIVE,                                    // Receiving byte
-			DATA_PENDING                                // Byte received
-	
-	}AsynchronousStates_t;
-	
-	// bit-level state of the UART
-	static volatile AsynchronousStates_t state;   
-	// data to be transmitted
-	static volatile unsigned char SwUartTXData;
-	// transmit bit counter
-	static volatile unsigned char SwUartTXBitCount; 
-	// Received bits storage
-	static volatile unsigned char SwUartRXData;   
-	// receive bit counter
-	static volatile unsigned char SwUartRXBitCount;
-	
-	
 	/* ---------------------------------------------------------------------------*/
 	/**
   * @brief  Initializes the uart driver
@@ -57,124 +32,80 @@
   * @retval : None
   */	
 	void usart_init(Tusart_pinConfig _usart_pins){
+		NVIC_InitTypeDef NVIC_InitStructure;
+		GPIO_InitTypeDef GPIO_InitStructure;
+		USART_InitTypeDef USART_InitStructure;
 		usart_pins=_usart_pins;
-		// initialize TX pin
-		GPIO_Init( usart_pins.TX_port, usart_pins.TX_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
-		// initialize RX pin
-		GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_IT);		
-		// disable TIM4 update interrupt
-		TIM4_ITConfig(TIM4_IT_UPDATE, DISABLE);//
-		// initialize TIM4
-		usart_initTim4(USART_DELAY_VAL);
-		// Initialize interrupt on RX pin
-		EXTI_SetExtIntSensitivity(_usart_pins.RX_exti_port,EXTI_SENSITIVITY_FALL_ONLY);
-		// Global enable interrupts
-		enableInterrupts();
-		//Internal State Variable
-		state = IDLE;
+		 
+  /* USARTx configured as follow:
+  - BaudRate = 9600 baud  
+  - Word Length = 8 Bits
+  - Stop Bit = 1 Stop Bit
+  - Parity = No Parity
+  - Hardware flow control disabled (RTS and CTS signals)
+  - Receive and transmit enabled
+  */
+  USART_InitStructure.USART_BaudRate = 9600;
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;
+  USART_InitStructure.USART_Parity = USART_Parity_No;
+  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+	
+/* Enable GPIO clock */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA , ENABLE);
+
+  /* Enable USART clock */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); 		
+		
+	 /* Connect PXx to USARTx_Tx */
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_1);
+
+  /* Connect PXx to USARTx_Rx */
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_1);	
+		
+	 /* Configure USART Tx as alternate function push-pull */
+  GPIO_InitStructure.GPIO_Pin = usart_pins.TX_pin;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);	
+		
+	/* Configure USART Rx as alternate function push-pull */
+  GPIO_InitStructure.GPIO_Pin = usart_pins.RX_pin;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);	
+	/* USART configuration */
+  USART_Init(USART1, &USART_InitStructure);
+	/* Enable USART receive data register not empty interrupt*/
+	USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);
+	
+			/* Enable the TIM1 Trigger and commutation interrupt */
+		NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+		NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
+		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+		NVIC_Init(&NVIC_InitStructure);
+	/* Enable USART */
+  USART_Cmd(USART1, ENABLE);
+	
+	
+//		// initialize TX pin
+//		GPIO_Init( usart_pins.TX_port, usart_pins.TX_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+//		// initialize RX pin
+//		GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_IT);		
+//		// disable TIM4 update interrupt
+//		TIM4_ITConfig(TIM4_IT_UPDATE, DISABLE);//
+//		// initialize TIM4
+//		usart_initTim4(USART_DELAY_VAL);
+//		// Initialize interrupt on RX pin
+//		EXTI_SetExtIntSensitivity(_usart_pins.RX_exti_port,EXTI_SENSITIVITY_FALL_ONLY);
+//		// Global enable interrupts
+//		enableInterrupts();
 	}
-	/**
-  * @brief  Initializes the Timer4
-  * @param reload: timer reload value
-  * @retval : None
-  */		
-void usart_initTim4(uint8_t reload){
-		TIM4_DeInit();
-		//Timer step 1us, reload every <reload> us
-		TIM4_TimeBaseInit(TIM4_PRESCALER_16, reload);	
-		/* TIM4 counter enable */
-		TIM4_Cmd(ENABLE);
-}
-	/**
-  * @brief  RX pin interrupt handler
-  * @param 	: None
-  * @retval : None
-  */		
-	void RX_pin_int_handler( void )
-	{	
-		//GPIO_TOGGLE(S3_PORT,S3_PIN); // FOR TIMING CORRECTION
-		// Change state
-		state = RECEIVE;                 
-		// Disable interrupt during the data bits.	
-		GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_NO_IT);   
-		// Disable timer to change its registers.
-		TIM4_ITConfig(TIM1_IT_UPDATE, DISABLE);     
-		// Count one and a half period into the future.			
-		usart_initTim4(USART_DELAY_VAL*1.5);  
-		//Compensate the delay in program execution
-		TIM4_SetCounter(18);		
-		// Clear received bit counter.
-		SwUartRXBitCount = 0;         
-		// Enable timer interrupt on again	    
-		TIM4_ITConfig(TIM1_IT_UPDATE, ENABLE);        
-	}
-	/**
-  * @brief  Timer interrupt handler
-  * @param 	: None
-  * @retval : None
-  */		
-	void Timer_interrupt_handler( void )
-	{
+
 	
-		switch (state) {
-		// Transmit Byte.
-		case TRANSMIT:
-			// Output the TX buffer.
-			if( SwUartTXBitCount < 8 ) {            
-				if( SwUartTXData & 0x01 ) {           // If the LSB of the TX buffer is 1:
-					GPIO_HIGH(usart_pins.TX_port, usart_pins.TX_pin);                       // Send a logic 1 on the TX_PIN.
-				}
-				else {                                // Otherwise:
-					GPIO_LOW(usart_pins.TX_port, usart_pins.TX_pin);                 // Send a logic 0 on the TX_PIN.
-				}
-				SwUartTXData = SwUartTXData >> 1;     // Bitshift the TX buffer and
-				SwUartTXBitCount++;                   // increment TX bit counter.
-			}
-	
-			//Send stop bit.
-			else {
-				GPIO_HIGH(usart_pins.TX_port, usart_pins.TX_pin);                         // Output a logic 1.
-				state = TRANSMIT_STOP_BIT;
-			}
-		break;
-	
-		// Go to idle after stop bit was sent.
-		case TRANSMIT_STOP_BIT:
-			TIM4_ITConfig(TIM1_IT_UPDATE, DISABLE);          // Stop the timer interrupts.
-			state = IDLE;                         // Go back to idle.			
-			GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_IT);     // Enable interrupt to receive more bytes.
-		break;
-	
-		//Receive Byte.
-		case RECEIVE:
-		//GPIO_TOGGLE(S3_PORT,S3_PIN); // FOR TIMING CORRECTION
-			usart_initTim4(USART_DELAY_VAL);     // Count one period after the falling edge is trigged.
-			TIM4_SetCounter(10);
-			TIM4_ITConfig(TIM1_IT_UPDATE, ENABLE);
-			//Receiving, LSB first.
-			if( SwUartRXBitCount < 8 ) {
-					SwUartRXBitCount++;
-					SwUartRXData = (SwUartRXData>>1);   // Shift due to receiving LSB first.
-					if( (usart_pins.RX_port->IDR&usart_pins.RX_pin) != 0 ) {
-							SwUartRXData |= 0x80;           // If a logical 1 is read, let the data mirror this.
-					}
-			}
-	
-			//Done receiving
-			else {
-					state = DATA_PENDING;               // Enter DATA_PENDING when one byte is received.
-					TIM4_ITConfig(TIM1_IT_UPDATE, DISABLE);         // Disable this interrupt.       
-					GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_IT);     // Enable interrupt to receive more bytes.
-					state = IDLE;
-					usart_byte_received(SwUartRXData);
-			}
-		break;
-	
-		// Unknown state.
-		default:        
-			state = IDLE;                           // Error, should not occur. Going to a safe state.
-		}
-	}
+		//			usart_byte_received(SwUartRXData);
+
 
 	/**
   * @brief  Transmits the byte
@@ -183,21 +114,7 @@ void usart_initTim4(uint8_t reload){
   */		
 	void usart_send(uint8_t c)
 {
-  while( state != IDLE )
-  {
-    ;                               // Don't send while busy receiving or transmitting.
-  }
-	// Set state
-  state = TRANSMIT;
-	// Disable reception.
-  GPIO_Init( usart_pins.RX_port, usart_pins.RX_pin, GPIO_MODE_IN_PU_NO_IT);  
-	// Put byte into TX buffer.
-  SwUartTXData = c;             
-  SwUartTXBitCount = 0;         
-	usart_initTim4(USART_DELAY_VAL);
-  GPIO_LOW(usart_pins.TX_port, usart_pins.TX_pin);      
-	// Enable timer interrupt
-  TIM4_ITConfig(TIM1_IT_UPDATE, ENABLE);        
+   USART_SendData(USART1, c);
 }
 	/**
   * @brief  Transmits the string

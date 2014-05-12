@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "btn.h"
 #include "menu.h"
 #include "Utils.h"
@@ -33,32 +32,32 @@
 	/**	Initializes  Menu
 	*/
 	void menuTest_Init(void){
-		//pot_init();		
-		 /*  Init GPIO for ADC7 */
-		GPIO_Init(GPIOB, GPIO_PIN_7, GPIO_MODE_IN_FL_NO_IT);
-		
-		GPIO_Init(GPIOB, GPIO_PIN_2, GPIO_MODE_IN_FL_NO_IT);
-		
-		/* De-Init ADC peripheral*/
-		ADC1_DeInit();
-		ADC1_Init(ADC1_CONVERSIONMODE_CONTINUOUS, ADC1_CHANNEL_2, ADC1_PRESSEL_FCPU_D18, \
-							ADC1_EXTTRIG_TIM, DISABLE, ADC1_ALIGN_RIGHT, ADC1_SCHMITTTRIG_CHANNEL2,\
-							DISABLE);								
-	
-		/* Enable EOC interrupt */
-		ADC1_ITConfig(ADC1_IT_EOCIE,ENABLE);
-	
-		/* Enable general interrupts */  
-		enableInterrupts();
-		
-		/*Start Conversion */
-		ADC1_StartConversion();
-	
-		lcd_clear();
-		menuTest_redraw();/*
-		// Wait for enter button to be depressed
-		while ((btn_getState()&btnEnter)>0)
-			;*/
+//		//pot_init();		
+//		 /*  Init GPIO for ADC7 */
+//		GPIO_Init(GPIOB, GPIO_PIN_7, GPIO_MODE_IN_FL_NO_IT);
+//		
+//		GPIO_Init(GPIOB, GPIO_PIN_2, GPIO_MODE_IN_FL_NO_IT);
+//		
+//		/* De-Init ADC peripheral*/
+//		ADC1_DeInit();
+//		ADC1_Init(ADC1_CONVERSIONMODE_CONTINUOUS, ADC1_CHANNEL_2, ADC1_PRESSEL_FCPU_D18, \
+//							ADC1_EXTTRIG_TIM, DISABLE, ADC1_ALIGN_RIGHT, ADC1_SCHMITTTRIG_CHANNEL2,\
+//							DISABLE);								
+//	
+//		/* Enable EOC interrupt */
+//		ADC1_ITConfig(ADC1_IT_EOCIE,ENABLE);
+//	
+//		/* Enable general interrupts */  
+//		enableInterrupts();
+//		
+//		/*Start Conversion */
+//		ADC1_StartConversion();
+//	
+//		lcd_clear();
+//		menuTest_redraw();/*
+//		// Wait for enter button to be depressed
+//		while ((btn_getState()&btnEnter)>0)
+//			;*/
 	}
 	/**	Deinitializes menu
 	*/
@@ -83,13 +82,13 @@
 			menuTest_firstRun=0;
 		}	
 		//display pwm width in us
-		itoa(Conversion_Value,&str);
+		itoa(Conversion_Value,(char *)&str);
 		lcd_drawTextXY(5*6,3,"    ");
 		lcd_invert(0);
 		lcd_drawTextXY(5*6,3,str);
 		
 		//display pwm width in us
-		itoa((uint32_t)VSupply_Value*33*65/1024,&str);
+		itoa((uint32_t)VSupply_Value*33*65/1024,(char *)&str);
 		lcd_drawTextXY(5*6,4,"    ");
 		lcd_invert(0);
 		lcd_drawTextXY(5*6,4,str);		
@@ -98,7 +97,7 @@
 		if (im<0)
 			im=-im;
 		//display pwm width in us
-		itoa(((int32_t)IMot_Value-452)*10000/2537,&str);
+		itoa(((int32_t)IMot_Value-452)*10000/2537,(char *)&str);
 		lcd_drawTextXY(5*6,5,"    ");
 		lcd_invert(0);
 		lcd_drawTextXY(5*6,5,str);	

@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "global.h"	
 
 #include "btn.h"
@@ -105,7 +104,7 @@
 			S2_TimSetCompare(pwm_S2*2);
 /////////////////////////////			
 			//display pwm width in us
-			itoa(pwm_S1,&str);
+			itoa(pwm_S1,(char *)&str);
 			lcd_drawTextXY(9*6,3," ");
 			if (pwm_S1==0)
 				lcd_drawTextXY(5*6,3,"0000");
@@ -113,7 +112,7 @@
 			lcd_drawTextXY(5*6,3,str);
 
 			//display pwm width in us
-			itoa(pwm_S2,&str);
+			itoa(pwm_S2,(char *)&str);
 			lcd_drawTextXY(9*6,4," ");
 			if (pwm_S2==0)
 				lcd_drawTextXY(5*6,4,"0000");

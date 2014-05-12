@@ -11,7 +11,6 @@
   ******************************************************************************
   */ 
 	/* Includes ------------------------------------------------------------------*/
-		#include "stm8s.h"
 		#include "usart.h"
 		#include <string.h>
 //		#include "board_stv307.h"
@@ -34,7 +33,7 @@
   * @param c: received byte
   * @retval : None
   */
-	void usart_byte_received(uint8_t c){		
+	void usart_byte_received(unsigned char c){		
 		static unsigned char n=0;		
 		// if uart state is idle
 		if (commState!=C_IDLE)
@@ -46,7 +45,7 @@
 			// if this is the first byte
 			if (n==0)
 				// clear the command reception buffer
-				memfill(rsbuff,0,MAX_COMMAND_LEN);
+				memfill((char*)rsbuff,0,MAX_COMMAND_LEN);
 			//echo the received character
 			//usart_send(c);
 			// Add received character to the buffer
@@ -213,10 +212,10 @@
 					// send response
 					usart_sendString("OK");
 					usart_sendString("\r\n");
-					if (rsbuff[sizeof(RS_Step)-2]=='R')
+				/*	if (rsbuff[sizeof(RS_Step)-2]=='R')
 						stepper_step(1,param);
 					else
-						stepper_step(0,param);
+						stepper_step(0,param);*/
 				}
 				// PWM value is out of range
 				else

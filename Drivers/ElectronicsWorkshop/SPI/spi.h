@@ -1,12 +1,13 @@
 #ifndef __spi_h_
 #define __spi_h_
+#include "stm32f0xx_gpio.h"
 	/* Public type definitions ------------------------------------------------*/
 	typedef struct {
-		u32 MOSI_pin;
+		uint32_t MOSI_pin;
 		GPIO_TypeDef* MOSI_port;
-		u32 MISO_pin;
+		uint32_t MISO_pin;
 		GPIO_TypeDef* MISO_port;		
-		u32 SCK_pin;
+		uint32_t SCK_pin;
 		GPIO_TypeDef* SCK_port;		
 	} Tspi_pinConfig;
 	

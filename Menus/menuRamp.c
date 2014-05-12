@@ -1,5 +1,4 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
 #include "btn.h"
 #include "menu.h"
 #include "global.h"
@@ -54,7 +53,7 @@ uint8_t menuRampMode=0;
 			else
 				lcd_invert(0);			
 			// convert integer to string
-			itoa((int32_t)(i+1),&str);
+			itoa((int32_t)(i+1),(char *)&str);
 			// draw on lcd
 			lcd_drawText(str);			
 			// disable text inversion
@@ -81,14 +80,14 @@ uint8_t menuRampMode=0;
 					if (menuRamp_state==MENU_RAMP_STATE_MIN){
 						lcd_drawTextXY(0,2,"   ");
 						//display time left
-						itoa((int32_t)menuRamp_RampStagetimeLeft,&str);
+						itoa((int32_t)menuRamp_RampStagetimeLeft,(char *)&str);
 						lcd_drawTextXY(0,2,str);	
 					}
 					
 					if (menuRamp_state==MENU_RAMP_STATE_MAX){
 						lcd_drawTextXY(0,3,"   ");
 						//display time left
-						itoa((int32_t)menuRamp_RampStagetimeLeft,&str);
+						itoa((int32_t)menuRamp_RampStagetimeLeft,(char *)&str);
 						lcd_drawTextXY(0,3,str);	
 					}
 					blinkState=1;
@@ -118,16 +117,16 @@ uint8_t menuRampMode=0;
 		lcd_drawTextXY(3*6,2,"          ");
 		lcd_drawTextXY(3*6,3,"          ");
 		// Display RPM min value
-		itoa((int32_t)rampCfg.RPM_min,&str);
+		itoa((int32_t)rampCfg.RPM_min,(char *)&str);
 		lcd_drawTextXY(5*6,2,str);
 		// Display RPM min dwell time
-		itoa((int32_t)rampCfg.min_dwell,&str);
+		itoa((int32_t)rampCfg.min_dwell,(char *)&str);
 		lcd_drawTextXY(10*6,2,str);
 		// Display RPM max value
-		itoa((int32_t)rampCfg.RPM_max,&str);
+		itoa((int32_t)rampCfg.RPM_max,(char *)&str);
 		lcd_drawTextXY(5*6,3,str);
 		// Display RPM max dwell time
-		itoa((int32_t)rampCfg.max_dwell,&str);
+		itoa((int32_t)rampCfg.max_dwell,(char *)&str);
 		lcd_drawTextXY(10*6,3,str);		
 	}
 	
@@ -343,6 +342,6 @@ uint8_t menuRampMode=0;
 		menu_displayRPM(4*6,4);
 		
 		//display pwm width in us
-		itoa((int32_t)menuRamp_pwm_width,&str);
+		itoa((int32_t)menuRamp_pwm_width,(char *)&str);
 		lcd_drawTextXY(4*6,5,str);
 	}

@@ -10,9 +10,8 @@
   * <h2><center>&copy; COPYRIGHT 2013 ElectronicsWorkshop.eu</center></h2>
   ******************************************************************************
   */ 
-	
+
 	/* Includes ------------------------------------------------------------------*/
-		#include "stm8s.h"
 		#include "exgpio.h"
 		#include "global.h"
 	/* Private defines -----------------------------------------------------------*/
@@ -23,6 +22,7 @@
 	
 	/* Public variables ----------------------------------------------------------*/
 		TEXGPIO_Config exgpio_config;
+		GPIO_InitTypeDef        GPIO_InitStructure;
 	/* ---------------------------------------------------------------------------*/
 	
 
@@ -36,13 +36,37 @@
   */
 	void EXGPIO_init(TEXGPIO_Config _exgpio_config){
 		exgpio_config=_exgpio_config;
-		/* Configure SPI1 MOSI as output */
-		GPIO_Init( _exgpio_config.D0_port, _exgpio_config.D0_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
-		GPIO_Init( _exgpio_config.D1_port, _exgpio_config.D1_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
-		GPIO_Init( _exgpio_config.D2_port, _exgpio_config.D2_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
-		GPIO_Init( _exgpio_config.D3_port, _exgpio_config.D3_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
-		GPIO_Init( _exgpio_config.D4_port, _exgpio_config.D4_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
-		GPIO_Init( _exgpio_config.D5_port, _exgpio_config.D5_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+		
+		GPIO_InitStructure.GPIO_Pin = _exgpio_config.D0_pin;
+		GPIO_Init(_exgpio_config.D0_port, &GPIO_InitStructure);
+		
+		GPIO_InitStructure.GPIO_Pin = _exgpio_config.D1_pin;
+		GPIO_Init(_exgpio_config.D1_port, &GPIO_InitStructure);
+		
+				GPIO_InitStructure.GPIO_Pin = _exgpio_config.D2_pin;
+		GPIO_Init(_exgpio_config.D2_port, &GPIO_InitStructure);
+		
+				GPIO_InitStructure.GPIO_Pin = _exgpio_config.D3_pin;
+		GPIO_Init(_exgpio_config.D3_port, &GPIO_InitStructure);
+		
+				GPIO_InitStructure.GPIO_Pin = _exgpio_config.D4_pin;
+		GPIO_Init(_exgpio_config.D4_port, &GPIO_InitStructure);
+		
+				GPIO_InitStructure.GPIO_Pin = _exgpio_config.D5_pin;
+		GPIO_Init(_exgpio_config.D5_port, &GPIO_InitStructure);
+		
+		
+//		GPIO_Init( _exgpio_config.D0_port, _exgpio_config.D0_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+//		GPIO_Init( _exgpio_config.D1_port, _exgpio_config.D1_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+//		GPIO_Init( _exgpio_config.D2_port, _exgpio_config.D2_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+//		GPIO_Init( _exgpio_config.D3_port, _exgpio_config.D3_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+//		GPIO_Init( _exgpio_config.D4_port, _exgpio_config.D4_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
+//		GPIO_Init( _exgpio_config.D5_port, _exgpio_config.D5_pin, GPIO_MODE_OUT_PP_HIGH_FAST);
 	}
 	
 	void EXGPIO_set(uint8_t pin,uint8_t state){
